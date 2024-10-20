@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TennisStoreServer", "TennisStoreServer\TennisStoreServer.csproj", "{74A91614-161E-4811-B4EC-2BF7DF546514}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TennisStoreServer", "TennisStoreServer\TennisStoreServer.csproj", "{74A91614-161E-4811-B4EC-2BF7DF546514}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TennisStoreClient", "TennisStoreClient\TennisStoreClient.csproj", "{9D30F0E8-3A51-4E9D-ADE6-2F1624869464}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TennisStoreClient", "TennisStoreClient\TennisStoreClient.csproj", "{9D30F0E8-3A51-4E9D-ADE6-2F1624869464}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TennisStoreSharedLibrary", "TennisStoreSharedLibrary\TennisStoreSharedLibrary.csproj", "{8B0B5BF7-7844-4FF3-821C-063ABC8D4AA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TennisStoreSharedLibrary", "TennisStoreSharedLibrary\TennisStoreSharedLibrary.csproj", "{8B0B5BF7-7844-4FF3-821C-063ABC8D4AA1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
