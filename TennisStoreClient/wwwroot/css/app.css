@@ -17,7 +17,7 @@ a, .btn-link {
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 .content {
@@ -100,4 +100,43 @@ a, .btn-link {
 
 code {
     color: #c02d76;
+}
+
+
+/*Custom Styles*/
+#StyleCursor {
+    cursor: pointer;
+}
+
+#style-button {
+    border-radius: 0px;
+}
+
+.control-container {
+    background-color: #ffffff;
+    margin: 0 auto;
+}
+
+.e-carosel .slide-content {
+    align-items: center;
+    display: flex;
+    font-size: 1.25rem;
+    height: 100%;
+    justify-content: center;
+}
+
+.e-carosel .e-carousel-indicators .e-indicator-bars .e-indicator-bar .indicator {
+    background-color: #3e3c41;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    display: flex;
+    height: 0.5rem;
+    justify-content: center;
+    margin: 0.2rem;
+    width: 2rem;
+}
+
+.e-carosel .e-carousel-indicators .e-indicator-bars .e-indicator-bar .e-active .indicator {
+    background-color: #3c78ef;
+    color: #fff;
 }

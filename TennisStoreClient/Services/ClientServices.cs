@@ -9,10 +9,10 @@ namespace TennisStoreClient.Services
     public class ClientServices(HttpClient httpClient) : IProduct
     {
         private const string BaseUrl = "api/product";
-        private static string SerilazedObj(object modelObj) => JsonSerializer.Serialize(modelObj,JsonOptions());
+        private static string SerilazedObj(object modelObj) => JsonSerializer.Serialize(modelObj, JsonOptions());
         private static T DeserializedJsonString<T>(string jsonString) => JsonSerializer.Deserialize<T>(jsonString, JsonOptions())!;
         private static StringContent GenerateStringContent(string serialiazedObj) => new(serialiazedObj, System.Text.Encoding.UTF8, "application/json");
-        private static IEnumerable<T> DeserializedJsonStringList<T>(string jsonString) => JsonSerializer.Deserialize<IEnumerable<T>>(jsonString, JsonOptions())!;   
+        private static IList<T> DeserializedJsonStringList<T>(string jsonString) => JsonSerializer.Deserialize<IList<T>>(jsonString, JsonOptions())!;
         private static JsonSerializerOptions JsonOptions()
         {
             return new JsonSerializerOptions
@@ -24,14 +24,23 @@ namespace TennisStoreClient.Services
             };
         }
 
-        public Task<ServiceResponse> AddProduct(Product model)
+        public async Task<ServiceResponse> AddProduct(Product model)
         {
-            throw new NotImplementedException();
+            var response = await httpClient.PostAsync(BaseUrl, GenerateStringContent(SerilazedObj(model)));
+
+            if (!response.IsSuccessStatusCode)
+                return new ServiceResponse(false, "Error occured. Try again later...");
+
+            var apiResponse = await response.Content.ReadAsStringAsync();
+            return DeserializedJsonString<ServiceResponse>(apiResponse);
         }
 
-        public Task<List<Product>> GetAllProducts(bool featuredProducts)
+        public async Task<List<Product>> GetAllProducts(bool featuredProducts)
         {
-            throw new NotImplementedException();
+            var response = await httpClient.GetAsync($"{BaseUrl}?featured={featuredProducts}");
+            if (!response.IsSuccessStatusCode) return null!;
+            var result = await response.Content.ReadAsStringAsync();
+            return [.. DeserializedJsonStringList<Product>(result)];
         }
     }
 }
