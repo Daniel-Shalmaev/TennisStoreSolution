@@ -64,7 +64,7 @@
             return;
         }
 
-        var (flag, message) = await ProductService.AddProduct(MyProduct);
+        var (flag, message) = await ClientService.AddProduct(MyProduct);
         if (flag)
             messageDialog!.SetDialogValues("success", message);
         else

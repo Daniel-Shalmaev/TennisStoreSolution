@@ -66,6 +66,11 @@
 @code {
     List<Product>? FeaturedProductsList = new();
 
+    protected override async Task OnInitializedAsync()
+    {
+        await RetrieveFeaturedProducts();
+    }
+
     private async Task RetrieveFeaturedProducts()
     {
         FeaturedProductsList?.Clear();

@@ -1,9 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using Syncfusion.Licensing;
 using TennisStoreServer.Data;
 using TennisStoreServer.Repositories;
 using TennisStoreSharedLibrary.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
+
+SyncfusionLicenseProvider.RegisterLicense(builder.Configuration["Syncfusion:LicenseKey"]);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -21,17 +24,10 @@ builder.Services.AddScoped<IProduct, ProductRepository>();
 
 var app = builder.Build();
 
-//// Apply pending migrations and create the database if it does not exist
-//using (var scope = app.Services.CreateScope())
-//{
-//    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-//    dbContext.Database.EnsureCreated(); // Create the database if it doesn't exist
-//    dbContext.Database.Migrate();       // Apply pending migrations
-//}
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage(); // Use this to see detailed errors
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseWebAssemblyDebugging();
