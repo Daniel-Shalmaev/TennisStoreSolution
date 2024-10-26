@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Syncfusion.Licensing;
 using TennisStoreServer.Data;
 using TennisStoreServer.Repositories;
-using TennisStoreSharedLibrary.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +20,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         ?? throw new InvalidOperationException("Connection string not found"));
 });
 builder.Services.AddScoped<IProduct, ProductRepository>();
+builder.Services.AddScoped<ICategory, CategoryRepository>();
 
 var app = builder.Build();
 

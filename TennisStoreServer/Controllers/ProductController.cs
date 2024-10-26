@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TennisStoreSharedLibrary.Contracts;
+using TennisStoreServer.Repositories;
 using TennisStoreSharedLibrary.Models;
 using TennisStoreSharedLibrary.Responses;
 

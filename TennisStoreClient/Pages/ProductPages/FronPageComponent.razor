@@ -1,4 +1,6 @@
-﻿<div class="container">
+﻿@page "/front"
+
+<div class="container">
     <div class="row">
         <div class="col-md-12">
             @if (FeaturedProductsList!.Any())
@@ -75,10 +77,8 @@
     {
         FeaturedProductsList?.Clear();
         bool featured = true;
-        var results = await ClientService.GetAllProducts(featured);
-        if (results is null) return;
-        foreach (var i in results)
-            FeaturedProductsList!.Add(i);
+        await ProductService.GetAllProducts(featured);
+        var data = ProductService.FeaturedProducts;
     }
 
     string GetNewLabel(DateTime dateUploaded)

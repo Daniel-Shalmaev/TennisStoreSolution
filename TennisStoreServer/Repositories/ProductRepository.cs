@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Transactions;
 using TennisStoreServer.Data;
-using TennisStoreSharedLibrary.Contracts;
 using TennisStoreSharedLibrary.Models;
 using TennisStoreSharedLibrary.Responses;
 

@@ -9,9 +9,11 @@
 @using TennisStoreClient
 @using TennisStoreClient.Layout
 
-@using TennisStoreSharedLibrary.Contracts
+@using TennisStoreClient.Services
 @using TennisStoreSharedLibrary.Models
 @using Syncfusion.Blazor.Navigations
 
 @inject IJSRuntime js
-@inject IProduct ClientService
+@inject IProductService ProductService
+@inject ICategoryService CategoryService
+@inject MessageDialogService messageDialogService

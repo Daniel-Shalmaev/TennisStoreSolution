@@ -1,7 +1,7 @@
 ﻿using TennisStoreSharedLibrary.Models;
 using TennisStoreSharedLibrary.Responses;
 
-namespace TennisStoreSharedLibrary.Contracts
+namespace TennisStoreServer.Repositories
 {
     public interface IProduct
     {
