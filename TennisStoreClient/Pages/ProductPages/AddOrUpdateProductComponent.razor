@@ -1,5 +1,5 @@
 ﻿@page "/add-product"
-@using TennisStoreClient.Pages.OtherPages
+@implements IDisposable
 
 <div class="container">
     <div class="row">
@@ -13,6 +13,19 @@
                         <div class="form-group">
                             <label class="form-label">Name</label>
                             <InputText @bind-Value="MyProduct.Name" class="form-control"></InputText>
+                        </div>
+                        <div class="form-group">
+                            <label>Select Category</label>
+                            @if (CategoryService.AllCategories is not null)
+                            {
+                                <InputSelect class="form-select form-control-sm" @bind-Value="@MyProduct.CategoryId">
+                                    <option>Select Category</option>
+                                    @foreach (var category in CategoryService.AllCategories)
+                                    {
+                                        <option value="@category.Id">@category.Name</option>
+                                    }
+                                </InputSelect>
+                            }
                         </div>
                         <div class="form-group mt-3">
                             <label class="form-label">Price</label>
@@ -54,24 +67,30 @@
     Product MyProduct = new();
     string ImageUploadMessage = "";
 
+    protected async override Task OnInitializedAsync()
+    {
+        await CategoryService.GetAllCategories();
+        CategoryService.CategoryAction += StateHasChanged;
+        messageDialogService.Action += StateHasChanged;
+    }
+
     async Task HandleSaveProduct()
     {
         messageDialogService.ShowSaveButton = false;
-        messageDialogService.ShowBusyButton = !ShowSaveButton;
+        messageDialogService.ShowBusyButton = !messageDialogService.ShowSaveButton;
         if (string.IsNullOrEmpty(MyProduct.Base64Img))
         {
             messageDialogService.messageDialog!.SetDialogValues("warning", "You need to choose image");
-            SetMessageDialog();
+            messageDialogService.SetMessageDialog();
             return;
         }
 
         var (flag, message) = await ProductService.AddProduct(MyProduct);
         if (flag)
-            messageDialog!.SetDialogValues("success", message);
+            messageDialogService.messageDialog!.SetDialogValues("success", message);
         else
-            messageDialog!.SetDialogValues("danger", message);
-
-        SetMessageDialog();
+            messageDialogService.messageDialog!.SetDialogValues("danger", message);
+        messageDialogService.SetMessageDialog();
         return;
     }
 
@@ -92,15 +111,9 @@
         return;
     }
 
-    MessageDialog? messageDialog;
-    public bool ShowBusyButton { get; set; }
-    public bool ShowSaveButton { get; set; } = true;
-
-    private async void SetMessageDialog()
+    public void Dispose()
     {
-        await messageDialog!.ShowMessage();
-        ShowBusyButton = false;
-        ShowSaveButton = !ShowBusyButton;
-        StateHasChanged();
+        CategoryService.CategoryAction -= StateHasChanged;
+        messageDialogService.Action -= StateHasChanged;
     }
 }

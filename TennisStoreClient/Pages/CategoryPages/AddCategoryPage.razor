@@ -36,7 +36,7 @@
     Category CategoryModel = new();
 
     protected override void OnInitialized() => messageDialogService.Action += StateHasChanged;
-    
+
     public void Dispose() => messageDialogService.Action -= StateHasChanged;
 
     async Task HandleSaveCategory()
@@ -49,5 +49,6 @@
         else
             messageDialogService.messageDialog!.SetDialogValues("danger", message);
         messageDialogService.SetMessageDialog();
+        return;
     }
 }
