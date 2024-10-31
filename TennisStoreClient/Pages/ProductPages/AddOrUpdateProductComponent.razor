@@ -96,20 +96,22 @@
 
     async Task UploadImage(InputFileChangeEventArgs e)
     {
-        if (e.File.Name.ToLower().Contains(".png"))
+        var format = e.File.Name.ToLower().EndsWith(".png") ? "image/png" :
+                     e.File.Name.ToLower().EndsWith(".jpg") || e.File.Name.ToLower().EndsWith(".jpeg") ? "image/jpeg" : null;
+
+        if (format == null)
         {
-            var format = "image/png";
-            var resizeImage = await e.File.RequestImageFileAsync(format, 300, 300);
-            var buffer = new byte[resizeImage.Size];
-            await resizeImage.OpenReadStream().ReadAsync(buffer);
-            var imageData = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
-            ImageUploadMessage = "";
-            MyProduct.Base64Img = imageData;
+            ImageUploadMessage = "PNG or JPG file needed";
             return;
         }
-        ImageUploadMessage = "PNG file needed";
-        return;
+
+        var resizeImage = await e.File.RequestImageFileAsync(format, 300, 300);
+        var buffer = new byte[resizeImage.Size];
+        await resizeImage.OpenReadStream().ReadAsync(buffer);
+        MyProduct.Base64Img = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+        ImageUploadMessage = "";
     }
+
 
     public void Dispose()
     {

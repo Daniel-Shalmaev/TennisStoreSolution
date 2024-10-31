@@ -13,9 +13,11 @@ namespace TennisStoreClient.Services
         public List<Category> AllCategories { get; set; }
         public List<Product> AllProducts { get; set; }
         public List<Product> FeaturedProducts { get; set; }
+        public List<Product> ProductsByCategory { get; set; }
 
 
-        // Products
+        #region  Products
+
         public async Task<ServiceResponse> AddProduct(Product model)
         {
             var response = await httpClient.PostAsync(ProductBaseUrl, General.GenerateStringContent(General.SerilazedObj(model)));
@@ -66,7 +68,19 @@ namespace TennisStoreClient.Services
             return (List<Product>?)General.DeserializedJsonStringList<Product>(result)!;
         }
 
-        // Categories
+        public async Task GetProductsByCategory(int categoryId)
+        {
+            bool featured = false;
+            await GetAllProducts(featured);
+            ProductsByCategory = AllProducts.Where(_ => _.CategoryId == categoryId).ToList();   
+            ProductAction?.Invoke();    
+        }
+
+
+        #endregion
+
+        #region Categories
+
         public async Task<ServiceResponse> AddCategory(Category model)
         {
             var response = await httpClient.PostAsync(CategoryBaseUrl, General.GenerateStringContent(General.SerilazedObj(model)));
@@ -100,7 +114,10 @@ namespace TennisStoreClient.Services
             await GetAllCategories();
         }
 
-        // General Methods
+        #endregion
+
+        #region  General Methods
+
         private static ServiceResponse CheckResponse(HttpResponseMessage response)
         {
             if (!response.IsSuccessStatusCode)
@@ -109,6 +126,8 @@ namespace TennisStoreClient.Services
                 return new ServiceResponse(true, null!);
         }
         private static async Task<string> ReadContent(HttpResponseMessage response) => await response.Content.ReadAsStringAsync();
+
+        #endregion
 
     }
 }
