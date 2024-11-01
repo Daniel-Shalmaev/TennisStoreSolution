@@ -15,14 +15,14 @@
                             <div class="text-start">
                                 <h2 style="font-family:Impact">Available On A Cool Price</h2>
                                 <h5 class="text-info">@Banner1.Name</h5>
-                                <p class="text-muted fs-6" style="font-family:Tahoma;">@(General.GetDescription(Banner1.Description))</p>
+                                <p class="text-muted fs-6" style="font-family:Tahoma;">@(General.GetDescription(Banner1.Description!))</p>
                                 <h6 class="text-muted">Free Pickup and Delivery Available</h6>
-                                <h5 class="text-dangger">@Banner1.Price.ToString("$#.##")</h5>
+                                <h5 class="text-danger">@Banner1.Price.ToString("$#.##")</h5>
                                 <button class="btn btn-danger">
-                                    <i class="fa fa-cart-shpping"></i> SHOP NOW
+                                    <i class="fa fa-cart-shopping"></i> SHOP NOW
                                 </button>
-                                <img src="@Banner1.Base64Img" width="150" height="200" class="float-end" />
                             </div>
+                            <img src="@Banner1.Base64Img" width="150" height="200" class="float-end" />
                         </div>
                     </div>
                 </div>
@@ -35,14 +35,14 @@
                             <div class="text-start">
                                 <h2 style="font-family:Impact">Secure this <u>Deal</u>Now!</h2>
                                 <h5 class="text-info">@Banner2.Name</h5>
-                                <p class="text-muted fs-6" style="font-family:Tahoma;">@(General.GetDescription(Banner2.Description))</p>
+                                <p class="text-muted fs-6" style="font-family:Tahoma;">@(General.GetDescription(Banner2.Description!))</p>
                                 <h6 class="text-muted">Free Pickup and Delivery Available</h6>
-                                <h5 class="text-dangger">@Banner2.Price.ToString("$#.##")</h5>
+                                <h5 class="text-danger">@Banner2.Price.ToString("$#.##")</h5>
                                 <button class="btn btn-danger">
-                                    <i class="fa fa-cart-shpping"></i> SHOP NOW
+                                    <i class="fa fa-cart-shopping"></i> SHOP NOW
                                 </button>
-                                <img src="@Banner2.Base64Img" width="150" height="200" class="float-end" />
                             </div>
+                            <img src="@Banner2.Base64Img" width="150" height="200" class="float-end" />
                         </div>
                     </div>
                 </div>

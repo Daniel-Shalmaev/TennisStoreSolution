@@ -14,6 +14,7 @@ namespace TennisStoreClient.Services
         public List<Product> AllProducts { get; set; }
         public List<Product> FeaturedProducts { get; set; }
         public List<Product> ProductsByCategory { get; set; }
+        public bool IsVisible { get; set; }
 
 
         #region  Products
@@ -44,7 +45,9 @@ namespace TennisStoreClient.Services
         {
             if (featuredProducts && FeaturedProducts is null)
             {
+                IsVisible = true;
                 FeaturedProducts = await GetProducts(featuredProducts);
+                IsVisible = false;
                 ProductAction?.Invoke();
                 return;
             }
@@ -52,12 +55,15 @@ namespace TennisStoreClient.Services
             {
                 if (!featuredProducts && AllProducts is null)
                 {
+                    IsVisible = true;
                     AllProducts = await GetProducts(featuredProducts);
+                    IsVisible = false;
                     ProductAction?.Invoke();
                     return;
                 }
             }
         }
+
         private async Task<List<Product>> GetProducts(bool featured)
         {
             var response = await httpClient.GetAsync($"{ProductBaseUrl}?featured={featured}");
@@ -76,6 +82,15 @@ namespace TennisStoreClient.Services
             ProductAction?.Invoke();    
         }
 
+        public Product GetRandomProduct()
+        {
+            if (FeaturedProducts is null) return null!;
+            Random RandomNumbers = new();
+            int minimumNumber = FeaturedProducts.Min(_ => _.Id);
+            int maximumNumber = FeaturedProducts.Max(_ => _.Id) + 1;
+            var result = RandomNumbers.Next(minimumNumber, maximumNumber);
+            return FeaturedProducts.FirstOrDefault(_ => _.Id == result)!;
+        }
 
         #endregion
 
@@ -127,6 +142,7 @@ namespace TennisStoreClient.Services
         }
         private static async Task<string> ReadContent(HttpResponseMessage response) => await response.Content.ReadAsStringAsync();
 
+        
         #endregion
 
     }

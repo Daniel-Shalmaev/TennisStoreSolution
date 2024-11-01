@@ -12,5 +12,7 @@ namespace TennisStoreClient.Services
         List<Product> AllProducts { get; set; }
         List<Product> FeaturedProducts { get; set; }
         List<Product> ProductsByCategory { get; set; }
+        Product GetRandomProduct();
+        bool IsVisible { get; set; }
     }
 }
