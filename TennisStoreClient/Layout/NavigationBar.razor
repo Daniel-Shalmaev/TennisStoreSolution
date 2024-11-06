@@ -3,6 +3,13 @@
         <a class="navbar-brand" href="#">
             <i class="fa fa-cart-shopping text-danger"></i>
             <span class="small text-danger fw-bold">1</span>
+            <h6>
+                Hello,
+                <AuthorizeView>
+                    <Authorized>@context.User.Identity!.Name</Authorized>
+                    <NotAuthorized>Guest</NotAuthorized>
+                </AuthorizeView>
+            </h6>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar">
             <span class="navbar-toggler-icon"></span>

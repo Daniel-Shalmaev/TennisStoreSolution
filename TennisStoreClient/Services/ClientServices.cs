@@ -1,12 +1,14 @@
-﻿using TennisStoreSharedLibrary.Models;
+﻿using TennisStoreSharedLibrary.DTOs;
+using TennisStoreSharedLibrary.Models;
 using TennisStoreSharedLibrary.Responses;
 
 namespace TennisStoreClient.Services
 {
-    public class ClientServices(HttpClient httpClient) : IProductService, ICategoryService
+    public class ClientServices(HttpClient httpClient) : IProductService, ICategoryService, IUserAccountService
     {
         private const string ProductBaseUrl = "api/product";
         private const string CategoryBaseUrl = "api/category";
+        private const string AuthenticationBaseUrl = "api/account";
 
         public Action? CategoryAction { get; set; }
         public Action? ProductAction { get; set; }
@@ -78,8 +80,8 @@ namespace TennisStoreClient.Services
         {
             bool featured = false;
             await GetAllProducts(featured);
-            ProductsByCategory = AllProducts.Where(_ => _.CategoryId == categoryId).ToList();   
-            ProductAction?.Invoke();    
+            ProductsByCategory = AllProducts.Where(_ => _.CategoryId == categoryId).ToList();
+            ProductAction?.Invoke();
         }
 
         public Product GetRandomProduct()
@@ -140,11 +142,39 @@ namespace TennisStoreClient.Services
             else
                 return new ServiceResponse(true, null!);
         }
-        private static async Task<string> ReadContent(HttpResponseMessage response) => await response.Content.ReadAsStringAsync();
 
-        
+        private static async Task<string> ReadContent(HttpResponseMessage response) =>
+            await response.Content.ReadAsStringAsync();
+
         #endregion
 
+        #region Account / Authentication
+
+        public async Task<LoginResponse> Login(LoginDTO model)
+        {
+            var response = await httpClient.PostAsync($"{AuthenticationBaseUrl}/login",
+                General.GenerateStringContent(General.SerilazedObj(model)));
+
+            if (!response.IsSuccessStatusCode)
+                return new LoginResponse(false, "Error occured", null!, null!);
+
+            var apiResponse = await ReadContent(response);
+            return General.DeserializedJsonString<LoginResponse>(apiResponse);
+        }
+
+        public async Task<ServiceResponse> Register(UserDTO model)
+        {
+            var response = await httpClient.PostAsync($"{AuthenticationBaseUrl}/register",
+                General.GenerateStringContent(General.SerilazedObj(model)));
+            var result = CheckResponse(response);
+            if (!result.Flag)
+                return result;
+
+            var apiResponse = await ReadContent(response);
+            return General.DeserializedJsonString<ServiceResponse>(apiResponse);
+        }
+
+        #endregion
     }
 }
 

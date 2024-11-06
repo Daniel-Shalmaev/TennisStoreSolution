@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
+using System.Text;
 using TennisStoreServer.Data;
 using TennisStoreSharedLibrary.DTOs;
 using TennisStoreSharedLibrary.Responses;
@@ -7,14 +10,45 @@ namespace TennisStoreServer.Repositories
 {
     public class UserAccountRepository(AppDbContext appDbContext) : IUserAccount
     {
-        public Task<LoginResponse> GetRefreshToken(PostRefreshTokenDTO model)
+        public async Task<LoginResponse> GetRefreshToken(PostRefreshTokenDTO model)
         {
-            throw new NotImplementedException();
+            var decodedToken = WebEncoders.Base64UrlDecode(model.RefreshToken!);
+            string normalToken = Encoding.UTF8.GetString(decodedToken);
+
+            var getToken = await appDbContext.TokenInfo
+                .FirstOrDefaultAsync(x => x.RefreshToken == normalToken);
+            if (getToken is null) return null!;
+
+            // Generate new token
+            var (newAccessToken, newRefreshToken) = await GenerateTokens();
+
+            // add or update Token info
+            await SaveToTokenInfo(getToken.UserId, newAccessToken, newRefreshToken);
+            return new LoginResponse(true, "refresh-token-complete", newAccessToken, newRefreshToken);
         }
 
-        public Task<UserSession> GetUserByToken(string token)
+        public async Task<UserSession> GetUserByToken(string token)
         {
-            throw new NotImplementedException();
+            var result = await appDbContext.TokenInfo
+                .FirstOrDefaultAsync(_ => _.AccessToken!.Equals(token));
+            if (result is null) return null!;
+
+            var getUserInfo = await appDbContext.UserAccounts
+                .FirstOrDefaultAsync(_ => _.Id == result.Id);
+            if (getUserInfo is null) return null!;
+
+            if (result.ExpiryDate < DateTime.Now) return null!;
+
+            var getUserRole = await appDbContext.UserRoles
+                .FirstOrDefaultAsync(_ => _.UserId == getUserInfo.Id);
+            if (getUserRole is null) return null!;
+
+            var roleName = await appDbContext.SystemRoles
+                .FirstOrDefaultAsync(_ => _.Id == getUserRole.RoleId);
+            if (roleName is null) return null!;
+
+            return new UserSession()
+            { Email = getUserInfo.Email, Name = getUserInfo.Name, Role = roleName.Name };
         }
 
         public async Task<LoginResponse> Login(LoginDTO model)
@@ -31,7 +65,64 @@ namespace TennisStoreServer.Repositories
             if (!BCrypt.Net.BCrypt.Verify(model!.Password, findUser.Password))
                 return new LoginResponse(false, "Invalid UserName/Password");
 
+            var (accessToken, refreshToken) = await GenerateTokens();
+
+            // Add or update Token info
+            await SaveToTokenInfo(findUser.Id, accessToken, refreshToken);
+            return new LoginResponse(true, "Login Successfull", accessToken, refreshToken);
         }
+
+        private async Task SaveToTokenInfo(int userId, string accessToken, string refreshToken)
+        {
+            var getUser = await appDbContext.TokenInfo
+                .FirstOrDefaultAsync(_ => _.UserId == userId);
+
+            if (getUser is null)
+            {
+                appDbContext.TokenInfo.Add(new TokenInfo()
+                { UserId = userId, AccessToken = accessToken, RefreshToken = refreshToken });
+                await Commit();
+            }
+            else
+            {
+                getUser.RefreshToken = refreshToken;
+                getUser.AccessToken = accessToken;
+                getUser.ExpiryDate = DateTime.Now.AddDays(1);
+                await Commit();
+            }
+        }
+
+        private async Task<bool> VerifyToken(string refreshToken = null!, string accessToken = null!)
+        {
+            TokenInfo tokenInfo = new();
+            if (!string.IsNullOrEmpty(refreshToken))
+            {
+                var getRefreshToken = await appDbContext.TokenInfo
+                    .FirstOrDefaultAsync(_ => _.RefreshToken!.Equals(refreshToken));
+                return getRefreshToken is null;
+            }
+            else
+            {
+                var getAccessToken = await appDbContext.TokenInfo
+                    .FirstOrDefaultAsync(_ => _.AccessToken!.Equals(accessToken));
+                return getAccessToken is null;
+            }
+        }
+        private async Task<(string AccessToken, string RefreshToken)> GenerateTokens()
+        {
+            string accessToken = GenerateToken(256);
+            string refreshToken = GenerateToken(64);
+
+            while (!await VerifyToken(accessToken))
+                accessToken = GenerateToken(256);
+
+            while (!await VerifyToken(refreshToken))
+                refreshToken = GenerateToken(256);
+
+            return (accessToken, refreshToken);
+        }
+        private static string GenerateToken(int numberOfBytes) =>
+            Convert.ToBase64String(RandomNumberGenerator.GetBytes(numberOfBytes));
 
         public async Task<ServiceResponse> Register(UserDTO model)
         {
