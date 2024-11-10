@@ -34,7 +34,7 @@ namespace TennisStoreServer.Repositories
             if (result is null) return null!;
 
             var getUserInfo = await appDbContext.UserAccounts
-                .FirstOrDefaultAsync(_ => _.Id == result.Id);
+                .FirstOrDefaultAsync(_ => _.Id == result.UserId);
             if (getUserInfo is null) return null!;
 
             if (result.ExpiryDate < DateTime.Now) return null!;
@@ -99,7 +99,7 @@ namespace TennisStoreServer.Repositories
             {
                 var getRefreshToken = await appDbContext.TokenInfo
                     .FirstOrDefaultAsync(_ => _.RefreshToken!.Equals(refreshToken));
-                return getRefreshToken is null;
+                return getRefreshToken is null;  
             }
             else
             {
@@ -121,6 +121,7 @@ namespace TennisStoreServer.Repositories
 
             return (accessToken, refreshToken);
         }
+
         private static string GenerateToken(int numberOfBytes) =>
             Convert.ToBase64String(RandomNumberGenerator.GetBytes(numberOfBytes));
 

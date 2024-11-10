@@ -1,11 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using Syncfusion.Licensing;
 using TennisStoreServer.Data;
 using TennisStoreServer.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
-
-SyncfusionLicenseProvider.RegisterLicense(builder.Configuration["Syncfusion:LicenseKey"]);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -22,6 +19,18 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IProduct, ProductRepository>();
 builder.Services.AddScoped<ICategory, CategoryRepository>();
 builder.Services.AddScoped<IUserAccount, UserAccountRepository>();
+
+
+// Configure CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder
+            .WithOrigins("https://localhost:7173") // Allow your client URL here
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
+
 
 var app = builder.Build();
 
@@ -42,6 +51,9 @@ else
 app.UseHttpsRedirection();
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
+
+app.UseCors("AllowSpecificOrigin");
+
 app.UseAuthorization();
 
 app.MapRazorPages();

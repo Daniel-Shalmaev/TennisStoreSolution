@@ -10,8 +10,17 @@ using TennisStoreSharedLibrary.Responses;
 
 namespace TennisStoreClient.Authentication
 {
-    public class AuthenticationService(ILocalStorageService localStorageService, HttpClient httpClient)
+    public class AuthenticationService
     {
+        private readonly ILocalStorageService _localStorageService;
+        private readonly HttpClient _httpClient;
+
+        public AuthenticationService(ILocalStorageService localStorageService, HttpClient httpClient)
+        {
+            _localStorageService = localStorageService;
+            _httpClient = httpClient;
+        }
+
         public async Task<UserSession> GetUserDetails()
         {
             var token = await GetTokenFromLocalStorage();
@@ -36,7 +45,7 @@ namespace TennisStoreClient.Authentication
 
                 var result = await httpClient.PostAsync("api/account/refresh-token",
                     General.GenerateStringContent(General.SerilazedObj(model)));
-                if (result.IsSuccessStatusCode && result.StatusCode == System.Net.HttpStatusCode.OK)
+                if (result.IsSuccessStatusCode && result.StatusCode == HttpStatusCode.OK)
                 {
                     var apiResponse = await result.Content.ReadAsStringAsync();
                     var loginResponse = General.DeserializedJsonString<LoginResponse>(apiResponse);
@@ -60,19 +69,19 @@ namespace TennisStoreClient.Authentication
 
         // Public Methods
         public async Task SetTokenToLocalStorage(string token) =>
-            await localStorageService.SetItemAsStringAsync("access_token", token);
+            await _localStorageService.SetItemAsStringAsync("access_token", token);
 
         public async Task<HttpClient> AddHeaderToHttpClient()
         {
-            httpClient.DefaultRequestHeaders.Remove("Authorization");
-            httpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer",
-                General.DeserializedJsonString<TokenProp>(await GetTokenFromLocalStorage()).Token);
-            return httpClient;
+            _httpClient.DefaultRequestHeaders.Remove("Authorization");
+            _httpClient.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer",
+            General.DeserializedJsonString<TokenProp>(await GetTokenFromLocalStorage()).Token);
+            return _httpClient;
         }
 
         public async Task RemoveTokenFromLocalStorage() =>
-            await localStorageService.RemoveItemAsync("access_token");
+            await _localStorageService.RemoveItemAsync("access_token");
 
         public ClaimsPrincipal SetClaimPrincipal(UserSession model)
         {
@@ -85,10 +94,9 @@ namespace TennisStoreClient.Authentication
                 }, "AccessTokenAuth"));
         }
 
-
         // Private Methods
         private async Task<string> GetTokenFromLocalStorage() =>
-            await localStorageService.GetItemAsStringAsync("access_token");
+            await _localStorageService.GetItemAsStringAsync("access_token");
 
         private async Task<HttpResponseMessage> GetUserDetailsFromApi()
         {

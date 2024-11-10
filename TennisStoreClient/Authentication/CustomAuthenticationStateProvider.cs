@@ -13,6 +13,7 @@ namespace TennisStoreClient.Authentication
             try
             {
                 var getUserSession = await authenticationService.GetUserDetails();
+
                 if (getUserSession is null || string.IsNullOrEmpty(getUserSession.Email))
                     return await Task.FromResult(new AuthenticationState(anonymous));
 
@@ -25,12 +26,12 @@ namespace TennisStoreClient.Authentication
         public async Task UpdateAuthenticationState(TokenProp tokenProp)
         {
             ClaimsPrincipal claimsPrincipal = new();
-            if (tokenProp is null || string.IsNullOrEmpty(tokenProp!.Token))
+            if (tokenProp is not null || !string.IsNullOrEmpty(tokenProp!.Token))
             {
-                await authenticationService.SetTokenToLocalStorage(General.SerilazedObj(tokenProp!));
+                await authenticationService.SetTokenToLocalStorage(General.SerilazedObj(tokenProp));
                 var getUserSession = await authenticationService.GetUserDetails();
-
-                claimsPrincipal = authenticationService.SetClaimPrincipal(getUserSession!);
+                if (getUserSession is not null || !string.IsNullOrEmpty(getUserSession!.Email))
+                    claimsPrincipal = authenticationService.SetClaimPrincipal(getUserSession);
             }
             else
             {
