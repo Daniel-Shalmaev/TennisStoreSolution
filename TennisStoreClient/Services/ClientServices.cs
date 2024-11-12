@@ -1,10 +1,13 @@
-﻿using TennisStoreSharedLibrary.DTOs;
+﻿using TennisStoreClient.Authentication;
+using TennisStoreClient.PrivateModels;
+using TennisStoreSharedLibrary.DTOs;
 using TennisStoreSharedLibrary.Models;
 using TennisStoreSharedLibrary.Responses;
 
 namespace TennisStoreClient.Services
 {
-    public class ClientServices(HttpClient httpClient) : IProductService, ICategoryService, IUserAccountService
+    public class ClientServices(HttpClient httpClient, AuthenticationService authenticationService) :
+        IProductService, ICategoryService, IUserAccountService , ICart
     {
         private const string ProductBaseUrl = "api/product";
         private const string CategoryBaseUrl = "api/category";
@@ -17,13 +20,18 @@ namespace TennisStoreClient.Services
         public List<Product> FeaturedProducts { get; set; }
         public List<Product> ProductsByCategory { get; set; }
         public bool IsVisible { get; set; }
+        public Action? CartAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int CartCount { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool IsCartLoaderVisible { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
 
         #region  Products
 
         public async Task<ServiceResponse> AddProduct(Product model)
         {
-            var response = await httpClient.PostAsync(ProductBaseUrl, General.GenerateStringContent(General.SerilazedObj(model)));
+            var privateHttpClient = await authenticationService.AddHeaderToHttpClient();
+            var response = await privateHttpClient.PostAsync(ProductBaseUrl,
+                General.GenerateStringContent(General.SerilazedObj(model)));
             var result = CheckResponse(response);
 
             if (!result.Flag) return result;
@@ -100,7 +108,10 @@ namespace TennisStoreClient.Services
 
         public async Task<ServiceResponse> AddCategory(Category model)
         {
-            var response = await httpClient.PostAsync(CategoryBaseUrl, General.GenerateStringContent(General.SerilazedObj(model)));
+            await authenticationService.GetUserDetails();
+            var privateHttpClient = await authenticationService.AddHeaderToHttpClient();
+            var response = await privateHttpClient.PostAsync(CategoryBaseUrl,
+                General.GenerateStringContent(General.SerilazedObj(model)));
 
             var result = CheckResponse(response);
             if (!result.Flag) return result;
@@ -172,6 +183,26 @@ namespace TennisStoreClient.Services
 
             var apiResponse = await ReadContent(response);
             return General.DeserializedJsonString<ServiceResponse>(apiResponse);
+        }
+
+        public Task GetCartCount()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ServiceResponse> AddToCart(Product model, int updateQuantity = 1)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Order>> MyOrders()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ServiceResponse> DeleteCart(Order cart)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
