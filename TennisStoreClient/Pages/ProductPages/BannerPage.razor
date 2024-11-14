@@ -1,4 +1,5 @@
-﻿@implements IDisposable
+﻿@using TennisStoreSharedLibrary.Responses
+@implements IDisposable
 
 @if (ProductService.FeaturedProducts is not null)
 {
@@ -18,7 +19,7 @@
                                 <p class="text-muted fs-6" style="font-family:Tahoma;">@(General.GetDescription(Banner1.Description!))</p>
                                 <h6 class="text-muted">Free Pickup and Delivery Available</h6>
                                 <h5 class="text-danger">@Banner1.Price.ToString("$#.##")</h5>
-                                <button class="btn btn-danger">
+                                <button class="btn btn-danger" @onclick="() => AddToCart(Banner1)">
                                     <i class="fa fa-cart-shopping"></i> SHOP NOW
                                 </button>
                             </div>
@@ -38,7 +39,7 @@
                                 <p class="text-muted fs-6" style="font-family:Tahoma;">@(General.GetDescription(Banner2.Description!))</p>
                                 <h6 class="text-muted">Free Pickup and Delivery Available</h6>
                                 <h5 class="text-danger">@Banner2.Price.ToString("$#.##")</h5>
-                                <button class="btn btn-danger">
+                                <button class="btn btn-danger" @onclick="() => AddToCart(Banner2)">
                                     <i class="fa fa-cart-shopping"></i> SHOP NOW
                                 </button>
                             </div>
@@ -57,7 +58,27 @@
         bool featured = true;
         await ProductService.GetAllProducts(featured);
         ProductService.ProductAction += StateHasChanged;
+        messageDialogService.Action += StateHasChanged;
     }
 
-    public void Dispose() => ProductService.ProductAction -= StateHasChanged;
+    async Task AddToCart(Product product)
+    {
+        DisplayResponse(await cartServiec.AddToCart(product));
+    }
+
+    private void DisplayResponse(ServiceResponse serviceResponse)
+    {
+        if (serviceResponse.Flag)
+            messageDialogService.messageDialog!.SetDialogValues("success", serviceResponse.Message);
+        else
+            messageDialogService.messageDialog!.SetDialogValues("warning", serviceResponse.Message);
+
+        messageDialogService.SetMessageDialog();
+    }
+
+    public void Dispose()
+    {
+        ProductService.ProductAction -= StateHasChanged;
+        messageDialogService.Action -= StateHasChanged;
+    }
 }

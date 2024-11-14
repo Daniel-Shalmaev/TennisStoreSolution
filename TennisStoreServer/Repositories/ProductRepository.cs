@@ -6,14 +6,9 @@ using TennisStoreSharedLibrary.Responses;
 
 namespace TennisStoreServer.Repositories
 {
-    public class ProductRepository : IProduct
+    public class ProductRepository(AppDbContext appDbContext) : IProduct
     {
-        private readonly AppDbContext appDbContext;
-
-        public ProductRepository(AppDbContext appDbContext)
-        {
-            this.appDbContext = appDbContext;
-        }
+        private readonly AppDbContext appDbContext = appDbContext;
 
         public async Task<ServiceResponse> AddProduct(Product model)
         {
@@ -32,9 +27,14 @@ namespace TennisStoreServer.Repositories
         public async Task<List<Product>> GetAllProducts(bool featuredProducts)
         {
             if (featuredProducts)
-                return await appDbContext.Products.Where(_ => _.Featured).ToListAsync();
+                return await appDbContext.Products
+                    .Where(_ => _.Featured)
+                    .Include(_ => _.Category)
+                    .ToListAsync();
             else
-                return await appDbContext.Products.ToListAsync();
+                return await appDbContext.Products
+                    .Include(_ => _.Category)   
+                    .ToListAsync();
         }
 
         private async Task<ServiceResponse> CheckName(string name)

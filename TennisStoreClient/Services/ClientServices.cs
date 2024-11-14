@@ -1,4 +1,5 @@
-﻿using TennisStoreClient.Authentication;
+﻿using Blazored.LocalStorage;
+using TennisStoreClient.Authentication;
 using TennisStoreClient.PrivateModels;
 using TennisStoreSharedLibrary.DTOs;
 using TennisStoreSharedLibrary.Models;
@@ -6,8 +7,8 @@ using TennisStoreSharedLibrary.Responses;
 
 namespace TennisStoreClient.Services
 {
-    public class ClientServices(HttpClient httpClient, AuthenticationService authenticationService) :
-        IProductService, ICategoryService, IUserAccountService , ICart
+    public class ClientServices(HttpClient httpClient, AuthenticationService authenticationService, ILocalStorageService localStorageService) :
+        IProductService, ICategoryService, IUserAccountService, ICart
     {
         private const string ProductBaseUrl = "api/product";
         private const string CategoryBaseUrl = "api/category";
@@ -20,9 +21,9 @@ namespace TennisStoreClient.Services
         public List<Product> FeaturedProducts { get; set; }
         public List<Product> ProductsByCategory { get; set; }
         public bool IsVisible { get; set; }
-        public Action? CartAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int CartCount { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool IsCartLoaderVisible { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Action? CartAction { get; set; }
+        public int CartCount { get; set; }
+        public bool IsCartLoaderVisible { get; set; }
 
 
         #region  Products
@@ -42,6 +43,7 @@ namespace TennisStoreClient.Services
             await ClearAndGetAllProducts();
             return data;
         }
+
         private async Task ClearAndGetAllProducts()
         {
             bool featuredProduct = true;
@@ -51,6 +53,7 @@ namespace TennisStoreClient.Services
             await GetAllProducts(featuredProduct);
             await GetAllProducts(allProduct);
         }
+
         public async Task GetAllProducts(bool featuredProducts)
         {
             if (featuredProducts && FeaturedProducts is null)
@@ -185,25 +188,96 @@ namespace TennisStoreClient.Services
             return General.DeserializedJsonString<ServiceResponse>(apiResponse);
         }
 
-        public Task GetCartCount()
+        #endregion
+
+        #region Cart Service
+
+        public async Task GetCartCount()
         {
-            throw new NotImplementedException();
+            string cartString = await GetCartFromLocalStorage();
+            if (string.IsNullOrEmpty(cartString))
+                CartCount = 0;
+            else
+                CartCount = General.DeserializedJsonStringList<StorageCart>(cartString).Count();
+            CartAction?.Invoke();
         }
 
-        public Task<ServiceResponse> AddToCart(Product model, int updateQuantity = 1)
+        public async Task<ServiceResponse> AddToCart(Product model, int updateQuantity = 1)
         {
-            throw new NotImplementedException();
+            string message = string.Empty;
+            var MyCart = new List<StorageCart>();
+            var getCartFromStorage = await GetCartFromLocalStorage();
+            if (!string.IsNullOrEmpty(getCartFromStorage))
+            {
+                MyCart = (List<StorageCart>)General.DeserializedJsonStringList<StorageCart>(getCartFromStorage);
+                var checkIfAddedAlerdy = MyCart.FirstOrDefault(_ => _.ProductId == model.Id);
+                if (checkIfAddedAlerdy is null)
+                {
+                    MyCart.Add(new StorageCart() { ProductId = model.Id, Quantity = model.Quantity });
+                    message = "Product added to cart";
+                }
+                else
+                {
+                    var updatedProduct = new StorageCart() { Quantity = updateQuantity, ProductId = model.Id };
+                    MyCart.Remove(checkIfAddedAlerdy!);
+                    MyCart.Add(updatedProduct);
+                    message = "Product Updated";
+                }
+            }
+            else
+            {
+                MyCart.Add(new StorageCart() { ProductId = model.Id, Quantity = 1 });
+                message = "Product added to cart";
+            }
+            await RemoveCartFromLocalStorage();
+            await SetCartFromLocalStorage(General.SerilazedObj(MyCart));
+            await GetCartCount();
+            return new ServiceResponse(true, message);
         }
 
-        public Task<List<Order>> MyOrders()
+        public async Task<List<Order>> MyOrders()
         {
-            throw new NotImplementedException();
+            IsCartLoaderVisible = true;
+            var cartList = new List<Order>();
+            string myCartString = await GetCartFromLocalStorage();
+            if (string.IsNullOrEmpty(myCartString)) return null!;
+
+            var myCartList = General.DeserializedJsonStringList<StorageCart>(myCartString);
+            await GetAllProducts(false);
+            foreach (var cartItem in myCartList)
+            {
+                var product = AllProducts.FirstOrDefault(_ => _.Id == cartItem.ProductId);
+                cartList.Add(new Order()
+                {
+                    Id = product!.Id,
+                    Name = product.Name,
+                    Quantity = cartItem.Quantity,
+                    Price = product.Price,
+                    Image = product.Base64Img
+                });
+            }
+            IsCartLoaderVisible = false;
+            await GetCartCount();
+            return cartList;
+
         }
 
-        public Task<ServiceResponse> DeleteCart(Order cart)
+        public async Task<ServiceResponse> DeleteCart(Order cart)
         {
-            throw new NotImplementedException();
+            var myCartList = General.DeserializedJsonStringList<StorageCart>(await GetCartFromLocalStorage());
+            if (myCartList is null)
+                return new ServiceResponse(false, "Product not found");
+
+            myCartList.Remove(myCartList.FirstOrDefault(_ => _.ProductId == cart.Id)!);
+            await RemoveCartFromLocalStorage();
+            await SetCartFromLocalStorage(General.SerilazedObj(myCartList));
+            await GetCartCount();
+            return new ServiceResponse(true, "Product removed successfully");
         }
+
+        private async Task<string> GetCartFromLocalStorage() => await localStorageService.GetItemAsStringAsync("cart");
+        private async Task SetCartFromLocalStorage(string cart) => await localStorageService.SetItemAsStringAsync("cart", cart);
+        private async Task RemoveCartFromLocalStorage() => await localStorageService.RemoveItemAsync("cart");
 
         #endregion
     }

@@ -15,7 +15,14 @@ else
                 <BannerPage />
                 <div class="card border-0">
                     <div class="card-header border-success mb-2"></div>
-                    <ProductListPage AllProducts="ProductService.ProductsByCategory ?? ProductService.AllProducts" />
+                    @if (ShowProductList)
+                    {
+                        <ProductListPage AllProducts="ProductService.ProductsByCategory ?? ProductService.AllProducts" HandleProductDetailsEvent="HandleProductDetailsEvent" />
+                    }
+                    @if (ShowProductDetails)
+                    {
+                        <ProductDetails HandleBackClickedEvent="HandleBackClickedEvent" Product="ProductDetails" />
+                    }
                 </div>
             </div>
             <div class="col-lg-12 mt-5">
@@ -29,6 +36,10 @@ else
 }
 
 @code {
+    public bool ShowProductList { get; set; } = true;
+    public bool ShowProductDetails { get; set; } = false;
+    public Product ProductDetails { get; set; } = new();
+
     protected override async Task OnInitializedAsync()
     {
         await LoadData();
@@ -54,4 +65,17 @@ else
     }
 
     public void Dispose() => ProductService.ProductAction -= StateHasChanged;
+
+    void HandleBackClickedEvent()
+    {
+        ShowProductDetails = false;
+        ShowProductList = true;
+    }
+
+    void HandleProductDetailsEvent(Product viewProduct)
+    {
+        ProductDetails = viewProduct;
+        ShowProductDetails = true;
+        ShowProductList = false;
+    }
 }
