@@ -25,19 +25,21 @@ namespace TennisStoreClient.Authentication
 
         public async Task UpdateAuthenticationState(TokenProp tokenProp)
         {
-            ClaimsPrincipal claimsPrincipal = new();
-            if (tokenProp is not null || !string.IsNullOrEmpty(tokenProp!.Token))
+            ClaimsPrincipal claimsPrincipal = anonymous;
+
+            if (tokenProp?.Token is not null)
             {
                 await authenticationService.SetTokenToLocalStorage(General.SerilazedObj(tokenProp));
                 var getUserSession = await authenticationService.GetUserDetails();
-                if (getUserSession is not null || !string.IsNullOrEmpty(getUserSession!.Email))
+
+                if (getUserSession?.Email is not null)
                     claimsPrincipal = authenticationService.SetClaimPrincipal(getUserSession);
             }
             else
             {
-                claimsPrincipal = anonymous;
                 await authenticationService.RemoveTokenFromLocalStorage();
             }
+
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(claimsPrincipal)));
         }
     }

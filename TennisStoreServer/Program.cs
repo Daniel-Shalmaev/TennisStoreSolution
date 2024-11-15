@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TennisStoreServer.Data;
 using TennisStoreServer.Repositories;
 
@@ -24,11 +24,12 @@ builder.Services.AddScoped<IUserAccount, UserAccountRepository>();
 // Configure CORS policy
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigin",
-        builder => builder
-            .WithOrigins("https://localhost:7173") // Allow your client URL here
-            .AllowAnyHeader()
-            .AllowAnyMethod());
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()   
+               .AllowAnyHeader()   
+               .AllowAnyMethod();  
+    });
 });
 
 
@@ -52,7 +53,7 @@ app.UseHttpsRedirection();
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
-app.UseCors("AllowSpecificOrigin");
+app.UseCors("AllowAll");
 
 app.UseAuthorization();
 
