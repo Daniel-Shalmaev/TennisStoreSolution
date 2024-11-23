@@ -48,10 +48,7 @@
         TakeValue = Page.PageSize;
     }
 
-    async Task ViewProductDetails(Product viewProduct)
-    {
-        await HandleProductDetailsEvent.InvokeAsync(viewProduct);
-    }
+    async Task ViewProductDetails(Product viewProduct) => await HandleProductDetailsEvent.InvokeAsync(viewProduct);
 
     private async Task AddToCart(Product model)
     {

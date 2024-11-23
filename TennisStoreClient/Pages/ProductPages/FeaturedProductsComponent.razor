@@ -22,7 +22,7 @@
                                         {
                                             <span class="badge bg-none d-flex align-items-center float-end" style="width:50px;height:20px;"></span>
                                         }
-                                        <img class="card-img-top childImage" src="@item.Base64Img" width="150" height="200" style="max-width:150px;min-width:150px;" />
+                                        <img class="card-img-top childImage" src="@item.Base64Img" width="150" height="200" style="max-width:150px;min-width:150px; cursor:pointer;" @onclick="() => ViewProduct(item)" />
                                         <div id="productCover" class="bg-secondary text-white d-flex justify-content-center text-wrap">@item.Name</div>
                                     </div>
                                 </div>
@@ -39,30 +39,30 @@
 
 <style>
     #styleCursor {
-        cursor: pointer;
+    cursor: pointer;
     }
 
     #productCover {
-        width: 150px;
-        font-size: 14px;
-        height: 50px;
-        position: absolute;
-        bottom: 10px;
-        border-radius: 10px;
-        padding: 2px;
-        cursor: pointer;
+    width: 150px;
+    font-size: 14px;
+    height: 50px;
+    position: absolute;
+    bottom: 10px;
+    border-radius: 10px;
+    padding: 2px;
+    cursor: pointer;
     }
 
-        #productCover:hover {
-            opacity: 1;
-        }
+    #productCover:hover {
+    opacity: 1;
+    }
 
     img {
-        opacity: 1;
+    opacity: 1;
     }
 
     .childImage:hover {
-        opacity: 0.5;
+    opacity: 0.5;
     }
 </style>
 
@@ -113,6 +113,7 @@
         AddToFeturedProducts(getPreviusProducts);
     }
 
+    void ViewProduct(Product product) => NavManager.NavigateTo($"/products/{product.Id}");
 
     public void Dispose() => ProductService.ProductAction -= StateHasChanged;
 }

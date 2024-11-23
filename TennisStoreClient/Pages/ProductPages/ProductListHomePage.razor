@@ -1,4 +1,7 @@
 ﻿@page "/products"
+@page "/products/{id:int}"
+@page "/products/filter/{filter}"
+
 @implements IDisposable
 @if (ProductService.IsVisible)
 {
@@ -17,7 +20,7 @@ else
                     <div class="card-header border-success mb-2"></div>
                     @if (ShowProductList)
                     {
-                        <ProductListPage AllProducts="ProductService.ProductsByCategory ?? ProductService.AllProducts" HandleProductDetailsEvent="HandleProductDetailsEvent" />
+                        <ProductListPage AllProducts="InternalProductList ?? ProductService.ProductsByCategory ?? ProductService.AllProducts" HandleProductDetailsEvent="HandleProductDetailsEvent" />
                     }
                     @if (ShowProductDetails)
                     {
@@ -36,9 +39,12 @@ else
 }
 
 @code {
+    [Parameter] public int Id { get; set; } = 0;
+    [Parameter] public string Filter { get; set; } = string.Empty;
     public bool ShowProductList { get; set; } = true;
     public bool ShowProductDetails { get; set; } = false;
     public Product ProductDetails { get; set; } = new();
+    public List<Product> InternalProductList { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -49,6 +55,7 @@ else
     private async void CategoryClickedEvent(int categoryId)
     {
         if (categoryId == 0) return;
+        InternalProductList?.Clear();
         await ProductService.GetProductsByCategory(categoryId);
     }
 
@@ -62,6 +69,7 @@ else
     {
         bool featured = false;
         await ProductService.GetAllProducts(featured);
+        InternalProductList = ProductService.AllProducts;
     }
 
     public void Dispose() => ProductService.ProductAction -= StateHasChanged;
@@ -70,6 +78,21 @@ else
     {
         ShowProductDetails = false;
         ShowProductList = true;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (Id > 0)
+        {
+            ProductDetails = ProductService.AllProducts.FirstOrDefault(_ => _.Id == Id)!;
+            ShowProductDetails = true;
+            ShowProductList = false;
+        }
+
+        if (!string.IsNullOrEmpty(Filter) || !string.IsNullOrWhiteSpace(Filter))
+        {
+            InternalProductList = ProductService.AllProducts.Where(_ => _.Name!.Contains(Filter, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
     }
 
     void HandleProductDetailsEvent(Product viewProduct)
