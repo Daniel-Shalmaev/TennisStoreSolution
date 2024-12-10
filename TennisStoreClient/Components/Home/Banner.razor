@@ -1,0 +1,62 @@
+﻿@using TennisStoreClient.PrivateModels
+<div class="banner">
+    <div class="container">
+        <div class="slider-container has-scrollbar">
+            @foreach (var slide in Slides)
+            {
+                <div class="slider-item">
+                    <img src="@slide.ImageUrl" alt="@slide.AltText" class="banner-img">
+                    <div class="banner-content">
+                        @* <p class="banner-subtitle">@slide.Subtitle</p>
+                        <h2 class="banner-title">@slide.Title</h2>
+                        <p class="banner-text">
+                            @((MarkupString)slide.Text!)
+                        </p> *@
+                        <a href="@slide.Link" class="banner-btn" style="margin-top: 300px;">קנה עכשיו</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public List<Slide> Slides { get; set; } = new List<Slide>();
+
+    protected override void OnInitialized()
+    {
+        Slides = new List<Slide>
+        {
+            new Slide
+            {
+                ImageUrl = "/images/banner-1.jpg",
+                AltText = "women's latest fashion sale",
+                Subtitle = "Trending item",
+                Title = "Women's latest fashion sale",
+                Text = "starting at $ <b>20</b>.00",
+                Link = "#"
+            },
+            new Slide
+            {
+                ImageUrl = "/images/banner-2.jpg",
+                AltText = "modern sunglasses",
+                Subtitle = "Trending accessories",
+                Title = "Modern sunglasses",
+                Text = "starting at $ <b>15</b>.00",
+                Link = "#"
+            },
+            new Slide
+            {
+                ImageUrl = "/images/banner-3.jpg",
+                AltText = "new fashion summer sale",
+                Subtitle = "Sale Offer",
+                Title = "New fashion summer sale",
+                Text = "starting at $ <b>29</b>.99",
+                Link = "#"
+            }
+        };
+    }
+}
+
+

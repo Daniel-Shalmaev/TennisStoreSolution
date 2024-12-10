@@ -1,0 +1,52 @@
+﻿<div class="modal @(IsOpen ? "" : "closed")" data-modal="">
+    <div class="modal-close-overlay" data-modal-overlay=""></div>
+    <div class="modal-content">
+        <button class="modal-close-btn" @onclick="CloseModal" id="closeModalButton" data-modal-close="">
+            <ion-icon class="fa-solid fa-x fa-2xs"></ion-icon>
+        </button>
+        <div class="newsletter-img">
+            <img src="@ImageUrl" alt="@ImageAlt" width="400" height="400">
+        </div>
+        <div class="newsletter">
+            <form>
+                <div class="newsletter-header">
+                    <h3 class="newsletter-title">@Title</h3>
+                    <p class="newsletter-desc">@((MarkupString)Description)</p>
+                </div>
+                <input type="email" class="email-field" placeholder="Email Address" required>
+                <button type="submit" class="btn-newsletter">Subscribe</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public string Title { get; set; } = "Subscribe Newsletter.";
+
+    [Parameter]
+    public string Description { get; set; } = "Subscribe the <strong>Anon</strong> to get latest products and discount update.";
+
+    [Parameter]
+    public string ImageUrl { get; set; } = "/images/newsletter.png";
+
+    [Parameter]
+    public string ImageAlt { get; set; } = "subscribe newsletter";
+
+    public bool IsOpen { get; set; } = false;
+
+    public void CloseModal()
+    {
+        IsOpen = false;
+        StateHasChanged();
+    }
+
+    public void OpenModal()
+    {
+        IsOpen = true;
+        StateHasChanged();
+    }
+}
+
+

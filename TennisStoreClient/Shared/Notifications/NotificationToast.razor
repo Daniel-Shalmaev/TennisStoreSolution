@@ -1,0 +1,51 @@
+﻿<div class="notification-toast @(IsOpen ? "" : "closed")" data-toast="">
+    <button class="toast-close-btn" @onclick="CloseToast" data-toast-close="">
+        <ion-icon name="close-outline" role="img" class="md hydrated fa-solid fa-x fa-2xs" aria-label="close outline"></ion-icon>
+    </button>
+
+    <div class="toast-banner">
+        <img src="@ImageUrl" alt="@ImageAlt" width="80" height="70">
+    </div>
+
+    <div class="toast-detail">
+        <p class="toast-message">@Message</p>
+        <p class="toast-title">@Title</p>
+        <p class="toast-meta">
+            <time datetime="@TimeDateTime">@TimeAgo</time> ago
+        </p>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string ImageUrl { get; set; } = "/Images/jewellery-1.jpg";
+
+    [Parameter]
+    public string ImageAlt { get; set; } = "Rose Gold Earrings";
+
+    [Parameter]
+    public string Message { get; set; } = "Someone in new just bought";
+
+    [Parameter]
+    public string Title { get; set; } = "Rose Gold Earrings";
+
+    [Parameter]
+    public string TimeAgo { get; set; } = "2 Minutes";
+
+    [Parameter]
+    public string TimeDateTime { get; set; } = "PT2M";
+
+    public bool IsOpen { get; set; } = false;
+
+    public void CloseToast()
+    {
+        IsOpen = false;
+        StateHasChanged();
+    }
+
+    public void OpenToast()
+    {
+        IsOpen = true;
+        StateHasChanged();
+    }
+}

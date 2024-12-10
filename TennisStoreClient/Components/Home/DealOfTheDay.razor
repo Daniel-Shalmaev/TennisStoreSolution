@@ -1,0 +1,117 @@
+﻿<div class="product-featured">
+    <h2 class="title">Deal of the day</h2>
+    <div class="showcase-wrapper has-scrollbar">
+        @foreach (var product in FeaturedProducts)
+        {
+            <div class="showcase-container">
+                <div class="showcase">
+                    <div class="showcase-banner">
+                        <img src="@product.ImageUrl" alt="@product.AltText" class="showcase-img">
+                    </div>
+                    <div class="showcase-content">
+                        <div class="showcase-rating">
+                            @for (int i = 0; i < Math.Floor((decimal)product.Rating); i++)
+                            {
+                                <i class="fa-solid fa-star"></i>
+                            }
+                            @if (product.Rating % 1 != 0)
+                            {
+                                <i class="fa-solid fa-star-half-stroke"></i>
+                            }
+                            @for (int i = (int)Math.Ceiling((decimal)product.Rating); i < 5; i++)
+                            {
+                                <i class="fa-regular fa-star"></i>
+                            }
+                        </div>
+                        <a href="#">
+                            <h3 class="showcase-title">@product.Title</h3>
+                        </a>
+                        <p class="showcase-desc">@product.Description</p>
+                        <div class="price-box">
+                            <p class="price">@product.Price</p>
+                            <del>@product.OriginalPrice</del>
+                        </div>
+                        <button class="add-cart-btn">הוסף לעגלה</button>
+                        <div class="showcase-status">
+                            <div class="wrapper">
+                                <p>נמכרו: <b>@product.Sold</b></p>
+                                <p>זמין במלאי: <b>@product.Available</b></p>
+                            </div>
+                            <div class="showcase-status-bar"></div>
+                        </div>
+                        <div class="countdown-box">
+                            <p class="countdown-desc">ההצעה נגמרת בעוד:</p>
+                            <div class="countdown">
+                                @foreach (var time in product.Countdown)
+                                {
+                                    <div class="countdown-content">
+                                        <p class="display-number">@time.Value</p>
+                                        <p class="display-text">@time.Key</p>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    public List<Product> FeaturedProducts { get; set; } = new()
+    {
+        new Product
+        {
+            ImageUrl = "/images/shampoo.jpg",
+            AltText = "shampoo, conditioner & facewash packs",
+            Title = "Shampoo, Conditioner & Facewash Packs",
+            Description = "Lorem ipsum dolor sit amet consectetur Lorem ipsum dolor sit amet consectetur.",
+            Price = "$150.00",
+            OriginalPrice = "$200.00",
+            Sold = 20,
+            Available = 40,
+            Rating = 3,
+            Countdown = new Dictionary<string, string>
+            {
+                { "ימים", "360" },
+                { "שעות", "24" },
+                { "דקות", "59" },
+                { "שניות", "00" }
+            }
+        },
+        new Product
+        {
+            ImageUrl = "images/jewellery-1.jpg",
+            AltText = "Rose Gold diamonds Earring",
+            Title = "Rose Gold Diamonds Earring",
+            Description = "Lorem ipsum dolor sit amet consectetur Lorem ipsum dolor sit amet consectetur.",
+            Price = "$1990.00",
+            OriginalPrice = "$2000.00",
+            Sold = 15,
+            Available = 40,
+            Rating = 3,
+            Countdown = new Dictionary<string, string>
+            {
+                { "ימים",  "360" },
+                { "שעות", "24" },
+                { "דקות", "59" },
+                { "שניות","00" }
+            }
+        }
+    };
+
+    public class Product
+    {
+        public string ImageUrl { get; set; }
+        public string AltText { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public string Price { get; set; }
+        public string OriginalPrice { get; set; }
+        public int Sold { get; set; }
+        public int Available { get; set; }
+        public int Rating { get; set; }
+        public Dictionary<string, string> Countdown { get; set; } = new();
+    }
+}

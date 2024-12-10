@@ -1,0 +1,27 @@
+﻿<div class="product-showcase">
+    <h2 class="title">@Title</h2>
+
+    <div class="showcase-wrapper has-scrollbar">
+        <div class="showcase-container">
+            @for (int i = 0; i < 4; i++)
+            {
+                <ProductCard Product="Products[i]" />
+            }
+        </div>
+
+        <div class="showcase-container">
+            @for (int i = 4; i < 8; i++)
+            {
+                <ProductCard Product="Products[i]" />
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public List<Product> Products { get; set; } = new();
+}

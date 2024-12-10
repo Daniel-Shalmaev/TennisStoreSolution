@@ -1,0 +1,67 @@
+﻿<div class="blog">
+    <div class="container">
+        <div class="blog-container has-scrollbar">
+            @foreach (var blog in BlogPosts)
+            {
+                <BlogCard ImageUrl="@blog.ImageUrl"
+                          AltText="@blog.AltText"
+                          Category="@blog.Category"
+                          Title="@blog.Title"
+                          Author="@blog.Author"
+                          PublishedDate="@blog.PublishedDate" />
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    public List<BlogPost> BlogPosts { get; set; } = new()
+    {
+        new BlogPost
+        {
+            ImageUrl = "/images/blog-1.jpg",
+            AltText = "Clothes Retail KPIs 2021 Guide for Clothes Executives",
+            Category = "Fashion",
+            Title = "Clothes Retail KPIs 2021 Guide for Clothes Executives.",
+            Author = "Mr Admin",
+            PublishedDate = new DateTime(2022, 4, 6)
+        },
+        new BlogPost
+        {
+            ImageUrl = "/images/blog-2.jpg",
+            AltText = "Curbside fashion Trends: How to Win the Pickup Battle.",
+            Category = "Clothes",
+            Title = "Curbside fashion Trends: How to Win the Pickup Battle.",
+            Author = "Mr Robin",
+            PublishedDate = new DateTime(2022, 1, 18)
+        },
+        new BlogPost
+        {
+            ImageUrl = "/images/blog-3.jpg",
+            AltText = "EBT vendors: Claim Your Share of SNAP Online Revenue.",
+            Category = "Shoes",
+            Title = "EBT vendors: Claim Your Share of SNAP Online Revenue.",
+            Author = "Mr Selsa",
+            PublishedDate = new DateTime(2022, 2, 10)
+        },
+        new BlogPost
+        {
+            ImageUrl = "/images/blog-4.jpg",
+            AltText = "Curbside fashion Trends: How to Win the Pickup Battle.",
+            Category = "Electronics",
+            Title = "Curbside fashion Trends: How to Win the Pickup Battle.",
+            Author = "Mr Pawar",
+            PublishedDate = new DateTime(2022, 3, 15)
+        }
+    };
+
+    public class BlogPost
+    {
+        public string ImageUrl { get; set; } = "";
+        public string AltText { get; set; } = "";
+        public string Category { get; set; } = "";
+        public string Title { get; set; } = "";
+        public string Author { get; set; } = "";
+        public DateTime PublishedDate { get; set; }
+    }
+}

@@ -1,0 +1,36 @@
+﻿<div class="service">
+    <h2 class="title">השירותים שלנו</h2>
+    <div class="service-container">
+        @foreach (var service in ServicesList)
+        {
+            <a href="#" class="service-item">
+                <div class="service-icon">
+                    <i class="@service.Icon"></i>
+                </div>
+                <div class="service-content">
+                    <h3 class="service-title">@service.Title</h3>
+                    <p class="service-desc">@service.Description</p>
+                </div>
+            </a>
+        }
+    </div>
+</div>
+
+@code {
+    public List<Service> ServicesList { get; set; } = new()
+    {
+        new Service { Icon = "fa-solid fa-truck fa-xs", IconLabel = "boat outline", Title = "משלוח לכל הארץ", Description = "בהזמנות מעל 100 ש\"ח" },
+        new Service { Icon = "fa-solid fa-rocket fa-xs", IconLabel = "rocket outline", Title = "משלוח מהיר", Description = "משלוח מהיר עם מעקב" },
+        new Service { Icon = "fa-solid fa-phone fa-xs", IconLabel = "call outline", Title = "תמיכה מקוונת מעולה", Description = "שעות פעילות: 8:00 - 23:00" },
+        new Service { Icon = "fa-solid fa-arrow-turn-up fa-rotate-270 fa-xs", IconLabel = "arrow undo outline", Title = "מדיניות החזרות", Description = "החזרה קלה וללא עלות" },
+        new Service { Icon = "fa-solid fa-ticket fa-xs", IconLabel = "ticket outline", Title = "גיפט כארד", Description = "אפשרות לרכישה ליקירכם" },
+    };
+
+    public class Service
+    {
+        public string Icon { get; set; }
+        public string IconLabel { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+    }
+}

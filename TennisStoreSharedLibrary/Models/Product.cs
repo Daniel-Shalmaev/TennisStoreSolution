@@ -13,14 +13,22 @@ namespace TennisStoreSharedLibrary.Models
         public string? Description { get; set; }
 
         [Required, Range(0.1, 99999.99)]
-        public decimal Price { get; set; }
+        public double Price { get; set; }
 
+        [Range(0.1, 99999.99)]
+        public double OldPrice { get; set; }
 
         [Required, DisplayName("Product Image")]
         public string? Base64Img { get; set; }
 
         [Required, Range(1, 99999)]
         public int Quantity { get; set; }
+
+        public string Badge { get; set; }
+
+        [Range(1, 5)]
+        [HalfStep]
+        public double Rating { get; set; }
         public bool Featured { get; set; } = false;
         public DateTime DateUploaded { get; set; } = DateTime.Now;
 
@@ -28,5 +36,19 @@ namespace TennisStoreSharedLibrary.Models
         // Relationship : Many To One
         public Category? Category { get; set; }
         public int CategoryId { get; set; }
+
+        public int? BrandId { get; set; }
+        public Brand? Brand { get; set; }
+    }
+
+    public class HalfStepAttribute : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
+        {
+            if (value is double rating && rating >= 1 && rating <= 5 && rating % 0.5 == 0)
+                return ValidationResult.Success!;
+
+            return new ValidationResult("The rating must be between 1 and 5, in increments of 0.5.");
+        }
     }
 }

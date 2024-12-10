@@ -10,8 +10,13 @@ namespace TennisStoreSharedLibrary.Models
         [Required]
         public string? Name { get; set; }
 
+        [Required]
+        public string? Icon { get; set; }
+
         [JsonIgnore]
-        // Relationship : One To Many
+        // Relationship: One To Many
         public List<Product>? Products { get; set; }
+
+        public List<Subcategory>? Subcategories { get; set; }
     }
 }

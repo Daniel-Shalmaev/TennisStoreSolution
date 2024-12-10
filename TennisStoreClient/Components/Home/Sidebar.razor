@@ -1,0 +1,74 @@
+﻿@using System.Text.Json
+<div class="sidebar has-scrollbar" data-mobile-menu="">
+    <div class="sidebar-category">
+        <div class="sidebar-top">
+            <h2 class="sidebar-title">קטגוריות</h2>
+            <button class="sidebar-close-btn" data-mobile-menu-close-btn="">
+                <ion-icon name="close-outline"></ion-icon>
+            </button>
+        </div>
+
+        <ul class="sidebar-menu-category-list">
+            @if (CategoryService.AllCategories != null && CategoryService.AllCategories.Any())
+            {
+                @foreach (var category in CategoryService.AllCategories)
+                {
+                    <li class="sidebar-menu-category">
+                        <button class="sidebar-accordion-menu">
+                            <div class="menu-title-flex">
+                                <img src="@("/images/Icons/" + category.Icon)" alt="@category.Name" width="20" height="20" class="menu-title-img">
+                                <p class="menu-title">@category.Name</p>
+                            </div>
+                            <div @onclick="() => ToggleCategory(category)">
+                                <i class="fa-solid @(OpenCategories.Contains(category) ? "fa-minus" : "fa-plus")"
+                                   style="cursor: pointer;"></i>
+                            </div>
+                        </button>
+                        <ul class="sidebar-submenu-category-list @(OpenCategories.Contains(category) ? "active" : "d-none")">
+                            @if (category.Subcategories != null && category.Subcategories.Any())
+                            {
+                                @foreach (var subcategory in category.Subcategories!)
+                                {
+                                    <li class="sidebar-submenu-category">
+                                        <a href="#" class="sidebar-submenu-title">
+                                            <p class="product-name">@subcategory.Name</p>
+                                            <data value="@subcategory.Stock" class="stock" title="Available Stock">@subcategory.Stock</data>
+                                        </a>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+    <ProductShowcase />
+
+</div>
+
+@code {
+    private HashSet<Category> OpenCategories = new HashSet<Category>();
+
+    private void ToggleCategory(Category category)
+    {
+        if (OpenCategories.Contains(category))
+        {
+            OpenCategories.Remove(category);
+            StateHasChanged();
+        }
+        else
+        {
+            OpenCategories.Add(category);
+            StateHasChanged();
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CategoryService.GetAllCategories();
+        CategoryService.CategoryAction += StateHasChanged;
+    }
+
+    public void Dispose() => CategoryService.CategoryAction -= StateHasChanged;
+}

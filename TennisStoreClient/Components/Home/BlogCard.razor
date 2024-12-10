@@ -1,0 +1,35 @@
+﻿<div class="blog-card">
+    <a href="#">
+        <img src="@ImageUrl" alt="@AltText" width="300" class="blog-banner" />
+    </a>
+
+    <div class="blog-content">
+        <a href="#" class="blog-category">@Category</a>
+        <h3>
+            <a href="#" class="blog-title">@Title</a>
+        </h3>
+        <p class="blog-meta">
+            By <cite>@Author</cite> / <time>@PublishedDate.ToString("dd-MM-yyyy")</time>
+        </p>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string ImageUrl { get; set; } = "";
+
+    [Parameter]
+    public string AltText { get; set; } = "";
+
+    [Parameter]
+    public string Category { get; set; } = "";
+
+    [Parameter]
+    public string Title { get; set; } = "";
+
+    [Parameter]
+    public string Author { get; set; } = "";
+
+    [Parameter]
+    public DateTime PublishedDate { get; set; }
+}

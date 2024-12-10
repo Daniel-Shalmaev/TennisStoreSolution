@@ -22,12 +22,15 @@ namespace TennisStoreServer.Repositories
             }
             return new ServiceResponse(flag, meassage);
         }
-        public async Task<List<Category>> GetAllCategories() => await appDbContext.Categories.ToListAsync();
 
+        public async Task<List<Category>> GetAllCategories() =>
+                                                             await appDbContext.Categories
+                                                                 .Include(c => c.Subcategories) 
+                                                                 .ToListAsync();
 
         private async Task<ServiceResponse> CheckName(string name)
         {
-            var category = await appDbContext.Categories.FirstOrDefaultAsync(x => x.Name.ToLower()!.Equals(name.ToLower()));
+            var category = await appDbContext.Categories.FirstOrDefaultAsync(x => x.Name!.ToLower()!.Equals(name.ToLower()));
             return category is null ? new ServiceResponse(true, null!) :
                 new ServiceResponse(false, "Category already exist");
         }

@@ -14,7 +14,8 @@ namespace TennisStoreServer.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Category>>> GetAllCategories()
         {
-            var products = await categoryService.GetAllCategories(); return Ok(products);
+            var categories = await categoryService.GetAllCategories(); 
+            return Ok(categories);
         }
 
         [HttpPost]

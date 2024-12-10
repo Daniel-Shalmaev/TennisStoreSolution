@@ -1,0 +1,33 @@
+﻿<div class="showcase">
+    <a href="#" class="showcase-img-box">
+        <img src="@Product.Base64Img" alt="@Product.Name" class="showcase-img" width="70">
+    </a>
+
+    <div class="showcase-content">
+        <a href="#">
+            <h4 class="showcase-title">@Product.Name</h4>
+        </a>
+        <a href="#" class="showcase-category">@Product.CategoryId</a>
+        <div class="price-box">
+            <span class="price">₪@Product.Price</span>
+            <del>₪@Product.OldPrice</del>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Product Product { get; set; }
+
+    private string GetBadgeClasses(string badgeText)
+    {
+        // Define badge styles based on the badge text
+        return badgeText.ToLower() switch
+        {
+            "sale" => "angle black", // Example for sale badge
+            "new" => "angle pink",  // Example for new badge
+            "limited" => "angle red", // Example for limited badge
+            _ => "" // Default style if no specific style is defined
+        };
+    }
+}

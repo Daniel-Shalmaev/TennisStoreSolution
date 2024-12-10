@@ -1,9 +1,23 @@
-﻿@inherits LayoutComponentBase
-<div class="page">
+﻿@using TennisStoreClient.Components.Home
+@using TennisStoreClient.Components.Home.Testimonials
+@using TennisStoreClient.Shared.Footer
+@using TennisStoreClient.Shared.Header
+@using TennisStoreClient.Shared.Notifications
+@using TennisStoreClient.Shared.Modals
+@inherits LayoutComponentBase
+
+<div>
+    <Header />
+    <NotificationToast />
+    <Modal />
+
     <main>
-        <NavigationBar></NavigationBar>
-        <article>
-            @Body
-        </article>
+        <Banner />
+        <BrandSlider />
+        <ProductContainer />
+        <TestimonialsBox />
+        <Blog />
     </main>
+
+    <Footer />
 </div>

@@ -1,0 +1,35 @@
+﻿<div class="category">
+    <div class="container">
+        <div class="category-item-container has-scrollbar">
+            @if (BrandService.AllBrands != null && BrandService.AllBrands.Any())
+            {
+                @foreach (var brand in BrandService.AllBrands)
+                {
+                    <div class="category-item">
+                        <div class="category-img-box">
+                            <img src="@("/images/" + brand.LogoPath)" alt="a" width="30">
+                        </div>
+                        <div class="category-content-box">
+                            <div class="category-content-flex">
+                                <h3 class="category-item-title">@brand.EnName</h3>
+                                <p class="category-item-amount">(@brand.ProductsCount)</p>
+                            </div>
+                            <a href="@brand.EnName" class="category-btn">Show all</a>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        await BrandService.GetAllBrands();
+        BrandService.BrandAction += StateHasChanged;
+    }
+
+    public void Dispose() => BrandService.BrandAction -= StateHasChanged;
+}

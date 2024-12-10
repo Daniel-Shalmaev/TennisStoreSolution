@@ -1,0 +1,52 @@
+﻿<div class="product-showcase">
+    <h3 class="showcase-heading">
+        הנמכרים ביותר
+    </h3>
+    <div class="showcase-wrapper">
+        <div class="showcase-container">
+            @foreach (var product in Products)
+            {
+                <div class="showcase">
+                    <a href="#" class="showcase-img-box">
+                        <img src="@product.Base64Img" alt="@product.Name" width="75" height="75" class="showcase-img">
+                    </a>
+                    <div class="showcase-content">
+                        <a href="#">
+                            <h4 class="showcase-title">@product.Name</h4>
+                        </a>
+                        <div class="showcase-rating">
+                            @for (int i = 0; i < Math.Floor((decimal)product.Rating); i++)
+                            {
+                                <i class="fa-solid fa-star"></i>
+                            }
+
+                            @if (product.Rating % 1 != 0)
+                            {
+                                <i class="fa-solid fa-star-half-stroke"></i>
+                            }
+
+                            @for (int i = (int)Math.Ceiling((decimal)product.Rating); i < 5; i++)
+                            {
+                                <i class="fa-regular fa-star"></i>
+                            }
+                        </div>
+                        <div class="price-box">
+                            <del>@product.OldPrice.ToString("C")</del>
+                            <p class="price">@product.Price.ToString("C")</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    public List<Product> Products { get; set; } = new()
+    {
+        new Product() { Name = "Baby Fabric Shoes", Base64Img = "/images/1.jpg", Price = 4.00, OldPrice = 5.00, Rating = 4.5 },
+        new Product() { Name = "Men's Hoodies T-Shirt", Base64Img = "/images/2.jpg", Price = 7.00, OldPrice = 17.00, Rating = 4 },
+        new Product() { Name = "Girls T-Shirt", Base64Img = "/images/3.jpg", Price = 3.00, OldPrice = 5.00, Rating = 4 },
+        new Product() { Name = "Woolen Hat for Men", Base64Img = "/images/4.jpg", Price = 12.00, OldPrice = 15.00, Rating = 5 }
+    };
+}

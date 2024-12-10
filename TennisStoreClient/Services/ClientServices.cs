@@ -8,15 +8,18 @@ using TennisStoreSharedLibrary.Responses;
 namespace TennisStoreClient.Services
 {
     public class ClientServices(HttpClient httpClient, AuthenticationService authenticationService, ILocalStorageService localStorageService) :
-        IProductService, ICategoryService, IUserAccountService, ICart
+        IProductService, ICategoryService, IUserAccountService, ICart , IBrandService
     {
         private const string ProductBaseUrl = "api/product";
         private const string CategoryBaseUrl = "api/category";
+        private const string BrandBaseUrl = "api/brand";
         private const string AuthenticationBaseUrl = "api/account";
 
         public Action? CategoryAction { get; set; }
         public Action? ProductAction { get; set; }
-        public List<Category> AllCategories { get; set; }
+        public Action? BrandAction { get ; set ; }
+        public List<Category> AllCategories { get; set; } 
+        public List<Brand> AllBrands { get; set; } 
         public List<Product> AllProducts { get; set; }
         public List<Product> FeaturedProducts { get; set; }
         public List<Product> ProductsByCategory { get; set; }
@@ -143,6 +146,41 @@ namespace TennisStoreClient.Services
         {
             AllCategories = null!;
             await GetAllCategories();
+        }
+
+        #endregion
+
+        #region Brands
+        public async Task GetAllBrands()
+        {
+            if (AllBrands is null)
+            {
+                var response = await httpClient.GetAsync($"{BrandBaseUrl}");
+                var (flag, _) = CheckResponse(response);
+                if (!flag) return;
+
+                var result = await ReadContent(response);
+                AllBrands = (List<Brand>?)General.DeserializedJsonStringList<Brand>(result)!;
+                BrandAction?.Invoke();
+            }
+        }
+
+        public async Task<ServiceResponse> AddBrand(Brand model)
+        {
+            await authenticationService.GetUserDetails();
+            var privateHttpClient = await authenticationService.AddHeaderToHttpClient();
+            var response = await privateHttpClient.PostAsync(CategoryBaseUrl,
+                General.GenerateStringContent(General.SerilazedObj(model)));
+
+            var result = CheckResponse(response);
+            if (!result.Flag) return result;
+
+            var apiResponse = await ReadContent(response);
+
+            var data = General.DeserializedJsonString<ServiceResponse>(apiResponse);
+            if (!data.Flag) return data;
+            await ClearAndGetAllCategories();
+            return data;
         }
 
         #endregion
@@ -278,6 +316,8 @@ namespace TennisStoreClient.Services
         private async Task<string> GetCartFromLocalStorage() => await localStorageService.GetItemAsStringAsync("cart");
         private async Task SetCartFromLocalStorage(string cart) => await localStorageService.SetItemAsStringAsync("cart", cart);
         private async Task RemoveCartFromLocalStorage() => await localStorageService.RemoveItemAsync("cart");
+
+       
 
         #endregion
     }
