@@ -6,6 +6,7 @@ using Syncfusion.Blazor;
 using Syncfusion.Licensing;
 using TennisStoreClient;
 using TennisStoreClient.Authentication;
+using TennisStoreClient.Interfaces;
 using TennisStoreClient.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -19,11 +20,14 @@ SyncfusionLicenseProvider
 builder.Services.AddAuthorizationCore();
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-builder.Services.AddScoped<IProductService, ClientServices>();
-builder.Services.AddScoped<ICategoryService, ClientServices>();
-builder.Services.AddScoped<IBrandService, ClientServices>();
-builder.Services.AddScoped<IUserAccountService, ClientServices>();
-builder.Services.AddScoped<ICart, ClientServices>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IBrandService, BrandService>();
+builder.Services.AddScoped<IUserAccountService, AccountService>();
+builder.Services.AddScoped<ICart, CartService>();
+
+
+
 
 builder.Services.AddScoped<AuthenticationService>();
 builder.Services.AddScoped<MessageDialogService>();

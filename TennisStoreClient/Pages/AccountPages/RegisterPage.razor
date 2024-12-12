@@ -1,4 +1,5 @@
 ﻿@page "/identity/account/register"
+@using TennisStoreSharedLibrary.DTOs
 @implements IDisposable
 
 <div class="container">
@@ -20,18 +21,18 @@
                         </div>
                         <div class="form-group mt-3">
                             <label class="form-label">Password</label>
-                            <input @bind="User.Password" type="password" class="form-control"></input>
+                            <input @bind="User.Password" type="password" class="form-control" />
                         </div>
                         <div class="form-group mt-3">
                             <label class="form-label">Confirm Password</label>
-                            <input @bind="User.ConfirmPassword" type="password" class="form-control"></input>
+                            <input @bind="User.ConfirmPassword" type="password" class="form-control" />
                         </div>
                         <div class="form-group mt-3">
-                            @if (messageDialogService.ShowSaveButton)
+                            @if (MessageDialogService.ShowSaveButton)
                             {
                                 <button class="btn btn-outline-primary float-end" type="submit">Register</button>
                             }
-                            <BusyButtonComponent ShowBusyButton="messageDialogService.ShowBusyButton"></BusyButtonComponent>
+                            <BusyButtonComponent ShowBusyButton="MessageDialogService.ShowBusyButton"></BusyButtonComponent>
                         </div>
 
                     </div>
@@ -40,28 +41,27 @@
         </div>
     </div>
 </div>
-<MessageDialog @ref="messageDialogService.messageDialog"></MessageDialog>
+<MessageDialog @ref="MessageDialogService.messageDialog"></MessageDialog>
 
 @code {
     UserDTO User = new();
 
-    public void Dispose() => messageDialogService.Action -= StateHasChanged;
+    public void Dispose() => MessageDialogService.Action -= StateHasChanged;
 
-    protected override void OnInitialized() => messageDialogService.Action += StateHasChanged;
+    protected override void OnInitialized() => MessageDialogService.Action += StateHasChanged;
 
     async Task HandleRegistration()
     {
-        messageDialogService.ShowSaveButton = false;
-        messageDialogService.ShowBusyButton = !messageDialogService.ShowSaveButton;
-        var (flag, message) = await accountService.Register(User);
+        MessageDialogService.ShowSaveButton = false;
+        MessageDialogService.ShowBusyButton = !MessageDialogService.ShowSaveButton;
+        var (flag, message) = await AccountService.Register(User);
         if (flag)
         {
-            messageDialogService.messageDialog!.SetDialogValues("success", message);
+            MessageDialogService.messageDialog!.SetDialogValues("success", message);
             User = new();
         }
         else
-            messageDialogService.messageDialog!.SetDialogValues("danger", message);
-        messageDialogService.SetMessageDialog();
+            MessageDialogService.messageDialog!.SetDialogValues("danger", message);
+        MessageDialogService.SetMessageDialog();
     }
-
 }

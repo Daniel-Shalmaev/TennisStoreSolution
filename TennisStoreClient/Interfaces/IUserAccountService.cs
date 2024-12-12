@@ -1,7 +1,7 @@
 ﻿using TennisStoreSharedLibrary.DTOs;
 using TennisStoreSharedLibrary.Responses;
 
-namespace TennisStoreClient.Services
+namespace TennisStoreClient.Interfaces
 {
     public interface IUserAccountService
     {

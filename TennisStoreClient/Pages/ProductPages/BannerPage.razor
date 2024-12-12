@@ -1,4 +1,5 @@
-﻿@using TennisStoreSharedLibrary.Responses
+﻿@using TennisStoreSharedLibrary.Models
+@using TennisStoreSharedLibrary.Responses
 @implements IDisposable
 
 @if (ProductService.FeaturedProducts is not null)
@@ -58,27 +59,27 @@
         bool featured = true;
         await ProductService.GetAllProducts(featured);
         ProductService.ProductAction += StateHasChanged;
-        messageDialogService.Action += StateHasChanged;
+        MessageDialogService.Action += StateHasChanged;
     }
 
     async Task AddToCart(Product product)
     {
-        DisplayResponse(await cartServiec.AddToCart(product));
+        DisplayResponse(await CartService.AddToCart(product));
     }
 
     private void DisplayResponse(ServiceResponse serviceResponse)
     {
         if (serviceResponse.Flag)
-            messageDialogService.messageDialog!.SetDialogValues("success", serviceResponse.Message);
+            MessageDialogService.messageDialog!.SetDialogValues("success", serviceResponse.Message);
         else
-            messageDialogService.messageDialog!.SetDialogValues("warning", serviceResponse.Message);
+            MessageDialogService.messageDialog!.SetDialogValues("warning", serviceResponse.Message);
 
-        messageDialogService.SetMessageDialog();
+        MessageDialogService.SetMessageDialog();
     }
 
     public void Dispose()
     {
         ProductService.ProductAction -= StateHasChanged;
-        messageDialogService.Action -= StateHasChanged;
+        MessageDialogService.Action -= StateHasChanged;
     }
 }

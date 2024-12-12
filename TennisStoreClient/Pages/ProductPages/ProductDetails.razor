@@ -1,4 +1,5 @@
-﻿@using TennisStoreSharedLibrary.Responses
+﻿@using TennisStoreSharedLibrary.Models
+@using TennisStoreSharedLibrary.Responses
 @implements IDisposable
 
 <div class="container-fluid">
@@ -24,7 +25,7 @@
                                     </div>
                                     <div class="hstack gap-2">
                                         <span>Quantity:</span>
-                                        <span>@Product.Quantity</span>
+                                        <span>@Product!.Quantity</span>
                                     </div>
                                     <div class="hstack gap-2">
                                         <span>Description:</span>
@@ -47,31 +48,31 @@
         </div>
     </div>
 </div>
-<MessageDialog @ref="messageDialogService.messageDialog"></MessageDialog>
+<MessageDialog @ref="MessageDialogService.messageDialog"></MessageDialog>
 
 
 @code {
     [Parameter] public Product? Product { get; set; } = new();
     [Parameter] public EventCallback HandleBackClickedEvent { get; set; }
 
-    protected override void OnInitialized() => messageDialogService.Action += StateHasChanged;
+    protected override void OnInitialized() => MessageDialogService.Action += StateHasChanged;
 
     async Task BackClicked() => await HandleBackClickedEvent.InvokeAsync();
 
     async Task AddToCart(){
         if (Product is null) return;
-        DisplayResponse(await cartServiec.AddToCart(Product!));
+        DisplayResponse(await CartService.AddToCart(Product!));
     }
 
     private void DisplayResponse(ServiceResponse serviceResponse)
     {
         if (serviceResponse.Flag)
-            messageDialogService.messageDialog!.SetDialogValues("success", serviceResponse.Message);
+            MessageDialogService.messageDialog!.SetDialogValues("success", serviceResponse.Message);
         else
-            messageDialogService.messageDialog!.SetDialogValues("warning", serviceResponse.Message);
+            MessageDialogService.messageDialog!.SetDialogValues("warning", serviceResponse.Message);
 
-        messageDialogService.SetMessageDialog();
+        MessageDialogService.SetMessageDialog();
     }
 
-    public void Dispose() => messageDialogService.Action -= StateHasChanged;
+    public void Dispose() => MessageDialogService.Action -= StateHasChanged;
 }

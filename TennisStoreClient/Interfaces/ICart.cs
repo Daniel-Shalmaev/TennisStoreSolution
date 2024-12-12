@@ -2,7 +2,7 @@
 using TennisStoreSharedLibrary.Models;
 using TennisStoreSharedLibrary.Responses;
 
-namespace TennisStoreClient.Services
+namespace TennisStoreClient.Interfaces
 {
     public interface ICart
     {

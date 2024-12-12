@@ -1,14 +1,14 @@
 ﻿using TennisStoreSharedLibrary.Models;
 using TennisStoreSharedLibrary.Responses;
 
-namespace TennisStoreClient.Services
+namespace TennisStoreClient.Interfaces
 {
     public interface IProductService
     {
         Action? ProductAction { get; set; }
         Task<ServiceResponse> AddProduct(Product model);
         Task GetAllProducts(bool featuredProducts);
-        Task GetProductsByCategory (int categoryId);
+        Task GetProductsByCategory(int categoryId);
         List<Product> AllProducts { get; set; }
         List<Product> FeaturedProducts { get; set; }
         List<Product> ProductsByCategory { get; set; }

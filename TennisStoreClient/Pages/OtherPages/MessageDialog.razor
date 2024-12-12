@@ -24,5 +24,5 @@
         StateHasChanged(); // Render the UI and Update the chnages
     }
 
-    public async Task ShowMessage() => await js.InvokeVoidAsync("ShowDialog");
+    public async Task ShowMessage() => await Js.InvokeVoidAsync("ShowDialog");
 }

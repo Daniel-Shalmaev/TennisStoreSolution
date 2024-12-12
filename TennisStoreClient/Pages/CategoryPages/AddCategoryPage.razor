@@ -18,11 +18,11 @@
                     </div>
                     <div class="card-footer">
                         <div class="form-group mt-3">
-                            @if (messageDialogService.ShowSaveButton)
+                            @if (MessageDialogService.ShowSaveButton)
                             {
                                 <button type="submit" class="btn btn-outline-primary"><i class="fa fa-plus"></i>Save Category</button>
                             }
-                            <BusyButtonComponent ShowBusyButton="messageDialogService.ShowBusyButton"></BusyButtonComponent>
+                            <BusyButtonComponent ShowBusyButton="MessageDialogService.ShowBusyButton"></BusyButtonComponent>
                         </div>
                     </div>
                 </div>
@@ -30,25 +30,25 @@
         </div>
     </div>
 </div>
-<MessageDialog @ref="messageDialogService.messageDialog"></MessageDialog>
+<MessageDialog @ref="MessageDialogService.messageDialog"></MessageDialog>
 
 @code {
     Category CategoryModel = new();
 
-    protected override void OnInitialized() => messageDialogService.Action += StateHasChanged;
+    protected override void OnInitialized() => MessageDialogService.Action += StateHasChanged;
 
-    public void Dispose() => messageDialogService.Action -= StateHasChanged;
+    public void Dispose() => MessageDialogService.Action -= StateHasChanged;
 
     async Task HandleSaveCategory()
     {
-        messageDialogService.ShowSaveButton = true;
-        messageDialogService.ShowBusyButton = !messageDialogService.ShowSaveButton;
+        MessageDialogService.ShowSaveButton = true;
+        MessageDialogService.ShowBusyButton = !MessageDialogService.ShowSaveButton;
         var (flag, message) = await CategoryService.AddCategory(CategoryModel);
         if (flag)
-            messageDialogService.messageDialog!.SetDialogValues("success", message);
+            MessageDialogService.messageDialog!.SetDialogValues("success", message);
         else
-            messageDialogService.messageDialog!.SetDialogValues("danger", message);
-        messageDialogService.SetMessageDialog();
+            MessageDialogService.messageDialog!.SetDialogValues("danger", message);
+        MessageDialogService.SetMessageDialog();
         return;
     }
 }

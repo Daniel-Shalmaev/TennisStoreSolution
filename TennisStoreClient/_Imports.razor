@@ -1,30 +1,38 @@
-﻿@using System.Net.Http
+﻿// Using statements for .NET libraries
+@using System.Net.Http
+@using Microsoft.JSInterop
 @using System.Net.Http.Json
-@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Routing
-@using Microsoft.AspNetCore.Components.Web
-@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Http
-@using Microsoft.JSInterop
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+
+// Using statements for project namespaces
 @using TennisStoreClient
 @using TennisStoreClient.Layout
-
 @using TennisStoreClient.Services
-@using TennisStoreSharedLibrary.Models
-@using Syncfusion.Blazor.Navigations
+@using TennisStoreClient.Interfaces
 @using TennisStoreClient.Pages.OtherPages
 @using TennisStoreClient.Pages.ProductPages
 @using TennisStoreClient.Pages.CategoryPages
-@using TennisStoreSharedLibrary.DTOs
 
-@inject IJSRuntime js
+// Shared library namespaces
+@using TennisStoreSharedLibrary.DTOs
+@using TennisStoreSharedLibrary.Models
+
+// External libraries
+@using Syncfusion.Blazor.Navigations
+
+
+// Injected services
+@inject IJSRuntime Js
+@inject ICart CartService
+@inject IBrandService BrandService
+@inject NavigationManager NavManager
 @inject IProductService ProductService
 @inject ICategoryService CategoryService
-@inject IBrandService BrandService
-@inject IUserAccountService accountService
-@inject ICart cartServiec
-
-@inject MessageDialogService messageDialogService
+@inject IUserAccountService AccountService
+@inject MessageDialogService MessageDialogService
 @inject AuthenticationStateProvider AuthStateProvider
-@inject NavigationManager NavManager 

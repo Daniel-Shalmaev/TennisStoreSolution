@@ -30,7 +30,7 @@
         </div>
     </div>
 }
-<MessageDialog @ref="messageDialogService.messageDialog"></MessageDialog>
+<MessageDialog @ref="MessageDialogService.messageDialog"></MessageDialog>
 
 @code {
     SfPager? Page;
@@ -40,7 +40,7 @@
     [Parameter] public EventCallback<Product> HandleProductDetailsEvent { get; set; }
 
 
-    protected override void OnInitialized() => messageDialogService.Action += StateHasChanged;
+    protected override void OnInitialized() => MessageDialogService.Action += StateHasChanged;
 
     public void Click(PagerItemClickEventArgs args)
     {
@@ -52,14 +52,14 @@
 
     private async Task AddToCart(Product model)
     {
-        var (flag, message) = await cartServiec.AddToCart(model);
+        var (flag, message) = await CartService.AddToCart(model);
         if (flag)
-            messageDialogService.messageDialog!.SetDialogValues("success", message);
+            MessageDialogService.messageDialog!.SetDialogValues("success", message);
         else
-            messageDialogService.messageDialog!.SetDialogValues("info", message);
+            MessageDialogService.messageDialog!.SetDialogValues("info", message);
 
-        messageDialogService.SetMessageDialog();
+        MessageDialogService.SetMessageDialog();
     }
 
-    public void Dispose() => messageDialogService.Action -= StateHasChanged;
+    public void Dispose() => MessageDialogService.Action -= StateHasChanged;
 }

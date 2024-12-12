@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <a class="navbar-brand" @onclick="GoToCartPage" style="cursor:pointer;">
             <i class="fa fa-cart-shopping text-danger"></i>
-            <span class="small text-danger fw-bold">@cartServiec.CartCount</span>
+            <span class="small text-danger fw-bold">@CartService.CartCount</span>
             <h6>
                 Hello,
                 <AuthorizeView>
@@ -72,8 +72,8 @@
 
     protected async override Task OnInitializedAsync()
     {
-        await cartServiec.GetCartCount();
-        cartServiec.CartAction += StateHasChanged;
+        await CartService.GetCartCount();
+        CartService.CartAction += StateHasChanged;
     }
 
     void SearchClicked()
@@ -94,5 +94,5 @@
 
     void NavigateTo(string url) => NavManager.NavigateTo($"identity/account/{url}");
 
-    public void Dispose() => cartServiec.CartAction -= StateHasChanged;
+    public void Dispose() => CartService.CartAction -= StateHasChanged;
 }

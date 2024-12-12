@@ -73,7 +73,7 @@ else
         </div>
     </div>
 }
-<MessageDialog @ref="messageDialogService.messageDialog"></MessageDialog>
+<MessageDialog @ref="MessageDialogService.messageDialog"></MessageDialog>
 
 
 @code {
@@ -84,7 +84,7 @@ else
         bool featured = true;
         await ProductService.GetAllProducts(featured);
         ProductService.ProductAction += StateHasChanged;
-        messageDialogService.Action += StateHasChanged;
+        MessageDialogService.Action += StateHasChanged;
     }
 
     private async Task RetrieveFeaturedProducts()
@@ -102,23 +102,23 @@ else
         return productDateAfterUploaded <= maxDays ? "New" : null!;
     }
 
-    async Task AddToCart(Product product) => DisplayResponse(await cartServiec.AddToCart(product));
+    async Task AddToCart(Product product) => DisplayResponse(await CartService.AddToCart(product));
 
     void ViewProduct(Product product) => NavManager.NavigateTo($"/products/{product.Id}");
 
     private void DisplayResponse(ServiceResponse serviceResponse)
     {
         if (serviceResponse.Flag)
-            messageDialogService.messageDialog!.SetDialogValues("success", serviceResponse.Message);
+            MessageDialogService.messageDialog!.SetDialogValues("success", serviceResponse.Message);
         else
-            messageDialogService.messageDialog!.SetDialogValues("warning", serviceResponse.Message);
+            MessageDialogService.messageDialog!.SetDialogValues("warning", serviceResponse.Message);
 
-        messageDialogService.SetMessageDialog();
+        MessageDialogService.SetMessageDialog();
     }
 
     public void Dispose()
     {
         ProductService.ProductAction -= StateHasChanged;
-        messageDialogService.Action -= StateHasChanged;
+        MessageDialogService.Action -= StateHasChanged;
     }
 }
