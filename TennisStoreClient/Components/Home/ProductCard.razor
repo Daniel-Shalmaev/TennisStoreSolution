@@ -1,13 +1,13 @@
 ﻿<div class="showcase">
     <a href="#" class="showcase-img-box">
-        <img src="@Product.Base64Img" alt="@Product.Name" class="showcase-img" width="70">
+        <img src="@Product.Base64Img" alt="@Product.Name" class="showcase-img" width="70" height="70">
     </a>
 
     <div class="showcase-content">
         <a href="#">
             <h4 class="showcase-title">@Product.Name</h4>
         </a>
-        <a href="#" class="showcase-category">@Product.CategoryId</a>
+        <a href="#" class="showcase-category">@Product.Category.Name</a>
         <div class="price-box">
             <span class="price">₪@Product.Price</span>
             <del>₪@Product.OldPrice</del>

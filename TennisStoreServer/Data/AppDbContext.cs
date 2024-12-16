@@ -13,5 +13,16 @@ namespace TennisStoreServer.Data
         public DbSet<SystemRole> SystemRoles { get; set; } = default!;
         public DbSet<UserRole> UserRoles { get; set; } = default!;
         public DbSet<TokenInfo> TokenInfo { get; set; } = default!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // הגדרה של מפתח מורכב עבור ProductAttribute
+            modelBuilder.Entity<ProductAttribute>()
+                .HasKey(pa => new { pa.ProductId, pa.AttributeId });
+
+            // הגדרות נוספות, אם יש
+        }
     }
 }

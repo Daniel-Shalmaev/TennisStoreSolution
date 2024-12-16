@@ -2,17 +2,17 @@
     <h2 class="title">מוצרים חדשים</h2>
 
     <div class="product-grid">
-        @foreach (var product in NewProducts1)
+        @foreach (var product in NewProductsList)
         {
             <div class="showcase">
 
                 <div class="showcase-banner">
-                    <img src="@product.DefaultImage" alt="@product.AltText" width="300" class="product-img default">
-                    <img src="@product.HoverImage" alt="@product.AltText" width="300" class="product-img hover">
+                    <img src="@product.Base64Img" alt="@product.Name" width="300" height="300" class="product-img default">
+                    <img src="@product.Base64Img" alt="@product.Name" width="300" height="300" class="product-img hover">
 
-                    @if (!string.IsNullOrEmpty(product.BadgeText))
+                    @if (!string.IsNullOrEmpty(product.Badge))
                     {
-                        <p class="showcase-badge @product.BadgeClass">@product.BadgeText</p>
+                        <p class="showcase-badge">@product.Badge</p>
                     }
 
                     <div class="showcase-actions">
@@ -32,10 +32,10 @@
                 </div>
 
                 <div class="showcase-content">
-                    <a href="#" class="showcase-category">@product.Category</a>
+                    <a href="#" class="showcase-category">@product.Category.Name</a>
 
                     <h3>
-                        <a href="#" class="showcase-title">@product.Title</a>
+                        <a href="#" class="showcase-title">@product.Name</a>
                     </h3>
 
                     <div class="showcase-rating">
@@ -53,8 +53,8 @@
                     </div>
 
                     <div class="price-box">
-                        <p class="price">@product.Price</p>
-                        <del>@product.OriginalPrice</del>
+                        <p class="price">₪@product.Price</p>
+                        <del>₪@product.OldPrice</del>
                     </div>
                 </div>
 
@@ -64,177 +64,21 @@
 </div>
 
 @code {
-    public List<Product> NewProducts1 { get; set; } = new()
-    {
-        new Product
-        {
-            DefaultImage = "/images/jacket-3.jpg",
-            HoverImage = "/images/jacket-4.jpg",
-            AltText = "Mens Winter Leathers Jackets",
-            BadgeText = "15%",
-            BadgeClass = "",
-            Category = "jacket",
-            Title = "Mens Winter Leathers Jackets",
-            Rating = 3,
-            Price = "$48.00",
-            OriginalPrice = "$75.00"
-        },
-        new Product
-        {
-            DefaultImage = "/images/shirt-1.jpg",
-            HoverImage = "/images/shirt-2.jpg",
-            AltText = "Pure Garment Dyed Cotton Shirt",
-            BadgeText = "sale",
-            BadgeClass = "angle black",
-            Category = "shirt",
-            Title = "Pure Garment Dyed Cotton Shirt",
-            Rating = 3,
-            Price = "$45.00",
-            OriginalPrice = "$56.00"
-        },
-        new Product
-        {
-            DefaultImage = "/images/jacket-5.jpg",
-            HoverImage = "/images/jacket-6.jpg",
-            AltText = "MEN Yarn Fleece Full-Zip Jacket",
-            BadgeText = "",
-            BadgeClass = "",
-            Category = "jacket",
-            Title = "MEN Yarn Fleece Full-Zip Jacket",
-            Rating = 3,
-            Price = "$58.00",
-            OriginalPrice = "$65.00"
-        },
-        new Product
-        {
-            DefaultImage = "/images/clothes-3.jpg",
-            HoverImage = "/images/clothes-4.jpg",
-            AltText = "Black Floral Wrap Midi Skirt",
-            BadgeText = "new",
-            BadgeClass = "angle pink",
-            Category = "skirt",
-            Title = "Black Floral Wrap Midi Skirt",
-            Rating = 5,
-            Price = "$25.00",
-            OriginalPrice = "$35.00"
-        },
-        new Product
-        {
-            DefaultImage = "/images/shoe-2.jpg",
-            HoverImage = "/images/shoe-2_1.jpg",
-            AltText = "Casual Men's Brown shoes",
-            BadgeText = "",
-            BadgeClass = "",
-            Category = "casual",
-            Title = "Casual Men's Brown shoes",
-            Rating = 5,
-            Price = "$99.00",
-            OriginalPrice = "$105.00"
-        },
-        new Product
-        {
-            DefaultImage = "/images/watch-3.jpg",
-            HoverImage = "/images/watch-4.jpg",
-            AltText = "Pocket Watch Leather Pouch",
-            BadgeText = "sale",
-            BadgeClass = "angle black",
-            Category = "watches",
-            Title = "Pocket Watch Leather Pouch",
-            Rating = 3,
-            Price = "$150.00",
-            OriginalPrice = "$170.00"
-        },
-        new Product
-        {
-            DefaultImage = "/images/watch-1.jpg",
-            HoverImage = "/images/watch-2.jpg",
-            AltText = "Smart watche Vital Plus",
-            BadgeText = "",
-            BadgeClass = "",
-            Category = "watches",
-            Title = "Smart watche Vital Plus",
-            Rating = 4,
-            Price = "$100.00",
-            OriginalPrice = "$120.00"
-        },
-        new Product
-        {
-            DefaultImage = "/images/party-wear-1.jpg",
-            HoverImage = "/images/party-wear-2.jpg",
-            AltText = "Womens Party Wear Shoes",
-            BadgeText = "sale",
-            BadgeClass = "angle black",
-            Category = "party wear",
-            Title = "Womens Party Wear Shoes",
-            Rating = 3,
-            Price = "$25.00",
-            OriginalPrice = "$30.00"
-        },
-        new Product
-        {
-            DefaultImage = "/images/jacket-1.jpg",
-            HoverImage = "/images/jacket-2.jpg",
-            AltText = "Mens Winter Leathers Jackets",
-            BadgeText = "",
-            BadgeClass = "",
-            Category = "jacket",
-            Title = "Mens Winter Leathers Jackets",
-            Rating = 4,
-            Price = "$32.00",
-            OriginalPrice = "$45.00"
-        },
-        new Product
-        {
-            DefaultImage = "/images/sports-2.jpg",
-            HoverImage = "/images/sports-4.jpg",
-            AltText = "Trekking & Running Shoes - black",
-            BadgeText = "sale",
-            BadgeClass = "angle black",
-            Category = "sports",
-            Title = "Trekking & Running Shoes - black",
-            Rating = 3,
-            Price = "$58.00",
-            OriginalPrice = "$64.00"
-        },
-        new Product
-        {
-            DefaultImage = "/images/shoe-1.jpg",
-            HoverImage = "/images/shoe-1_1.jpg",
-            AltText = "Men's Leather Formal Wear shoes",
-            BadgeText = "",
-            BadgeClass = "",
-            Category = "formal",
-            Title = "Men's Leather Formal Wear shoes",
-            Rating = 4,
-            Price = "$50.00",
-            OriginalPrice = "$65.00"
-        },
-        new Product
-        {
-            DefaultImage = "/images/shorts-1.jpg",
-            HoverImage = "/images/shorts-2.jpg",
-            AltText = "Better Basics French Terry Sweatshorts",
-            BadgeText = "sale",
-            BadgeClass = "angle black",
-            Category = "shorts",
-            Title = "Better Basics French Terry Sweatshorts",
-            Rating = 3,
-            Price = "$78.00",
-            OriginalPrice = "$85.00"
-        }
-    };
+    private List<Product> NewProductsList = new();
 
-    public class Product
+    protected override async Task OnInitializedAsync()
     {
-        public string DefaultImage { get; set; }
-        public string HoverImage { get; set; }
-        public string AltText { get; set; }
-        public string BadgeText { get; set; }
-        public string BadgeClass { get; set; }
-        public string Category { get; set; }
-        public string Title { get; set; }
-        public int Rating { get; set; }
-        public string Price { get; set; }
-        public string OriginalPrice { get; set; }
+        await ProductService.GetAllProducts(false);
+
+        NewProductsList = ProductService.AllProducts
+            .OrderByDescending(product => product.DateUploaded)
+            .Take(12)
+            .ToList();
+
+        StateHasChanged();
     }
+
+    // badge classe
+    // angle black
+    // angle pink
 }

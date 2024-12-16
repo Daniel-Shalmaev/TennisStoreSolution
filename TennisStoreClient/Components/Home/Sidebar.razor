@@ -21,7 +21,7 @@
                             </div>
                             <div @onclick="() => ToggleCategory(category)">
                                 <i class="fa-solid @(OpenCategories.Contains(category) ? "fa-minus" : "fa-plus")"
-                                   style="cursor: pointer;"></i>
+                                style="cursor: pointer;"></i>
                             </div>
                         </button>
                         <ul class="sidebar-submenu-category-list @(OpenCategories.Contains(category) ? "active" : "d-none")">
@@ -32,7 +32,9 @@
                                     <li class="sidebar-submenu-category">
                                         <a href="#" class="sidebar-submenu-title">
                                             <p class="product-name">@subcategory.Name</p>
-                                            <data value="@subcategory.Stock" class="stock" title="Available Stock">@subcategory.Stock</data>
+                                            <span class="stock" title="Available Stock">
+                                                @ProductSubCategoryCount(subcategory.Id)
+                                            </span>
                                         </a>
                                     </li>
                                 }
@@ -62,6 +64,10 @@
             OpenCategories.Add(category);
             StateHasChanged();
         }
+    }
+
+    int ProductSubCategoryCount(int subCategoryId){
+        return ProductService.AllProducts.Count(p => p.SubCategoryId == subCategoryId);
     }
 
     protected override async Task OnInitializedAsync()

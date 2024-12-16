@@ -6,39 +6,31 @@
 </div>
 
 @code {
-    private List<Product> newArrivals = new()
-    {
-        new Product { Base64Img = "/images/clothes-1.jpg", Name = "Relaxed Short Full Sleeve T-Shirt", CategoryId = 1, Price = 45, OldPrice = 12 },
-        new Product { Base64Img = "/images/clothes-2.jpg", Name = "Girls Pink Embro Design Top", CategoryId = 1, Price = 61, OldPrice = 9 },
-        new Product { Base64Img = "/images/clothes-2.jpg", Name = "Girls Pink Embro Design Top", CategoryId = 1, Price = 61, OldPrice = 9 },
-        new Product { Base64Img = "/images/clothes-2.jpg", Name = "Girls Pink Embro Design Top", CategoryId = 1, Price = 61, OldPrice = 9 },
-        new Product { Base64Img = "/images/clothes-2.jpg", Name = "Girls Pink Embro Design Top", CategoryId = 1, Price = 61, OldPrice = 9 },
-        new Product { Base64Img = "/images/clothes-2.jpg", Name = "Girls Pink Embro Design Top", CategoryId = 1, Price = 61, OldPrice = 9 },
-        new Product { Base64Img = "/images/clothes-2.jpg", Name = "Girls Pink Embro Design Top", CategoryId = 1, Price = 61, OldPrice = 9 },
-        new Product { Base64Img = "/images/clothes-2.jpg", Name = "Girls Pink Embro Design Top", CategoryId = 1, Price = 61, OldPrice = 9 }
-    };
 
-    private List<Product> trendingProducts = new()
-    {
-        new Product { Base64Img = "/images/sports-1.jpg", Name = "Running & Trekking Shoes - White", CategoryId = 2, Price = 49, OldPrice = 15 },
-        new Product { Base64Img = "/images/sports-2.jpg", Name = "Trekking & Running Shoes - Black", CategoryId = 2, Price = 78, OldPrice = 36 },
-        new Product { Base64Img = "/images/sports-2.jpg", Name = "Trekking & Running Shoes - Black", CategoryId = 2, Price = 78, OldPrice = 36 },
-        new Product { Base64Img = "/images/sports-2.jpg", Name = "Trekking & Running Shoes - Black", CategoryId = 2, Price = 78, OldPrice = 36 },
-        new Product { Base64Img = "/images/sports-2.jpg", Name = "Trekking & Running Shoes - Black", CategoryId = 2, Price = 78, OldPrice = 36 },
-        new Product { Base64Img = "/images/sports-2.jpg", Name = "Trekking & Running Shoes - Black", CategoryId = 2, Price = 78, OldPrice = 36 },
-        new Product { Base64Img = "/images/sports-2.jpg", Name = "Trekking & Running Shoes - Black", CategoryId = 2, Price = 78, OldPrice = 36 },
-        new Product { Base64Img = "/images/sports-2.jpg", Name = "Trekking & Running Shoes - Black", CategoryId = 2, Price = 78, OldPrice = 36 }
-    };
+    private List<Product> newArrivals = new List<Product>();
+    private List<Product> topRatedProducts = new List<Product>();
+    private List<Product> trendingProducts = new List<Product>();
 
-    private List<Product> topRatedProducts = new()
+    protected override async Task OnInitializedAsync()
     {
-        new Product { Base64Img = "/images/watch-3.jpg", Name = "Pocket Watch Leather Pouch", CategoryId = 2, Price = 50, OldPrice = 34 },
-        new Product { Base64Img = "/images/jewellery-3.jpg", Name = "Silver Deer Heart Necklace", CategoryId = 2, Price = 84, OldPrice = 30 },
-        new Product { Base64Img = "/images/jewellery-3.jpg", Name = "Silver Deer Heart Necklace", CategoryId = 2, Price = 84, OldPrice = 30 },
-        new Product { Base64Img = "/images/jewellery-3.jpg", Name = "Silver Deer Heart Necklace", CategoryId = 2, Price = 84, OldPrice = 30 },
-        new Product { Base64Img = "/images/jewellery-3.jpg", Name = "Silver Deer Heart Necklace", CategoryId = 2, Price = 84, OldPrice = 30 },
-        new Product { Base64Img = "/images/jewellery-3.jpg", Name = "Silver Deer Heart Necklace", CategoryId = 2, Price = 84, OldPrice = 30 },
-        new Product { Base64Img = "/images/jewellery-3.jpg", Name = "Silver Deer Heart Necklace", CategoryId = 2, Price = 84, OldPrice = 30 },
-        new Product { Base64Img = "/images/jewellery-3.jpg", Name = "Silver Deer Heart Necklace", CategoryId = 2, Price = 84, OldPrice = 30 }
-    };
+        await ProductService.GetAllProducts(false);
+
+        newArrivals = ProductService.AllProducts
+            .OrderByDescending(product => product.DateUploaded)
+            .Take(8)
+            .ToList();
+
+        trendingProducts = ProductService.AllProducts
+            .Take(8)                          
+            .ToList();
+
+        topRatedProducts = ProductService.AllProducts
+            .OrderByDescending(product => product.Rating)
+            .Take(8)
+            .ToList();
+
+        StateHasChanged(); 
+    }
+
+
 }

@@ -3,6 +3,7 @@ using TennisStoreClient.Interfaces;
 using TennisStoreClient.PrivateModels;
 using TennisStoreSharedLibrary.Models;
 using TennisStoreSharedLibrary.Responses;
+using Order = TennisStoreClient.PrivateModels.Order;
 
 namespace TennisStoreClient.Services
 {

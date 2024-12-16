@@ -15,9 +15,6 @@ namespace TennisStoreSharedLibrary.Models
         [Required]
         public string? Name { get; set; }
 
-        [Required]
-        public int Stock { get; set; } // Stock count for the subcategory
-
         // Relationship: Many-to-One with Category
         public int CategoryId { get; set; }
         [JsonIgnore]

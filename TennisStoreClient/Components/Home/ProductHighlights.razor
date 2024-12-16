@@ -3,14 +3,14 @@
 
     <div class="showcase-wrapper has-scrollbar">
         <div class="showcase-container">
-            @for (int i = 0; i < 4; i++)
+            @for (int i = 0; i < 4 && i < Products.Count; i++) 
             {
                 <ProductCard Product="Products[i]" />
             }
         </div>
 
         <div class="showcase-container">
-            @for (int i = 4; i < 8; i++)
+            @for (int i = 4; i < 8 && i < Products.Count; i++) 
             {
                 <ProductCard Product="Products[i]" />
             }

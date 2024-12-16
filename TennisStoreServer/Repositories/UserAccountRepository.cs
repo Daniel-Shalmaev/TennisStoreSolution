@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using TennisStoreServer.Data;
 using TennisStoreSharedLibrary.DTOs;
+using TennisStoreSharedLibrary.Models;
 using TennisStoreSharedLibrary.Responses;
 
 namespace TennisStoreServer.Repositories

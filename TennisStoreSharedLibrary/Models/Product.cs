@@ -10,6 +10,9 @@ namespace TennisStoreSharedLibrary.Models
         [Required]
         public string? Name { get; set; }
 
+        [Required]
+        public string? SubName { get; set; }
+
         public string? Description { get; set; }
 
         [Required, Range(0.1, 99999.99)]
@@ -24,13 +27,15 @@ namespace TennisStoreSharedLibrary.Models
         [Required, Range(1, 99999)]
         public int Quantity { get; set; }
 
-        public string Badge { get; set; }
+        public string? Badge { get; set; }
 
         [Range(1, 5)]
         [HalfStep]
         public double Rating { get; set; }
         public bool Featured { get; set; } = false;
         public DateTime DateUploaded { get; set; } = DateTime.Now;
+
+        public List<ProductAttribute>? Attributes { get; set; }
 
 
         // Relationship : Many To One
@@ -39,7 +44,24 @@ namespace TennisStoreSharedLibrary.Models
 
         public int? BrandId { get; set; }
         public Brand? Brand { get; set; }
+
+        public int? SubCategoryId { get; set; }
+        public Subcategory? SubCategory { get; set; }
+
     }
+
+    public class ProductAttribute
+    {
+        public int ProductId { get; set; }
+        public int AttributeId { get; set; }
+
+        [Required]
+        public string Value { get; set; } = string.Empty;
+
+        public Product? Product { get; set; }
+        public Attribute? Attribute { get; set; }
+    }
+
 
     public class HalfStepAttribute : ValidationAttribute
     {

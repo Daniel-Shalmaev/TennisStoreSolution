@@ -4,7 +4,7 @@
     </h3>
     <div class="showcase-wrapper">
         <div class="showcase-container">
-            @foreach (var product in Products)
+            @foreach (var product in BestSellers)
             {
                 <div class="showcase">
                     <a href="#" class="showcase-img-box">
@@ -22,7 +22,7 @@
 
                             @if (product.Rating % 1 != 0)
                             {
-                                <i class="fa-solid fa-star-half-stroke"></i>
+                                <i class="fa-solid fa-star-half-stroke fa-flip-horizontal"></i>
                             }
 
                             @for (int i = (int)Math.Ceiling((decimal)product.Rating); i < 5; i++)
@@ -42,11 +42,16 @@
 </div>
 
 @code {
-    public List<Product> Products { get; set; } = new()
+    private List<Product> BestSellers = new();
+
+    protected override async Task OnInitializedAsync()
     {
-        new Product() { Name = "Baby Fabric Shoes", Base64Img = "/images/1.jpg", Price = 4.00, OldPrice = 5.00, Rating = 4.5 },
-        new Product() { Name = "Men's Hoodies T-Shirt", Base64Img = "/images/2.jpg", Price = 7.00, OldPrice = 17.00, Rating = 4 },
-        new Product() { Name = "Girls T-Shirt", Base64Img = "/images/3.jpg", Price = 3.00, OldPrice = 5.00, Rating = 4 },
-        new Product() { Name = "Woolen Hat for Men", Base64Img = "/images/4.jpg", Price = 12.00, OldPrice = 15.00, Rating = 5 }
-    };
+        await ProductService.GetAllProducts(false);
+
+        BestSellers = ProductService.AllProducts
+            .Take(5)
+            .ToList();
+
+        StateHasChanged();
+    }
 }

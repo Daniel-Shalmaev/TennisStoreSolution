@@ -2198,7 +2198,7 @@ footer {
         position: absolute;
         content: '';
         top: 3px;
-        right: -10px;
+        left: -10px;
         background: var(--sonic-silver);
         width: 1px;
         height: 15px;

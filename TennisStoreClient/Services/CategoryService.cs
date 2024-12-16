@@ -52,6 +52,14 @@ namespace TennisStoreClient.Services
             await GetAllCategories();
         }
 
+        public int GetSubCategoryCount(int categoryId)
+        {
+            var category = AllCategories.FirstOrDefault(c => c.Id == categoryId);
+            if (category == null || category.Subcategories == null) return 0;
+
+            return category.Subcategories.Count;
+        }
+
         #endregion
 
         #region Helper Methods
