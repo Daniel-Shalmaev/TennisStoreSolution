@@ -11,15 +11,20 @@ namespace TennisStoreServer.Controllers
     {
         private readonly IProduct productService;
 
-        public ProductController(IProduct productService)
-        {
-            this.productService = productService;
-        }
+        public ProductController(IProduct productService) => this.productService = productService;
 
         [HttpGet]
         public async Task<ActionResult<List<Product>>> GetAllProducts(bool featured)
         {
             var products = await productService.GetAllProducts(featured); return Ok(products);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Product>> GetProductById(int id)
+        {
+            var product = await productService.GetProductById(id);
+            if (product == null) return NotFound($"Product with ID {id} not found.");
+            return Ok(product);
         }
 
         [HttpPost]

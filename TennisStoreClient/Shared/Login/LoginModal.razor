@@ -1,0 +1,99 @@
+﻿<div class="modal-overlay @ModalClass">
+    <div class="modal-container">
+        <button class="close-btn" @onclick="CloseModal">&times;</button>
+        <div class="container @SignUpModeClass">
+            <div class="forms-container">
+                <div class="signin-signup">
+                    @if (!IsSignUpMode)
+                    {
+                        <EditForm Model="User" OnValidSubmit="HandleSignIn">
+                            <h2 class="title">Sign in</h2>
+                            <div class="input-field">
+                                <i class="fas fa-user"></i>
+                                <input @bind="User.Username" placeholder="Username" />
+                            </div>
+                            <div class="input-field">
+                                <i class="fas fa-lock"></i>
+                                <input @bind="User.Password" type="password" placeholder="Password" />
+                            </div>
+                            <button type="submit" class="btn solid">Login</button>
+                        </EditForm>
+                    }
+                    else
+                    {
+                        <EditForm Model="User" OnValidSubmit="HandleSignUp">
+                            <h2 class="title">Sign up</h2>
+                            <div class="input-field">
+                                <i class="fas fa-user"></i>
+                                <input @bind="User.Username" placeholder="Username" />
+                            </div>
+                            <div class="input-field">
+                                <i class="fas fa-envelope"></i>
+                                <input @bind="User.Email" type="email" placeholder="Email" />
+                            </div>
+                            <div class="input-field">
+                                <i class="fas fa-lock"></i>
+                                <input @bind="User.Password" type="password" placeholder="Password" />
+                            </div>
+                            <button type="submit" class="btn solid">Sign up</button>
+                        </EditForm>
+                    }
+                </div>
+            </div>
+
+            <div class="panels-container">
+                <div class="panel left-panel">
+                    <div class="content">
+                        <h3>New here?</h3>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, ex ratione. Aliquid!</p>
+                        <button class="btn transparent" @onclick="() => ToggleMode(true)">Sign up</button>
+                    </div>
+                    <img src="/Images/Logos/log.svg" class="image" alt="Login illustration" />
+                </div>
+                <div class="panel right-panel">
+                    <div class="content">
+                        <h3>One of us?</h3>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum laboriosam ad deleniti.</p>
+                        <button class="btn transparent" @onclick="() => ToggleMode(false)">Sign in</button>
+                    </div>
+                    <img src="/Images/Logos/register.svg" class="image" alt="Register illustration" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public bool IsModalOpen { get; set; }
+    private bool IsSignUpMode = false;
+    private string ModalClass => IsModalOpen ? "open" : "";
+    private string SignUpModeClass => IsSignUpMode ? "sign-up-mode" : "";
+
+    private UserDTO User = new UserDTO();
+
+    private void HandleSignUp()
+    {
+        // Handle sign-up logic
+    }
+
+    private void HandleSignIn()
+    {
+        // Handle sign-in logic
+    }
+
+    private void CloseModal()
+    {
+        IsModalOpen = false;
+        Js.InvokeVoidAsync("document.body.classList.remove", "modal-open");
+    }
+
+    private void ToggleMode(bool signUpMode) => IsSignUpMode = signUpMode;
+
+    public class UserDTO
+    {
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+}

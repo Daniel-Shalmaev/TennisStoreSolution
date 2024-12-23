@@ -10,127 +10,48 @@
                 <a href="#" class="menu-title">קטגוריות</a>
 
                 <div class="dropdown-panel">
-                    <ul class="dropdown-panel-list">
-                        <li class="menu-title">
-                            <a href="#">Electronics</a>
-                        </li>
-                        <li class="panel-list-item">
-                            <a href="#">Desktop</a>
-                        </li>
-                        <li class="panel-list-item">
-                            <a href="#">Laptop</a>
-                        </li>
-                        <li class="panel-list-item">
-                            <a href="#">Camera</a>
-                        </li>
-                        <li class="panel-list-item">
-                            <a href="#">Tablet</a>
-                        </li>
-                        <li class="panel-list-item">
-                            <a href="#">Headphone</a>
-                        </li>
-                        <li class="panel-list-item">
-                            <a href="#">
-                                <img src="/Images/electronics-banner-1.jpg" alt="headphone collection" width="250" height="119">
-                            </a>
-                        </li>
-                    </ul>
+                    @if (CategoryService.AllCategories != null && CategoryService.AllCategories.Any())
+                    {
+                        @foreach (var category in CategoryService.AllCategories)
+                        {
+                            <ul class="dropdown-panel-list">
+                                <li class="menu-title">
+                                    <a href="#">@category.Name</a>
+                                </li>
 
-                    <ul class="dropdown-panel-list">
-                        <li class="menu-title">
-                            <a href="#">מותגים</a>
-                        </li>
-                        <li class="panel-list-item">
-                            <a href="#">Formal</a>
-                        </li>
-                        <li class="panel-list-item">
-                            <a href="#">Casual</a>
-                        </li>
-                        <li class="panel-list-item">
-                            <a href="#">Sports</a>
-                        </li>
-                        <li class="panel-list-item">
-                            <a href="#">Jacket</a>
-                        </li>
-                        <li class="panel-list-item">
-                            <a href="#">Sunglasses</a>
-                        </li>
-                        <li class="panel-list-item">
-                            <a href="#">
-                                <img src="/images/mens-banner.jpg" alt="men's fashion" width="250" height="119">
-                            </a>
-                        </li>
-                    </ul>
+                                @foreach (var subcategory in category.Subcategories!)
+                                {
+                                    <li class="panel-list-item">
+                                        <a href="#">@subcategory.Name</a>
+                                    </li>
+                                }
 
-                    <ul class="dropdown-panel-list">
-                        <li class="menu-title">
-                            <a href="#">Women's</a>
-                        </li>
-                        <li class="panel-list-item">
-                            <a href="#">Formal</a>
-                        </li>
-                        <li class="panel-list-item">
-                            <a href="#">Casual</a>
-                        </li>
-                        <li class="panel-list-item">
-                            <a href="#">Perfume</a>
-                        </li>
-                        <li class="panel-list-item">
-                            <a href="#">Cosmetics</a>
-                        </li>
-                        <li class="panel-list-item">
-                            <a href="#">Bags</a>
-                        </li>
-                        <li class="panel-list-item">
-                            <a href="#">
-                                <img src="/images/womens-banner.jpg" alt="women's fashion" width="250" height="119">
-                            </a>
-                        </li>
-                    </ul>
-
-                    <ul class="dropdown-panel-list">
-                        <li class="menu-title">
-                            <a href="#">Electronics</a>
-                        </li>
-                        <li class="panel-list-item">
-                            <a href="#">Smart Watch</a>
-                        </li>
-                        <li class="panel-list-item">
-                            <a href="#">Smart TV</a>
-                        </li>
-                        <li class="panel-list-item">
-                            <a href="#">Keyboard</a>
-                        </li>
-                        <li class="panel-list-item">
-                            <a href="#">Mouse</a>
-                        </li>
-                        <li class="panel-list-item">
-                            <a href="#">Microphone</a>
-                        </li>
-                        <li class="panel-list-item">
-                            <a href="#">
-                                <img src="/Images/electronics-banner-2.jpg" alt="mouse collection" width="250" height="119">
-                            </a>
-                        </li>
-                    </ul>
+                                <li class="panel-list-item">
+                                    <a href="#">
+                                        <img src="@("/images/Icons/" + category.Icon)" alt="@category.Name" width="50" height="50">
+                                    </a>
+                                </li>
+                            </ul>
+                        }
+                    }
                 </div>
             </li>
 
             <li class="menu-category">
-                <a href="#" class="menu-title">Men's</a>
+                <a href="#" class="menu-title">מותגים</a>
                 <ul class="dropdown-list">
-                    <li class="dropdown-item">
-                        <a href="#">Shirt</a>
-                    </li>
-                    <li class="dropdown-item">
-                        <a href="#">Shorts &amp; Jeans</a>
-                    </li>
-                    <li class="dropdown-item">
-                        <a href="#">Safety Shoes</a>
-                    </li>
-                    <li class="dropdown-item">
-                        <a href="#">Wallet</a>
-                    </li>
+                    @if (BrandService.AllBrands != null && BrandService.AllBrands.Any())
+                    {
+                        @foreach (var brand in BrandService.AllBrands)
+                        {
+                            <li class="dropdown-item">
+                                <a href="@brand.EnName" style="display: flex; align-items: center; gap: 10px;">
+                                    <img src="@("/images/" + brand.LogoPath)" alt="@brand.EnName" width="60" height="60">
+                                    <span>@brand.EnName</span>
+                                </a>
+                            </li>
+                        }
+                    }
                 </ul>
             </li>
 
@@ -199,3 +120,19 @@
         </ul>
     </div>
 </nav>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await BrandService.GetAllBrands();
+        BrandService.BrandAction += StateHasChanged;
+        await CategoryService.GetAllCategories();
+        CategoryService.CategoryAction += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        BrandService.BrandAction -= StateHasChanged;
+        CategoryService.CategoryAction -= StateHasChanged;
+    }
+}

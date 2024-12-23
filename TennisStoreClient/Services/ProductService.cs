@@ -67,6 +67,16 @@ namespace TennisStoreClient.Services
             return result;
         }
 
+        public async Task<Product?> GetProductById(int productId)
+        {
+            var response = await _httpClient.GetAsync($"api/product/{productId}");
+            if (!response.IsSuccessStatusCode) return null;
+
+            var content = await response.Content.ReadAsStringAsync();
+            return General.DeserializedJsonString<Product>(content);
+        }
+
+
         #endregion
 
         #region Private Methods

@@ -24,6 +24,14 @@ namespace TennisStoreServer.Repositories
 
         }
 
+        public async Task<Product?> GetProductById(int id)
+        {
+            return await appDbContext.Products
+                .Include(_ => _.Category)
+                .FirstOrDefaultAsync(product => product.Id == id);
+        }
+
+
         public async Task<List<Product>> GetAllProducts(bool featuredProducts)
         {
             if (featuredProducts)

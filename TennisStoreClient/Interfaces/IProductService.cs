@@ -5,14 +5,15 @@ namespace TennisStoreClient.Interfaces
 {
     public interface IProductService
     {
-        Action? ProductAction { get; set; }
-        Task<ServiceResponse> AddProduct(Product model);
-        Task GetAllProducts(bool featuredProducts);
-        Task GetProductsByCategory(int categoryId);
-        List<Product> AllProducts { get; set; }
-        List<Product> FeaturedProducts { get; set; }
-        List<Product> ProductsByCategory { get; set; }
         Product GetRandomProduct();
         bool IsVisible { get; set; }
+        Action? ProductAction { get; set; }
+        List<Product> AllProducts { get; set; }
+        Task GetAllProducts(bool featuredProducts);
+        Task GetProductsByCategory(int categoryId);
+        List<Product> FeaturedProducts { get; set; }
+        Task<Product?> GetProductById(int productId);
+        List<Product> ProductsByCategory { get; set; }
+        Task<ServiceResponse> AddProduct(Product model);
     }
 }

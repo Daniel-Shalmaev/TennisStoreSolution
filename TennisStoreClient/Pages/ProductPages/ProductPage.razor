@@ -1,0 +1,68 @@
+﻿@page "/product/{id:int}"
+
+@inject IProductService ProductService
+
+<div class="container">
+    <section class="main">
+        <div class="gallery">
+            <div class="main-img">
+                <img class="active" src="@CurrentProduct?.Image1" alt="@CurrentProduct?.Name" />
+            </div>
+            <div class="thumb-list">
+                @foreach (var productAttribute in CurrentProduct?.Attributes ?? Enumerable.Empty<ProductAttribute>())
+                {
+                    <div>
+                        <img src="@productAttribute.Value" alt="@productAttribute.Attribute?.Name" />
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>@CurrentProduct?.Name</h2>
+            <NavLink href="@($"/category/{CurrentProduct?.Category?.Id}")">
+                <h3>@CurrentProduct?.Category?.Name</h3>
+            </NavLink>
+            <p>@CurrentProduct?.Description</p>
+            <div class="price-info">
+                <div class="price">
+                    <span class="current-price">₪@CurrentProduct?.Price</span>
+                    @if (CurrentProduct?.OldPrice > 0)
+                    {
+                        <span class="prev-price">₪@CurrentProduct?.OldPrice</span>
+                    }
+                </div>
+            </div>
+            <div class="add-to-cart-container">
+                <div class="counter">
+                    <button @onclick="DecreaseQty">-</button>
+                    <span class="count">@Qty</span>
+                    <button @onclick="IncreaseQty">+</button>
+                </div>
+                <button class="add-to-cart" @onclick="AddToCart">הוסף לעגלה</button>
+            </div>
+        </div>
+    </section>
+</div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Product? CurrentProduct { get; set; }
+    private int Qty { get; set; } = 1;
+
+    protected override async Task OnInitializedAsync() => CurrentProduct = await ProductService.GetProductById(Id);
+
+    private void IncreaseQty() => Qty++;
+
+    private void DecreaseQty()
+    {
+        if (Qty > 1) Qty--;
+    }
+
+    private void AddToCart()
+    {
+        Console.WriteLine( "ok");
+    }
+}

@@ -20,6 +20,9 @@ builder.Services.AddScoped<IProduct, ProductRepository>();
 builder.Services.AddScoped<ICategory, CategoryRepository>();
 builder.Services.AddScoped<IBrand, BrandRepository>();
 builder.Services.AddScoped<IUserAccount, UserAccountRepository>();
+builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<IExcelProcessingService, ExcelProcessingService>();
+
 
 
 // Configure CORS policy

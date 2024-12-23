@@ -15,6 +15,9 @@ namespace TennisStoreSharedLibrary.Models
 
         public string? Description { get; set; }
 
+        public string? LongDescription { get; set; } 
+
+
         [Required, Range(0.1, 99999.99)]
         public double Price { get; set; }
 
@@ -22,7 +25,17 @@ namespace TennisStoreSharedLibrary.Models
         public double OldPrice { get; set; }
 
         [Required, DisplayName("Product Image")]
-        public string? Base64Img { get; set; }
+        public string? Image1 { get; set; }
+        public string? Image2 { get; set; }
+        public string? Image3 { get; set; }
+        public string? Image4 { get; set; }
+        public string? Image5 { get; set; }
+        public string? Image6 { get; set; }
+        public string? Image7 { get; set; }
+        public string? Image8 { get; set; }
+
+
+
 
         [Required, Range(1, 99999)]
         public int Quantity { get; set; }

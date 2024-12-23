@@ -97,7 +97,7 @@ button {
     cursor: pointer;
 }
 
-img, ion-icon, button, a {
+img, i, button, a {
     display: block;
 }
 
@@ -315,7 +315,7 @@ body {
         opacity: 0.9;
     }
 
-    .modal-close-btn ion-icon {
+    .modal-close-btn i {
         --ionicon-stroke-width: 70px;
     }
 
@@ -418,7 +418,7 @@ body {
     color: var(--sonic-silver);
 }
 
-    .toast-close-btn ion-icon {
+    .toast-close-btn i {
         --ionicon-stroke-width: 50px;
     }
 
@@ -598,7 +598,7 @@ body {
     font-size: 22px;
 }
 
-    .menu-close-btn ion-icon {
+    .menu-close-btn i {
         --ionicon-stroke-width: 50px;
     }
 
@@ -628,7 +628,7 @@ body {
     font-size: 14px;
 }
 
-.accordion-menu ion-icon {
+.accordion-menu i {
     color: var(--onyx);
     --ionicon-stroke-width: 90px;
 }
@@ -814,7 +814,7 @@ body {
     margin-bottom: 30px;
 }
 
-.category-item-container {
+.brand-item-container {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -823,7 +823,7 @@ body {
     overscroll-behavior-inline: contain;
 }
 
-.category-item {
+.brand-item {
     min-width: 100%;
     display: flex;
     align-items: center;
@@ -834,37 +834,37 @@ body {
     scroll-snap-align: start;
 }
 
-.category-img-box {
+.brand-img-box {
     background: var(--cultured);
     border: 1px solid hsl(0, 0%, 80%);
-    padding: 10px;
+    padding: 5px;
     border-radius: var(--border-radius-sm);
 }
 
-.category-content-box {
+.brand-content-box {
     width: 100%;
 }
 
-.category-content-flex {
+.brand-content-flex {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
 }
 
-.category-item-title {
+.brand-item-title {
     color: var(--eerie-black);
     font-size: var(--fs-9);
     font-weight: var(--weight-600);
     text-transform: uppercase;
 }
 
-.category-item-amount {
+.brand-item-amount {
     color: var(--sonic-silver);
     font-size: var(--fs-11);
 }
 
-.category-btn {
+.brand-btn {
     color: var(--tennis-ball-yellow);
     font-size: var(--fs-9);
     font-weight: var(--weight-500);
@@ -927,7 +927,7 @@ body {
     font-weight: var(--weight-600);
 }
 
-    .sidebar-close-btn ion-icon {
+    .sidebar-close-btn i {
         --ionicon-stroke-width: 50px;
     }
 
@@ -951,7 +951,7 @@ body {
     font-weight: var(--weight-500);
 }
 
-.sidebar-accordion-menu ion-icon {
+.sidebar-accordion-menu i {
     color: var(--sonic-silver);
     font-size: 14px;
     --ionicon-stroke-width: 70px;
@@ -1636,7 +1636,7 @@ body {
     transition: var(--transition-timing);
 }
 
-    .service-icon ion-icon {
+    .service-icon i {
         --ionicon-stroke-width: 25px;
     }
 
@@ -1851,7 +1851,7 @@ footer {
         font-size: 25px;
     }
 
-        .footer-nav-item .icon-box ion-icon {
+        .footer-nav-item .icon-box i {
             --ionicon-stroke-width: 30px;
         }
 
@@ -2113,11 +2113,11 @@ footer {
    * #CATEGORY
    */
 
-    .category-item-container {
+    .brand-item-container {
         gap: 30px;
     }
 
-    .category-item {
+    .brand-item {
         min-width: calc(50% - 15px);
     }
 
@@ -2280,8 +2280,8 @@ footer {
    * #CATEGORY 
    */
 
-    .category-img-box {
-        padding: 20px;
+    .brand-img-box {
+        padding: 5px;
     }
 
 
@@ -2544,10 +2544,12 @@ footer {
     }
 
     .panel-list-item img {
-        width: 100%;
-        height: auto;
+        width: 50px; 
+        height: 50px; 
+        -webkit-border-radius: var(--border-radius-sm);
         border-radius: var(--border-radius-sm);
     }
+
 
     .dropdown-list {
         position: absolute;
@@ -2582,9 +2584,15 @@ footer {
         transition: var(--transition-timing);
     }
 
-        .dropdown-list .dropdown-item a:hover {
-            color: var(--tennis-ball-yellow);
-        }
+    .dropdown-item img {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+    }
+
+    .dropdown-list .dropdown-item a:hover {
+        color: var(--tennis-ball-yellow);
+    }
 
     .mobile-bottom-navigation {
         display: none;
@@ -2627,12 +2635,12 @@ footer {
    * #CATEGORY 
    */
 
-    .category-item {
+    .brand-item {
         min-width: calc(33.33% - 20px);
     }
 
-    .category-img-box {
-        padding: 10px;
+    .brand-img-box {
+        padding: 5px;
     }
 
 
@@ -2819,11 +2827,11 @@ footer {
    * #CATEGORY
    */
 
-    .category-item {
+    .brand-item {
         min-width: calc(25% - 22.5px);
     }
 
-    .category-item-title {
+    .brand-item-title {
         --fs-9: 0.824rem;
     }
 

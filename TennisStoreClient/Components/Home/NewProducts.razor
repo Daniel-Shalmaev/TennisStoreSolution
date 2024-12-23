@@ -7,8 +7,8 @@
             <div class="showcase">
 
                 <div class="showcase-banner">
-                    <img src="@product.Base64Img" alt="@product.Name" width="300" height="300" class="product-img default">
-                    <img src="@product.Base64Img" alt="@product.Name" width="300" height="300" class="product-img hover">
+                    <img src="@product.Image1" alt="@product.Name" width="300" height="300" class="product-img default">
+                    <img src="@product.Image1" alt="@product.Name" width="300" height="300" class="product-img hover">
 
                     @if (!string.IsNullOrEmpty(product.Badge))
                     {
@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="showcase-content">
-                    <a href="#" class="showcase-category">@product.Category.Name</a>
+                    <a href="#" class="showcase-category">@product.Category!.Name</a>
 
                     <h3>
                         <a href="#" class="showcase-title">@product.Name</a>
@@ -43,11 +43,11 @@
                         {
                             if (i < product.Rating)
                             {
-                                <ion-icon name="star" role="img" class="md hydrated" aria-label="star"></ion-icon>
+                                <i name="star" role="img" class="md hydrated" aria-label="star"></i>
                             }
                             else
                             {
-                                <ion-icon name="star-outline" role="img" class="md hydrated" aria-label="star outline"></ion-icon>
+                                <i name="star-outline" role="img" class="md hydrated" aria-label="star outline"></i>
                             }
                         }
                     </div>
