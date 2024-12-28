@@ -18,11 +18,8 @@ namespace TennisStoreServer.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // הגדרה של מפתח מורכב עבור ProductAttribute
             modelBuilder.Entity<ProductAttribute>()
                 .HasKey(pa => new { pa.ProductId, pa.AttributeId });
-
-            // הגדרות נוספות, אם יש
         }
     }
 }

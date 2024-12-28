@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TennisStoreServer.Data;
 using TennisStoreServer.Repositories;
+using TennisStoreServer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

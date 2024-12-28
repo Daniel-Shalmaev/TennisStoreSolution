@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace TennisStoreSharedLibrary.Models
 {
@@ -19,6 +20,7 @@ namespace TennisStoreSharedLibrary.Models
         public string? LogoPath { get; set; }
 
         // Relationships
+        [JsonIgnore]
         public List<Product>? Products { get; set; }
 
     }

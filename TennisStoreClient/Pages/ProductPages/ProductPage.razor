@@ -3,6 +3,42 @@
 @inject IProductService ProductService
 
 <div class="container">
+    <div class="breadcrumb">
+        <div class="breadcrumb-navigation">
+            <div class="breadcrumb-list">
+                <ol>
+                    <li><a href="/">דף הבית</a></li>
+                    @if (CurrentProduct?.Category != null)
+                    {
+                        <li>
+                            <a href="@($"/category/{CurrentProduct.Category.Id}")">@CurrentProduct.Category.Name</a>
+                        </li>
+                    }
+                    @if (!string.IsNullOrEmpty(CurrentProduct?.SubCategory?.Name))
+                    {
+                        <li>
+                            <a href="@($"/subcategory/{CurrentProduct.SubCategory.Id}")">@CurrentProduct.SubCategory.Name</a>
+                        </li>
+                    }
+                    <li>@CurrentProduct?.Name</li>
+                </ol>
+            </div>
+            @if (CurrentProduct?.Brand != null)
+            {
+                <div class="watch-brand-page">
+                    <NavLink href="@($"/brand/{CurrentProduct?.BrandId}")">
+                        <h3>לצפייה במגוון מוצרי @CurrentProduct!.Brand.HebName</h3>
+                    </NavLink>
+                </div>
+            }
+        </div>
+        <div class="breadcrumb-save-button">
+            <button class="btn-primary" @onclick="ToggleSaveIcon">
+                <span>שמירה</span>
+                <i class="fa-regular fa-bookmark favorite-icon"></i>
+            </button>
+        </div>
+    </div>
     <section class="main">
         <div class="gallery">
             <div class="main-img">
@@ -19,11 +55,11 @@
         </div>
 
         <div class="content">
-            <h2>@CurrentProduct?.Name</h2>
+            <h2 class="h2-product-name">@CurrentProduct?.Name</h2>
             <NavLink href="@($"/category/{CurrentProduct?.Category?.Id}")">
                 <h3>@CurrentProduct?.Category?.Name</h3>
             </NavLink>
-            <p>@CurrentProduct?.Description</p>
+            <p>@CurrentProduct?.ShortDescription</p>
             <div class="price-info">
                 <div class="price">
                     <span class="current-price">₪@CurrentProduct?.Price</span>
@@ -39,7 +75,10 @@
                     <span class="count">@Qty</span>
                     <button @onclick="IncreaseQty">+</button>
                 </div>
-                <button class="add-to-cart" @onclick="AddToCart">הוסף לעגלה</button>
+                <button class="btn-primary" @onclick="AddToCart">
+                    הוסף לעגלה
+                    <i class="fa-solid fa-cart-plus add-to-cart-icon"></i>
+                </button>
             </div>
         </div>
     </section>
@@ -63,6 +102,11 @@
 
     private void AddToCart()
     {
-        Console.WriteLine( "ok");
+        Console.WriteLine("ok");
+    }
+
+    private void ToggleSaveIcon()
+    {
+        Console.WriteLine("ok");
     }
 }

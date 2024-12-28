@@ -1,112 +1,251 @@
-﻿.container {
+﻿/*-----------------------------------*\
+   * General Container Styling
+\*-----------------------------------*/
+.container {
     max-width: 1120px;
     margin: auto;
     padding: 0 20px;
     font-family: 'Kumbh Sans', sans-serif;
 }
 
+/*-----------------------------------*\
+   * Watch Brand Page Styling
+\*-----------------------------------*/
+.watch-brand-page {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+    .watch-brand-page h3 {
+        position: relative;
+        font-size: 16px;
+        color: #007bff;
+        font-weight: bold;
+        margin: 0;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+        .watch-brand-page h3:hover {
+            color: var(--hover-highlight);
+        }
+
+        .watch-brand-page h3::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -3px;
+            width: 0;
+            height: 2px;
+            background-color: var(--hover-highlight);
+            transition: width 0.3s ease;
+        }
+
+        .watch-brand-page h3:hover::after {
+            width: 100%;
+        }
+
+
+/*-----------------------------------*\
+   * Breadcrumb Styling
+\*-----------------------------------*/
+.breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 10px 15px;
+    margin: 10px 0;
+    font-size: 14px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    direction: rtl;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    .breadcrumb .breadcrumb-save-button .btn-primary .favorite-icon {
+        margin-right: 5px;
+    }
+
+    .breadcrumb .breadcrumb-save-button .btn-primary:hover .favorite-icon {
+        animation: bounce 1s ease-in-out;
+    }
+
+    .breadcrumb .breadcrumb-list {
+        margin-bottom: 5px;
+    }
+
+    .breadcrumb li {
+        position: relative;
+        display: inline-flex;
+        margin-left: 5px;
+        color: #007bff;
+        white-space: nowrap;
+        transition: color 0.3s ease;
+    }
+
+        .breadcrumb li a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+            .breadcrumb li a::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                bottom: -3px;
+                width: 0;
+                height: 2px;
+                background-color: var(--hover-highlight);
+                transition: width 0.3s ease;
+            }
+
+            .breadcrumb li a:hover {
+                color: var(--hover-highlight);
+            }
+
+                .breadcrumb li a:hover::after {
+                    width: 100%;
+                }
+
+        .breadcrumb li:last-child {
+            color: #555;
+            font-weight: normal;
+        }
+
+        .breadcrumb li + li:before {
+            content: ">";
+            margin: 0 5px;
+            color: #999;
+            font-weight: bold;
+        }
+
+/*-----------------------------------*\
+   * Main Content Styling
+\*-----------------------------------*/
 .main {
     display: flex;
     gap: 40px;
     padding: 40px 0;
 }
 
-.gallery {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.main-img img {
-    width: 100%;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-.thumb-list {
-    display: flex;
-    gap: 10px;
-}
-
-    .thumb-list img {
-        width: 70px;
-        height: 70px;
-        border-radius: 8px;
-        cursor: pointer;
-        border: 2px solid transparent;
+    .main .content .h2-product-name {
+        margin-bottom: 5px;
     }
 
-        .thumb-list img:hover {
-            border-color: var(--tennis-ball-yellow);
+    .main .content {
+        flex: 1;
+    }
+
+    .main .gallery {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+        .main .gallery .main-img img {
+            width: 100%;
+            border-radius: 10px;
+            cursor: pointer;
         }
 
-.content {
-    flex: 1;
-}
+        .main .gallery .thumb-list {
+            display: flex;
+            gap: 10px;
+        }
 
-    .content h2 {
+            .main .gallery .thumb-list img {
+                width: 70px;
+                height: 70px;
+                border-radius: 8px;
+                cursor: pointer;
+                border: 2px solid transparent;
+            }
+
+                .main .gallery .thumb-list img:hover {
+                    border-color: var(--tennis-ball-yellow);
+                }
+
+
+
+    .main .content .add-to-cart-container .add-to-cart-icon {
+        margin-right: 5px;
+    }
+
+    .main .content .btn-primary:hover .add-to-cart-icon {
+        animation: bounce 1s ease-in-out;
+    }
+
+    .main .content h2 {
         font-size: 24px;
         margin-bottom: 20px;
     }
 
-.price-info {
-    margin: 20px 0;
-}
-
-.current-price {
-    font-size: 20px;
-    color: var(--tennis-ball-yellow);
-    font-weight: bold;
-}
-
-.prev-price {
-    font-size: 16px;
-    color: #ccc;
-    text-decoration: line-through;
-}
-
-.add-to-cart-container {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.counter {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    padding: 10px;
-    border: 1px solid #ddd;
-}
-
-    .counter button {
-        border: none;
-        background: none;
-        cursor: pointer;
-        font-size: 18px;
-        font-weight: bold;
-        color: #333;
+    .main .content .price-info {
+        margin: 20px 0;
     }
 
-        .counter button:hover {
+        .main .content .price-info .current-price {
+            margin-left: 5px;
+            font-size: 20px;
             color: var(--tennis-ball-yellow);
+            font-weight: bold;
         }
 
-.add-to-cart {
-    padding: 10px 20px;
-    background-color: var(--tennis-ball-yellow);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s;
-}
+        .main .content .price-info .prev-price {
+            font-size: 16px;
+            color: #ccc;
+            text-decoration: line-through;
+        }
 
-    .add-to-cart:hover {
-        background-color: #ffcc33;
+    .main .content .add-to-cart-container {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-top: 20px;
     }
+
+        .main .content .add-to-cart-container .counter {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+            .main .content .add-to-cart-container .counter button {
+                border: none;
+                background: none;
+                cursor: pointer;
+                font-size: 18px;
+                font-weight: bold;
+                color: #333;
+            }
+
+                .main .content .add-to-cart-container .counter button:hover {
+                    color: var(--tennis-ball-yellow);
+                }
+
+/*-----------------------------------*\
+   * Bounce Animation Styling
+\*-----------------------------------*/
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-10px);
+    }
+
+    60% {
+        transform: translateY(-5px);
+    }
+}

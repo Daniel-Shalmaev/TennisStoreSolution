@@ -6,6 +6,7 @@ namespace TennisStoreSharedLibrary.Models
     public class Product
     {
         public int Id { get; set; }
+        public int Inventory { get; set; }
 
         [Required]
         public string? Name { get; set; }
@@ -13,7 +14,7 @@ namespace TennisStoreSharedLibrary.Models
         [Required]
         public string? SubName { get; set; }
 
-        public string? Description { get; set; }
+        public string? ShortDescription { get; set; }
 
         public string? LongDescription { get; set; } 
 
@@ -34,7 +35,7 @@ namespace TennisStoreSharedLibrary.Models
         public string? Image7 { get; set; }
         public string? Image8 { get; set; }
 
-
+        public bool Visible { get; set; }
 
 
         [Required, Range(1, 99999)]

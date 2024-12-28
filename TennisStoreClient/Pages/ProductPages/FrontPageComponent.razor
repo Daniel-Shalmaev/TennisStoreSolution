@@ -40,7 +40,7 @@ else
                                                         </p>
                                                     </div>
 
-                                                    <p class="text-muted fs-5 w-75" style="text-align:justify-all;font-family:Cambria">@(General.GetDescription(product.Description!))</p>
+                                                    <p class="text-muted fs-5 w-75" style="text-align:justify-all;font-family:Cambria">@(General.GetDescription(product.ShortDescription!))</p>
                                                 </div>
                                                 <div class="hstack gap-1 d-flex justify-content-center">
                                                     <button class="btn btn-secondary fw-bold" id="styleButton" style="cursor:pointer;" @onclick="() => ViewProduct(product)"><i class="fa fa-list"></i>Details</button>
