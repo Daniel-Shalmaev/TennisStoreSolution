@@ -8,6 +8,81 @@
     font-family: 'Kumbh Sans', sans-serif;
 }
 
+
+/*-----------------------------------*\
+   * Product Description Styling
+\*-----------------------------------*/
+    .container .product-description-container {
+        max-width: 800px;
+        margin: 60px auto;
+        padding: 30px;
+        background-color: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 20px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        text-align: center;
+        direction: rtl;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        overflow: hidden;
+        position: relative;
+        will-change: transform, box-shadow;
+        transform-origin: center;
+        height: auto;
+        min-height: 300px;
+    }
+
+        .container .product-description-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+
+    .container .product-description-title {
+        font-size: 28px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        border-bottom: 2px solid var(--tennis-ball-yellow);
+        display: inline-block;
+        padding-bottom: 5px;
+    }
+
+    .container .product-description-text {
+        font-size: 18px;
+        line-height: 1.8;
+        color: #555;
+        margin-bottom: 25px;
+        text-align: justify;
+    }
+
+    .container .product-description-list {
+        list-style-type: none;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .container .product-description-list-item {
+        font-size: 18px;
+        color: #007bff;
+        padding: 10px 20px;
+        background: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .container .product-description-list-item:hover {
+            color: #ffffff;
+            background: #007bff;
+            border-color: #0056b3;
+            font-weight: bold;
+        }
+
+
 /*-----------------------------------*\
    * Watch Brand Page Styling
 \*-----------------------------------*/
@@ -233,6 +308,9 @@
                     color: var(--tennis-ball-yellow);
                 }
 
+
+
+
 /*-----------------------------------*\
    * Bounce Animation Styling
 \*-----------------------------------*/
@@ -247,5 +325,44 @@
 
     60% {
         transform: translateY(-5px);
+    }
+}
+
+/*-----------------------------------*\
+   * Media Queries
+\*-----------------------------------*/
+@media (max-width: 768px) {
+    .container {
+        padding: 0 10px;
+    }
+
+    .product-description-container {
+        padding: 20px;
+    }
+
+    .product-description-title {
+        font-size: 22px;
+    }
+
+    .product-description-text {
+        font-size: 16px;
+    }
+
+    .product-description-list-item {
+        font-size: 16px;
+        padding: 8px 15px;
+    }
+
+    .gallery {
+        flex-direction: column;
+    }
+
+        .gallery .thumb-list img {
+            width: 50px;
+            height: 50px;
+        }
+
+    .main .content {
+        text-align: center;
     }
 }
