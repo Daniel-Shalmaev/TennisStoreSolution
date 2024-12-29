@@ -1,4 +1,5 @@
 ﻿@page "/product/{id:int}"
+@using System.Text.RegularExpressions
 
 @inject IProductService ProductService
 
@@ -42,7 +43,7 @@
     <section class="main">
         <div class="gallery">
             <div class="main-img">
-                <img class="active" src="@CurrentProduct?.Image1" alt="@CurrentProduct?.Name"  />
+                <img class="active" src="@CurrentProduct?.Image1" alt="@CurrentProduct?.Name" />
             </div>
             <div class="thumb-list">
                 @foreach (var productAttribute in CurrentProduct?.Attributes ?? Enumerable.Empty<ProductAttribute>())
@@ -84,17 +85,16 @@
     </section>
     <div class="container">
         <div class="product-description-container">
-            <h2 class="product-description-title">כובע טניס Ultralight של וילסון</h2>
-            <p class="product-description-text">
-                כובע הטניס Ultralight של וילסון הוא כובע קל משקל המיועד להגן עליך מפני קרני השמש במהלך משחק הטניס.
-                הכובע עשוי מבד סרוג ומשולב רשת בצדדיו ובחלקו האחורי, מה שמאפשר אוורור ונוחות מרבית.
-                הכובע כולל סגירה אחורית להתאמה אישית לראש השחקן.
-            </p>
-            <p class="product-description-text">הכובע זמין בצבעים שונים, כולל:</p>
+            <h2 class="product-description-title">@ProductTitle</h2>
+            @foreach (var paragraph in ProductParagraphs)
+            {
+                <p class="product-description-text">@paragraph</p>
+            }
             <ul class="product-description-list">
-                <li class="product-description-list-item">לבן עם לוגו וילסון</li>
-                <li class="product-description-list-item">אדום עם לוגו וילסון</li>
-                <li class="product-description-list-item">שחור עם לוגו וילסון</li>
+                @foreach (var item in ProductListItems)
+                {
+                    <li class="product-description-list-item">@item</li>
+                }
             </ul>
         </div>
     </div>
@@ -103,11 +103,21 @@
 @code {
     [Parameter]
     public int Id { get; set; }
+    private string ProductTitle { get; set; } = string.Empty;
+    private List<string> ProductParagraphs { get; set; } = new List<string>();
+    private List<string> ProductListItems { get; set; } = new List<string>();
+
 
     private Product? CurrentProduct { get; set; }
     private int Qty { get; set; } = 1;
 
-    protected override async Task OnInitializedAsync() => CurrentProduct = await ProductService.GetProductById(Id);
+    protected override async Task OnInitializedAsync()
+    {
+        CurrentProduct = await ProductService.GetProductById(Id);
+
+        if (CurrentProduct?.LongDescription != null)
+            ParseDescription(CurrentProduct.LongDescription);
+    }
 
     private void IncreaseQty() => Qty++;
 
@@ -125,4 +135,22 @@
     {
         Console.WriteLine("ok");
     }
+
+    private void ParseDescription(string? rawHtml)
+    {
+        if (string.IsNullOrWhiteSpace(rawHtml))
+            return;
+
+        var h2Match = Regex.Match(rawHtml, @"<h2>(.*?)<\/h2>");
+        ProductTitle = h2Match.Success ? h2Match.Groups[1].Value.Trim() : string.Empty;
+
+        var pMatches = Regex.Matches(rawHtml, @"<p>(.*?)<\/p>");
+        foreach (Match match in pMatches)
+            ProductParagraphs.Add(match.Groups[1].Value.Trim());
+
+        var liMatches = System.Text.RegularExpressions.Regex.Matches(rawHtml, @"<li>(.*?)<\/li>");
+        foreach (Match match in liMatches)
+            ProductListItems.Add(match.Groups[1].Value.Trim());
+    }
+
 }
