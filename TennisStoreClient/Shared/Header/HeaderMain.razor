@@ -20,7 +20,7 @@
             </button>
             <button class="action-btn">
                 <i class="fa-solid fa-bag-shopping fa-2xs"></i>
-                <span class="count">0</span>
+                <span class="count">@CartService.CartCount</span>
             </button>
         </div>
     </div>
@@ -31,8 +31,11 @@
 @code {
     private bool IsModalOpen = false;
 
-    private void OpenModal()
+    protected override async Task OnInitializedAsync()
     {
-        IsModalOpen = true;
+        CartService.CartAction = StateHasChanged; 
+        await CartService.GetCartCount(); 
     }
+
+    private void OpenModal() => IsModalOpen = true;
 }

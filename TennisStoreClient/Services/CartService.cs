@@ -28,9 +28,11 @@ namespace TennisStoreClient.Services
         public async Task GetCartCount()
         {
             string cartString = await GetCartFromLocalStorage();
+
             CartCount = string.IsNullOrEmpty(cartString)
                 ? 0
-                : General.DeserializedJsonStringList<StorageCart>(cartString).Count();
+                : General.DeserializedJsonStringList<StorageCart>(cartString).Sum(item => item.Quantity);
+
             CartAction?.Invoke();
         }
 
@@ -42,7 +44,7 @@ namespace TennisStoreClient.Services
 
             if (existingItem == null)
             {
-                cartItems.Add(new StorageCart { ProductId = model.Id, Quantity = model.Quantity });
+                cartItems.Add(new StorageCart { ProductId = model.Id, Quantity = updateQuantity });
                 message = "Product added to cart";
             }
             else

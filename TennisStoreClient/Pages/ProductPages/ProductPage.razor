@@ -126,10 +126,8 @@
         if (Qty > 1) Qty--;
     }
 
-    private void AddToCart()
-    {
-        Console.WriteLine("ok");
-    }
+    private async void AddToCart() => await CartService.AddToCart(CurrentProduct!, Qty);
+
 
     private void ToggleSaveIcon()
     {

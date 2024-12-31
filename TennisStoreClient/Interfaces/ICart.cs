@@ -7,12 +7,12 @@ namespace TennisStoreClient.Interfaces
 {
     public interface ICart
     {
-        public Action? CartAction { get; set; }
-        public int CartCount { get; set; }
         Task GetCartCount();
-        Task<ServiceResponse> AddToCart(Product model, int updateQuantity = 1);
         Task<List<Order>> MyOrders();
-        Task<ServiceResponse> DeleteCart(Order cart);
+        public int CartCount { get; set; }
         bool IsCartLoaderVisible { get; set; }
+        public Action? CartAction { get; set; }
+        Task<ServiceResponse> DeleteCart(Order cart);
+        Task<ServiceResponse> AddToCart(Product model, int updateQuantity = 1);
     }
 }
