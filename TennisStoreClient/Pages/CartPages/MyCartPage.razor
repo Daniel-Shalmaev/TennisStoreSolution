@@ -1,146 +1,116 @@
-﻿@page "/shopping/cart/my-cart"
+﻿@page "/my-cart"
 @using Syncfusion.Blazor.Navigations
 @using TennisStoreClient.PrivateModels
 @using TennisStoreSharedLibrary.Models
 @using TennisStoreSharedLibrary.Responses
 @using Order = TennisStoreClient.PrivateModels.Order;
-@implements IDisposable
-@if (CartService.IsCartLoaderVisible)
-{
-    <LoadingPage />
-}
-else
-{
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="card">
-                    <div class="card-header">
-                        Cart Summary
-                    </div>
-                    <div class="card-body p-5">
-                        <span>
-                            <sub style="font-size:30px; font-family:Impact">$</sub>
-                            <sup style="font-family:Impact; font-size:20px;">@MyCartOrders.Sum(_ => _.SubTotal).ToString("#.##")</sup>
-                        </span>
-                    </div>
-                    <div class=" card-footer">
-                        <button class="btn btn-lg btn-danger">
-                            <i class="fa fa-cart-arrow-down"></i>
-                            Proceed to Checkout
-                        </button>
-                    </div>
+
+<div class="container">
+    <div class="cart-container">
+        <h1 class="cart-title">עגלת הקניות שלי</h1>
+        <div class="cart-layout">
+            <div class="cart-summary">
+                <h2>סיכום סל הקניות - <span>@MyCartOrders.Count</span> פריטים</h2>
+                <div class="summary-details">
+                    <p>סה"כ: <span class="total-price">₪@MyCartOrders.Sum(_ => _.SubTotal).ToString("#.##")</span></p>
+                    <p>משלוח: יתווסף לאחר בחירת אפשרות</p>
+                    <p><strong>סה"כ לתשלום:</strong> יותאם בסיום</p>
+                </div>
+                <button class="checkout-button">
+                    מעבר לתשלום <i class="fa fa-credit-card"></i>
+                </button>
+                <button class="coupon-button">
+                    יש לך קופון? <i class="fa fa-tag"></i>
+                </button>
+                <div class="gift-card-section">
+                    <h3>מימוש גיפט קארד</h3>
+                    <input type="text" class="gift-card-input" placeholder="הזן קוד גיפט קארד" @bind="GiftCardCode">
+                    <button class="gift-card-button" @onclick="RedeemGiftCard">
+                        טען יתרה <i class="fa fa-gift"></i>
+                    </button>
                 </div>
             </div>
-            <div class="col-lg-9">
-                <BannerPage />
-                <div class="card">
-                    <div class="card-header">Cart Details</div>
-                    <div class="card-body">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th class="col">#</th>
-                                    <th class="col">Image</th>
-                                    <th class="col">Name</th>
-                                    <th class="col">Price</th>
-                                    <th class="col">Quntity</th>
-                                    <th class="col">SubTotal</th>
-                                    <th class="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (MyCartOrders is not null)
-                                {
-                                    var listData = MyCartOrders.Skip(SkipValue).Take(TakeValue).ToList();
-                                    int count = 1;
-                                    foreach (var item in listData)
-                                    {
-                                        <tr>
-                                            <td>@count</td>
-                                            <td><img src="@item.Image" width="100" height="150" /></td>
-                                            <td>@item.Name</td>
-                                            <td>@item.Price</td>
-                                            <td><input type="number" min="1" class="form-control w-25" value="@item.Quantity" @onchange="@(e => HandleChange(e , item))" /></td>
-                                            <td>@item.SubTotal</td>
-                                            <td>
-                                                <a id="changeCursor" @onclick="async ()=> await DeleteCart(item)">
-                                                    <i class="fa fa-trash text-danger"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        count++;
-                                    }
-                                }
-                            </tbody>
-                        </table>
+
+            <div class="cart-items">
+                @foreach (var item in MyCartOrders)
+                {
+                    <div class="cart-item">
+                        <img class="item-image" src="@item.Image" alt="@item.Name">
+                        <div class="item-details">
+                            <h3>@item.Name</h3>
+                            <p>מחיר יחידה: ₪@item.Price</p>
+                            <div class="quantity-control">
+                                <button class="quantity-btn" @onclick="() => DecreaseQuantity(item)">-</button>
+                                <span class="quantity">@item.Quantity</span>
+                                <button class="quantity-btn" @onclick="() => IncreaseQuantity(item)">+</button>
+                            </div>
+                            <p>סה"כ: ₪@item.SubTotal</p>
+                        </div>
+                        <button class="delete-button" @onclick="async () => await DeleteCart(item)">
+                            מחק <i class="fa fa-trash"></i>
+                        </button>
                     </div>
-                </div>
-                <div class="card-footer">
-                    <div class="d-flex justify-content-center">
-                        <SfPager @ref="@Page" PageSize=3 NumericItemsCount=4 TotalItemsCount=MyCartOrders!.Count ItemClick="Click"></SfPager>
-                    </div>
-                </div>
+                }
             </div>
         </div>
     </div>
-}
-<MessageDialog @ref="MessageDialogService.messageDialog"></MessageDialog>
-<style>
-    #changeCursor {
-        cursor: pointer;
-    }
-</style>
+</div>
+
 
 @code {
-    SfPager? Page;
-    public int SkipValue;
-    public int TakeValue = 3;
-
-    List<Order> MyCartOrders = new();
+    public List<Order> MyCartOrders = new();
+    public string GiftCardCode { get; set; } = string.Empty;
 
     protected async override Task OnInitializedAsync()
     {
-        MyCartOrders = await CartService.MyOrders();
-        MessageDialogService.Action += StateHasChanged;
-    }
+        var cartItems = await CartService.MyOrders();
 
-    async Task HandleChange(Microsoft.AspNetCore.Components.ChangeEventArgs e, Order order)
-    {
-        try
+        foreach (var cartItem in cartItems)
         {
-            if (int.Parse(e.Value!.ToString()!) <= 0 || e.Value.ToString()!.Equals("") || string.IsNullOrWhiteSpace(e.Value.ToString())) return;
-            var getOrder = MyCartOrders.FirstOrDefault(_ => _.Id == order.Id);
-            getOrder!.Quantity = int.Parse(e.Value!.ToString()!);
+            var productDetails = await ProductService.GetProductById(cartItem.Id);
 
-            DisplayResponse(await CartService.AddToCart(new Product() { Id = order.Id }, getOrder.Quantity));
+            if (productDetails != null)
+            {
+                MyCartOrders.Add(new Order
+                    {
+                        Id = productDetails.Id,
+                        Name = productDetails.Name,
+                        Image = productDetails.Image1,
+                        Price = productDetails.Price,
+                        Quantity = cartItem.Quantity
+                    });
+            }
         }
-        catch { }
     }
 
-    async Task DeleteCart(Order cart)
+    private async Task IncreaseQuantity(Order order)
     {
-        bool confirm = await Js.InvokeAsync<bool>("confirm", "Are you sure you want to delete this form cart?");
-        if (!confirm) return;
-        MyCartOrders.Remove(MyCartOrders.FirstOrDefault(_ => _.Id == cart.Id)!);
-        DisplayResponse(await CartService.DeleteCart(cart));
+        order.Quantity++;
+        await UpdateCart(order);
     }
 
-    private void DisplayResponse(ServiceResponse serviceResponse)
+    private async Task DecreaseQuantity(Order order)
     {
-        if (serviceResponse.Flag)
-            MessageDialogService.messageDialog!.SetDialogValues("success", serviceResponse.Message);
-        else
-            MessageDialogService.messageDialog!.SetDialogValues("warning", serviceResponse.Message);
-
-        MessageDialogService.SetMessageDialog();
+        if (order.Quantity > 1)
+        {
+            order.Quantity--;
+             await UpdateCart(order);
+        }
     }
 
-    public void Click(PagerItemClickEventArgs args)
+    private async Task UpdateCart(Order order)
     {
-        SkipValue = (args.CurrentPage * Page!.PageSize) - Page.PageSize;
-        TakeValue = Page.PageSize;
+        await CartService.AddToCart(new Product { Id = order.Id }, order.Quantity);
     }
 
-    public void Dispose() => MessageDialogService.Action -= StateHasChanged;
+    private async Task DeleteCart(Order order)
+    {
+        await CartService.DeleteCart(order);
+        MyCartOrders.Remove(order);
+    }
+
+    private async Task RedeemGiftCard()
+    {
+        
+    }
 }

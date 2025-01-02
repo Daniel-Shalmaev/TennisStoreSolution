@@ -44,7 +44,7 @@ namespace TennisStoreServer.Controllers
         [HttpPost("refresh-token")]
         public async Task<ActionResult<LoginResponse>> RefreshToken(PostRefreshTokenDTO model)
         {
-            if (model is null) return Unauthorized();   
+            if (model is null) return Unauthorized();
             var result = await accountService.GetRefreshToken(model);
             return Ok(result);
         }

@@ -31,7 +31,7 @@ namespace TennisStoreServer.Controllers
         public async Task<ActionResult<ServiceResponse>> AddProduct(Product model)
         {
             if (model is null) return BadRequest("Model is null");
-            var response = await productService.AddProduct(model);   
+            var response = await productService.AddProduct(model);
             return Ok(response);
         }
     }

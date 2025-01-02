@@ -1,8 +1,6 @@
 ﻿@page "/product/{id:int}"
 @using System.Text.RegularExpressions
 
-@inject IProductService ProductService
-
 <div class="container">
     <div class="breadcrumb">
         <div class="breadcrumb-navigation">
@@ -76,7 +74,7 @@
                     <span class="count">@Qty</span>
                     <button @onclick="IncreaseQty">+</button>
                 </div>
-                <button class="btn-primary" @onclick="AddToCart">
+                <button class="btn-primary @BounceClass" @onclick="AddToCart">
                     הוסף לעגלה
                     <i class="fa-solid fa-cart-plus add-to-cart-icon"></i>
                 </button>
@@ -104,12 +102,14 @@
     [Parameter]
     public int Id { get; set; }
     private string ProductTitle { get; set; } = string.Empty;
-    private List<string> ProductParagraphs { get; set; } = new List<string>();
-    private List<string> ProductListItems { get; set; } = new List<string>();
-
+    private List<string> ProductParagraphs { get; set; } = new();
+    private List<string> ProductListItems { get; set; } = new();
 
     private Product? CurrentProduct { get; set; }
     private int Qty { get; set; } = 1;
+
+    private string BounceClass { get; set; } = string.Empty;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -126,7 +126,20 @@
         if (Qty > 1) Qty--;
     }
 
-    private async void AddToCart() => await CartService.AddToCart(CurrentProduct!, Qty);
+    private async Task AddToCart()
+    {
+        // הוספת מחלקת bounce לכפתור
+        BounceClass = "bounce";
+
+        // המתנה לסיום האנימציה
+        await Task.Delay(500);
+
+        // הסרת מחלקת bounce
+        BounceClass = string.Empty;
+
+        // הוספת המוצר לעגלה
+        await CartService.AddToCart(CurrentProduct!, Qty);
+    }
 
 
     private void ToggleSaveIcon()

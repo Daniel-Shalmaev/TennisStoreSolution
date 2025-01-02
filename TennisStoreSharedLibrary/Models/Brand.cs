@@ -14,7 +14,7 @@ namespace TennisStoreSharedLibrary.Models
         public string? EnName { get; set; }
 
         [Required]
-        public int ProductsCount{ get; set; }
+        public int ProductsCount { get; set; }
 
         [Required]
         public string? LogoPath { get; set; }

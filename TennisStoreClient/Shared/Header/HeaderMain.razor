@@ -18,10 +18,12 @@
                 <i class="fa-regular fa-heart fa-2xs"></i>
                 <span class="count">0</span>
             </button>
-            <button class="action-btn">
-                <i class="fa-solid fa-bag-shopping fa-2xs"></i>
-                <span class="count">@CartService.CartCount</span>
-            </button>
+            <NavLink href="@("/my-cart")">
+                <button class="action-btn">
+                    <i class="fa-solid fa-bag-shopping fa-2xs"></i>
+                    <span class="count">@CartService.CartCount</span>
+                </button>
+            </NavLink>
         </div>
     </div>
 </div>
@@ -33,8 +35,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        CartService.CartAction = StateHasChanged; 
-        await CartService.GetCartCount(); 
+        CartService.CartAction = StateHasChanged;
+        await CartService.GetCartCount();
     }
 
     private void OpenModal() => IsModalOpen = true;

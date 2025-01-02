@@ -1,5 +1,4 @@
-﻿using TennisStoreClient.PrivateModels;
-using TennisStoreSharedLibrary.Models;
+﻿using TennisStoreSharedLibrary.Models;
 using TennisStoreSharedLibrary.Responses;
 using Order = TennisStoreClient.PrivateModels.Order;
 

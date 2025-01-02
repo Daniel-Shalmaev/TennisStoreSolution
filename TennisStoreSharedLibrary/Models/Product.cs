@@ -16,7 +16,7 @@ namespace TennisStoreSharedLibrary.Models
 
         public string? ShortDescription { get; set; }
 
-        public string? LongDescription { get; set; } 
+        public string? LongDescription { get; set; }
 
 
         [Required, Range(0.1, 99999.99)]

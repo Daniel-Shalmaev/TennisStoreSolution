@@ -14,7 +14,7 @@ namespace TennisStoreServer.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Category>>> GetAllCategories()
         {
-            var categories = await categoryService.GetAllCategories(); 
+            var categories = await categoryService.GetAllCategories();
             return Ok(categories);
         }
 
@@ -22,7 +22,7 @@ namespace TennisStoreServer.Controllers
         public async Task<ActionResult<ServiceResponse>> AddCategory(Category model)
         {
             if (model is null) return BadRequest("Model is null");
-            var response = await categoryService.AddCategory(model);   
+            var response = await categoryService.AddCategory(model);
             return Ok(response);
         }
     }

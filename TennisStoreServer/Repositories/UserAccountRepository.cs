@@ -100,7 +100,7 @@ namespace TennisStoreServer.Repositories
             {
                 var getRefreshToken = await appDbContext.TokenInfo
                     .FirstOrDefaultAsync(_ => _.RefreshToken!.Equals(refreshToken));
-                return getRefreshToken is null;  
+                return getRefreshToken is null;
             }
             else
             {

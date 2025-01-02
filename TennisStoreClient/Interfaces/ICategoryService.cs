@@ -7,7 +7,7 @@ namespace TennisStoreClient.Interfaces
     {
         Task GetAllCategories();
         Action? CategoryAction { get; set; }
-        int GetSubCategoryCount(int categoryId); 
+        int GetSubCategoryCount(int categoryId);
         public List<Category> AllCategories { get; set; }
         Task<ServiceResponse> AddCategory(Category model);
     }

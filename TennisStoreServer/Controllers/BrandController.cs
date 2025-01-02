@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using TennisStoreClient.Services;
+﻿using Microsoft.AspNetCore.Mvc;
 using TennisStoreServer.Repositories;
 using TennisStoreSharedLibrary.Models;
 using TennisStoreSharedLibrary.Responses;

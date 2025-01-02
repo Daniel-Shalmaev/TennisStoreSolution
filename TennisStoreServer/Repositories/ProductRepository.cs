@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Transactions;
 using TennisStoreServer.Data;
 using TennisStoreSharedLibrary.Models;
 using TennisStoreSharedLibrary.Responses;
@@ -41,7 +40,7 @@ namespace TennisStoreServer.Repositories
                     .ToListAsync();
             else
                 return await appDbContext.Products
-                    .Include(_ => _.Category)   
+                    .Include(_ => _.Category)
                     .ToListAsync();
         }
 

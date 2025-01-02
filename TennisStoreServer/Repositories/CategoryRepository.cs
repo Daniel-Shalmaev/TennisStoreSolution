@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Transactions;
 using TennisStoreServer.Data;
 using TennisStoreSharedLibrary.Models;
 using TennisStoreSharedLibrary.Responses;
@@ -25,7 +24,7 @@ namespace TennisStoreServer.Repositories
 
         public async Task<List<Category>> GetAllCategories() =>
                                                              await appDbContext.Categories
-                                                                 .Include(c => c.Subcategories) 
+                                                                 .Include(c => c.Subcategories)
                                                                  .ToListAsync();
 
         private async Task<ServiceResponse> CheckName(string name)
