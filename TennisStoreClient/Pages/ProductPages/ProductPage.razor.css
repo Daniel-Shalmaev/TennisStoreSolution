@@ -14,7 +14,7 @@
 \*-----------------------------------*/
     .container .product-description-container {
         max-width: 800px;
-        margin: 60px auto;
+        margin: 30px auto 30px auto;
         padding: 30px;
         background-color: #ffffff;
         border: 1px solid #e0e0e0;
@@ -217,7 +217,7 @@
     }
 
     .main .gallery {
-        flex: 1;
+        margin: 0px 70px 0px 10px;
         display: flex;
         flex-direction: column;
         gap: 20px;
@@ -225,6 +225,8 @@
 
         .main .gallery .main-img img {
             width: 100%;
+            width: 300px;
+            height: 300px;
             border-radius: 10px;
             cursor: pointer;
         }
@@ -307,6 +309,51 @@
                 .main .content .add-to-cart-container .counter button:hover {
                     color: var(--tennis-ball-yellow);
                 }
+
+
+/*-----------------------------------*\
+   * Swiper Styling
+\*-----------------------------------*/
+
+.swiper-container {
+    width: 100%;
+    max-width: 300px; /* אותו רוחב כמו התמונה הראשית */
+    margin: 20px auto;
+    padding-bottom: 20px;
+    direction: rtl;
+}
+
+.swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+    .swiper-slide img {
+        width: 100%; /* מתיחה לרוחב */
+        height: auto; /* התאמה אוטומטית לגובה */
+        max-height: 300px; /* הגבלת גובה */
+        object-fit: cover; /* שמירה על פרופורציות */
+        border-radius: 8px;
+    }
+
+.swiper-button-next,
+.swiper-button-prev {
+    color: var(--tennis-ball-yellow);
+    font-size: 18px;
+}
+
+.swiper-pagination {
+    position: relative;
+    margin-top: 10px;
+}
+
+
+
 
 
 

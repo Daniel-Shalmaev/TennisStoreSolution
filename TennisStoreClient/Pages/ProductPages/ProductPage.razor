@@ -41,16 +41,36 @@
     <section class="main">
         <div class="gallery">
             <div class="main-img">
-                <img class="active" src="@CurrentProduct?.Image1" alt="@CurrentProduct?.Name" />
+                <img class="active" src="https://i.imgur.com/@CurrentProduct?.Image2" alt="@CurrentProduct?.Name" />
             </div>
-            <div class="thumb-list">
+
+            <!-- Swiper Slider -->
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    @foreach (var image in GetProductImages())
+                    {
+                        <div class="swiper-slide">
+                            <img src="https://i.imgur.com/@image" alt="Product Image" />
+                        </div>
+                    }
+                </div>
+
+                <!-- Navigation Arrows -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+
+                <!-- Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+
+           @*  <div class="thumb-list">
                 @foreach (var productAttribute in CurrentProduct?.Attributes ?? Enumerable.Empty<ProductAttribute>())
                 {
                     <div>
                         <img src="@productAttribute.Value" alt="@productAttribute.Attribute?.Name" />
                     </div>
                 }
-            </div>
+            </div> *@
         </div>
 
         <div class="content">
@@ -97,7 +117,22 @@
         </div>
     </div>
 </div>
-
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        new Swiper('.swiper-container', {
+            loop: true,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            spaceBetween: 10,
+        });
+    });
+</script>
 @code {
     [Parameter]
     public int Id { get; set; }
@@ -128,16 +163,12 @@
 
     private async Task AddToCart()
     {
-        // הוספת מחלקת bounce לכפתור
         BounceClass = "bounce";
 
-        // המתנה לסיום האנימציה
         await Task.Delay(500);
 
-        // הסרת מחלקת bounce
         BounceClass = string.Empty;
 
-        // הוספת המוצר לעגלה
         await CartService.AddToCart(CurrentProduct!, Qty);
     }
 
@@ -164,4 +195,19 @@
             ProductListItems.Add(match.Groups[1].Value.Trim());
     }
 
+    private List<string> GetProductImages()
+    {
+        var images = new List<string?>
+        {
+            CurrentProduct?.Image2,
+            CurrentProduct?.Image3,
+            CurrentProduct?.Image4,
+            CurrentProduct?.Image5,
+            CurrentProduct?.Image6,
+            CurrentProduct?.Image7,
+            CurrentProduct?.Image8
+        };
+
+        return images.Where(image => !string.IsNullOrEmpty(image)).ToList()!;
+    }
 }
