@@ -35,6 +35,9 @@ namespace TennisStoreSharedLibrary.Models
         public string? Image7 { get; set; }
         public string? Image8 { get; set; }
 
+        public string? Image75 { get; set; }
+        public string? Image180 { get; set; }
+
         public bool Visible { get; set; }
 
 

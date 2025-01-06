@@ -41,37 +41,26 @@
     <section class="main">
         <div class="gallery">
             <div class="main-img">
-                <img class="active" src="https://i.imgur.com/@CurrentProduct?.Image2" alt="@CurrentProduct?.Name" />
+                <img id="mainImage" src="https://i.imgur.com/@MainImageUrl" alt="@CurrentProduct?.Name" />
             </div>
-
-            <!-- Swiper Slider -->
-            <div class="swiper-container">
-                <div class="swiper-wrapper">
-                    @foreach (var image in GetProductImages())
-                    {
-                        <div class="swiper-slide">
-                            <img src="https://i.imgur.com/@image" alt="Product Image" />
-                        </div>
-                    }
-                </div>
-
-                <!-- Navigation Arrows -->
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
-
-                <!-- Pagination -->
-                <div class="swiper-pagination"></div>
-            </div>
-
-           @*  <div class="thumb-list">
-                @foreach (var productAttribute in CurrentProduct?.Attributes ?? Enumerable.Empty<ProductAttribute>())
-                {
-                    <div>
-                        <img src="@productAttribute.Value" alt="@productAttribute.Attribute?.Name" />
+            <div class="slider-container">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        @foreach (var image in GetProductImages())
+                        {
+                            <div class="swiper-slide @((image == MainImageUrl ? "active-slide" : ""))" @onclick="() => ChangeMainImage(image)">
+                                <img src="https://i.imgur.com/@image" alt="Product Image" />
+                            </div>
+                        }
                     </div>
-                }
-            </div> *@
+                </div>
+                @* <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div> *@
+            </div>
         </div>
+
+
 
         <div class="content">
             <h2 class="h2-product-name">@CurrentProduct?.Name</h2>
@@ -119,18 +108,19 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        new Swiper('.swiper-container', {
-            loop: true,
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            spaceBetween: 10,
-        });
+    new Swiper('.swiper-container', {
+    loop: true,
+    slidesPerView: 4,
+    spaceBetween: 10,
+    navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+    },
+    pagination: {
+    el: '.swiper-pagination',
+    clickable: true,
+    },
+    });
     });
 </script>
 @code {
@@ -139,6 +129,8 @@
     private string ProductTitle { get; set; } = string.Empty;
     private List<string> ProductParagraphs { get; set; } = new();
     private List<string> ProductListItems { get; set; } = new();
+    private string MainImageUrl { get; set; } = string.Empty;
+
 
     private Product? CurrentProduct { get; set; }
     private int Qty { get; set; } = 1;
@@ -149,6 +141,10 @@
     protected override async Task OnInitializedAsync()
     {
         CurrentProduct = await ProductService.GetProductById(Id);
+
+        if (CurrentProduct != null && !string.IsNullOrEmpty(CurrentProduct.Image1))
+            MainImageUrl = CurrentProduct.Image1;
+
 
         if (CurrentProduct?.LongDescription != null)
             ParseDescription(CurrentProduct.LongDescription);
@@ -195,10 +191,13 @@
             ProductListItems.Add(match.Groups[1].Value.Trim());
     }
 
+    private void ChangeMainImage(string imageUrl) => MainImageUrl = imageUrl;
+
     private List<string> GetProductImages()
     {
         var images = new List<string?>
         {
+            CurrentProduct?.Image1,
             CurrentProduct?.Image2,
             CurrentProduct?.Image3,
             CurrentProduct?.Image4,

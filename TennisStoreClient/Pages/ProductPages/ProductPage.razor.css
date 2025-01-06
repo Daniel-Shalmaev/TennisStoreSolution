@@ -8,8 +8,7 @@
     font-family: 'Kumbh Sans', sans-serif;
 }
 
-
-/*-----------------------------------*\
+    /*-----------------------------------*\
    * Product Description Styling
 \*-----------------------------------*/
     .container .product-description-container {
@@ -35,7 +34,6 @@
             transform: scale(1.02);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
         }
-
 
     .container .product-description-title {
         font-size: 28px;
@@ -82,7 +80,6 @@
             font-weight: bold;
         }
 
-
 /*-----------------------------------*\
    * Watch Brand Page Styling
 \*-----------------------------------*/
@@ -120,7 +117,6 @@
         .watch-brand-page h3:hover::after {
             width: 100%;
         }
-
 
 /*-----------------------------------*\
    * Breadcrumb Styling
@@ -217,19 +213,84 @@
     }
 
     .main .gallery {
-        margin: 0px 70px 0px 10px;
         display: flex;
         flex-direction: column;
+        align-items: center;
         gap: 20px;
     }
 
+        .main .gallery .swiper-button-next,
+        .main .gallery .swiper-button-prev {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .main .gallery .swiper-button-next {
+            right: -20px;
+        }
+
+        .main .gallery .swiper-button-prev {
+            left: -20px;
+        }
+
+            .main .gallery .swiper-button-next:hover,
+            .main .gallery .swiper-button-prev:hover {
+                background-color: rgba(255, 255, 255, 1);
+            }
+
         .main .gallery .main-img img {
             width: 100%;
-            width: 300px;
-            height: 300px;
-            border-radius: 10px;
-            cursor: pointer;
+            max-width: 400px;
+            height: auto;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #ddd;
         }
+
+        .main .gallery .slider-container {
+            overflow-x: hidden;
+        }
+
+        .main .gallery .swiper-slide {
+            width: auto;
+            margin: 5px;
+            border: 0.5px solid #EEEEEE;
+            border-radius: 5px;
+        }
+
+            .main .gallery .swiper-slide.active-slide img {
+                opacity: 1;
+                filter: none; 
+                transform: scale(1.1); 
+                border: 1px solid var(--tennis-ball-yellow); 
+            }
+
+            .main .gallery .swiper-slide img {
+                width: 80px;
+                height: 80px;
+                object-fit: cover;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: filter 0.3s ease, transform 0.3s ease;
+                opacity: 0.6; 
+            }
+
+                .main .gallery .swiper-slide img:hover,
+                .main .gallery .swiper-slide img.selected {
+                    opacity: 1;
+                    transform: scale(1.1);
+                }
 
         .main .gallery .thumb-list {
             display: flex;
@@ -247,8 +308,6 @@
                 .main .gallery .thumb-list img:hover {
                     border-color: var(--tennis-ball-yellow);
                 }
-
-
 
     .main .content .add-to-cart-container .add-to-cart-icon {
         margin-right: 5px;
@@ -310,54 +369,6 @@
                     color: var(--tennis-ball-yellow);
                 }
 
-
-/*-----------------------------------*\
-   * Swiper Styling
-\*-----------------------------------*/
-
-.swiper-container {
-    width: 100%;
-    max-width: 300px; /* אותו רוחב כמו התמונה הראשית */
-    margin: 20px auto;
-    padding-bottom: 20px;
-    direction: rtl;
-}
-
-.swiper-slide {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #fff;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-    .swiper-slide img {
-        width: 100%; /* מתיחה לרוחב */
-        height: auto; /* התאמה אוטומטית לגובה */
-        max-height: 300px; /* הגבלת גובה */
-        object-fit: cover; /* שמירה על פרופורציות */
-        border-radius: 8px;
-    }
-
-.swiper-button-next,
-.swiper-button-prev {
-    color: var(--tennis-ball-yellow);
-    font-size: 18px;
-}
-
-.swiper-pagination {
-    position: relative;
-    margin-top: 10px;
-}
-
-
-
-
-
-
-
 /*-----------------------------------*\
    * Bounce Animation Styling
 \*-----------------------------------*/
@@ -416,4 +427,16 @@
     .main .content {
         text-align: center;
     }
+
+    .main .gallery .swiper-slide img {
+        max-width: 60px;
+    }
+
+    .main .gallery .swiper-button-next,
+    .main .gallery .swiper-button-prev {
+        width: 30px;
+        height: 30px;
+    }
 }
+
+
