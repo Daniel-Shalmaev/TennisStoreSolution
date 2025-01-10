@@ -219,36 +219,6 @@
         gap: 20px;
     }
 
-        .main .gallery .swiper-button-next,
-        .main .gallery .swiper-button-prev {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 10;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .main .gallery .swiper-button-next {
-            right: -20px;
-        }
-
-        .main .gallery .swiper-button-prev {
-            left: -20px;
-        }
-
-            .main .gallery .swiper-button-next:hover,
-            .main .gallery .swiper-button-prev:hover {
-                background-color: rgba(255, 255, 255, 1);
-            }
-
         .main .gallery .main-img img {
             width: 100%;
             max-width: 400px;
@@ -259,8 +229,70 @@
         }
 
         .main .gallery .slider-container {
-            overflow-x: hidden;
+            position: relative;
+            max-width: 400px;
+            overflow: hidden;
+            margin: auto;
         }
+
+            .main .gallery .slider-container .swiper-button-prev,
+            .main .gallery .slider-container .swiper-button-next {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 30px;
+                height: 30px;
+                background-color: rgba(238, 238, 238, 0.5);
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                color: #fff;
+                border: none;
+                border-radius: 50%;
+                cursor: pointer;
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: auto;
+            }
+
+            .main .gallery .slider-container .swiper-button-prev {
+                right: 0;
+                left: unset;
+            }
+
+            .main .gallery .slider-container .swiper-button-next {
+                left: 0;
+                right: unset;
+            }
+
+                .main .gallery .slider-container .swiper-button-prev.hidden,
+                .main .gallery .slider-container .swiper-button-next.hidden {
+                    display: none;
+                }
+
+                .main .gallery .slider-container .swiper-button-prev:hover,
+                .main .gallery .slider-container .swiper-button-next:hover {
+                    background-color: rgba(238, 238, 238, 1);
+                }
+
+                .main .gallery .slider-container .swiper-button-prev::after,
+                .main .gallery .slider-container .swiper-button-next::after {
+                    font-size: 16px;
+                    line-height: 1;
+                }
+
+            .main .gallery .slider-container .swiper-button-prev::after {
+                content: '\276E'; 
+                font-size: 16px;
+                transform: none; 
+            }
+
+            .main .gallery .slider-container .swiper-button-next::after {
+                content: '\276E'; 
+                font-size: 16px;
+                transform: rotate(180deg); 
+            }
+
 
         .main .gallery .swiper-slide {
             width: auto;
@@ -271,9 +303,9 @@
 
             .main .gallery .swiper-slide.active-slide img {
                 opacity: 1;
-                filter: none; 
-                transform: scale(1.1); 
-                border: 1px solid var(--tennis-ball-yellow); 
+                filter: none;
+                transform: scale(1.1);
+                border: 1px solid var(--tennis-ball-yellow);
             }
 
             .main .gallery .swiper-slide img {
@@ -283,7 +315,7 @@
                 border-radius: 5px;
                 cursor: pointer;
                 transition: filter 0.3s ease, transform 0.3s ease;
-                opacity: 0.6; 
+                opacity: 0.6;
             }
 
                 .main .gallery .swiper-slide img:hover,
@@ -438,5 +470,3 @@
         height: 30px;
     }
 }
-
-

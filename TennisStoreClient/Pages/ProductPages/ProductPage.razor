@@ -45,7 +45,7 @@
             </div>
             <div class="slider-container">
                 <div class="swiper-container">
-                    <div class="swiper-wrapper">
+                    <div class="swiper-wrapper" style="transition: transform 0.5s ease; transform: translateX(@(CurrentIndex * (ThumbnailWidth + ThumbnailSpacing))px);">
                         @foreach (var image in GetProductImages())
                         {
                             <div class="swiper-slide @((image == MainImageUrl ? "active-slide" : ""))" @onclick="() => ChangeMainImage(image)">
@@ -54,12 +54,16 @@
                         }
                     </div>
                 </div>
-                @* <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-pagination"></div> *@
+                @if (!IsAtStart)
+                {
+                    <button class="swiper-button-prev" @onclick="MoveSliderBack"></button>
+                }
+                @if (!IsAtEnd)
+                {
+                    <button class="swiper-button-next" @onclick="MoveSliderForward"></button>
+                }
             </div>
         </div>
-
 
 
         <div class="content">
@@ -106,37 +110,38 @@
         </div>
     </div>
 </div>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-    new Swiper('.swiper-container', {
-    loop: true,
-    slidesPerView: 4,
-    spaceBetween: 10,
-    navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
-    },
-    pagination: {
-    el: '.swiper-pagination',
-    clickable: true,
-    },
-    });
-    });
-</script>
+
+
+
 @code {
+    #region Parameters
+
     [Parameter]
     public int Id { get; set; }
-    private string ProductTitle { get; set; } = string.Empty;
-    private List<string> ProductParagraphs { get; set; } = new();
-    private List<string> ProductListItems { get; set; } = new();
-    private string MainImageUrl { get; set; } = string.Empty;
 
+    #endregion
 
-    private Product? CurrentProduct { get; set; }
+    #region Properties
+
     private int Qty { get; set; } = 1;
-
+    private int CurrentIndex { get; set; }
+    private Product? CurrentProduct { get; set; }
+    private int ThumbnailWidth { get; set; } = 80;
+    private int ThumbnailSpacing { get; set; } = 10;
+    private int VisibleThumbnails { get; set; } = 4;
     private string BounceClass { get; set; } = string.Empty;
+    private string ProductTitle { get; set; } = string.Empty;
+    private string MainImageUrl { get; set; } = string.Empty;
+    private List<string> ProductListItems { get; set; } = new();
+    private List<string> ProductParagraphs { get; set; } = new();
 
+    private bool IsAtStart => CurrentIndex == 0;
+    private bool IsAtEnd => CurrentIndex >= GetProductImages().Count - VisibleThumbnails;
+
+
+    #endregion
+
+    #region Lifecycle Methods
 
     protected override async Task OnInitializedAsync()
     {
@@ -145,10 +150,13 @@
         if (CurrentProduct != null && !string.IsNullOrEmpty(CurrentProduct.Image1))
             MainImageUrl = CurrentProduct.Image1;
 
-
         if (CurrentProduct?.LongDescription != null)
             ParseDescription(CurrentProduct.LongDescription);
     }
+
+    #endregion
+
+    #region Methods
 
     private void IncreaseQty() => Qty++;
 
@@ -168,7 +176,6 @@
         await CartService.AddToCart(CurrentProduct!, Qty);
     }
 
-
     private void ToggleSaveIcon()
     {
         Console.WriteLine("ok");
@@ -186,10 +193,27 @@
         foreach (Match match in pMatches)
             ProductParagraphs.Add(match.Groups[1].Value.Trim());
 
-        var liMatches = System.Text.RegularExpressions.Regex.Matches(rawHtml, @"<li>(.*?)<\/li>");
+        var liMatches = Regex.Matches(rawHtml, @"<li>(.*?)<\/li>");
         foreach (Match match in liMatches)
             ProductListItems.Add(match.Groups[1].Value.Trim());
     }
+
+    private void MoveSliderBack()
+    {
+        if (CurrentIndex > 0)
+        {
+            CurrentIndex--;
+        }
+    }
+
+    private void MoveSliderForward()
+    {
+        if (CurrentIndex < GetProductImages().Count - VisibleThumbnails)
+        {
+            CurrentIndex++;
+        }
+    }
+
 
     private void ChangeMainImage(string imageUrl) => MainImageUrl = imageUrl;
 
@@ -209,4 +233,7 @@
 
         return images.Where(image => !string.IsNullOrEmpty(image)).ToList()!;
     }
+
+    #endregion
 }
+
