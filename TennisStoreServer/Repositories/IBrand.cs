@@ -5,7 +5,8 @@ namespace TennisStoreServer.Repositories
 {
     public interface IBrand
     {
-        Task<ServiceResponse> AddBrand(Brand model);
         Task<List<Brand>> GetAllBrands();
+        Task<Brand?> GetBrandById(int id);
+        Task<ServiceResponse> AddBrand(Brand model);
     }
 }

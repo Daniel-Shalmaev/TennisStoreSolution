@@ -239,20 +239,14 @@
             .main .gallery .slider-container .swiper-button-next {
                 position: absolute;
                 top: 50%;
-                transform: translateY(-50%);
                 width: 30px;
                 height: 30px;
-                background-color: rgba(238, 238, 238, 0.5);
+                background-color: rgba(238, 238, 238, 0.6);
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
                 color: #fff;
                 border: none;
                 border-radius: 50%;
                 cursor: pointer;
-                z-index: 1000;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin: auto;
             }
 
             .main .gallery .slider-container .swiper-button-prev {

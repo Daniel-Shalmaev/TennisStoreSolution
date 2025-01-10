@@ -47,6 +47,15 @@ namespace TennisStoreClient.Services
             return new ServiceResponse(true, "Brand added successfully");
         }
 
+        public async Task<Brand?> GetBrandById(int brandId)
+        {
+            var response = await _httpClient.GetAsync($"api/brand/{brandId}");
+            if (!response.IsSuccessStatusCode) return null;
+
+            var content = await response.Content.ReadAsStringAsync();
+            return General.DeserializedJsonString<Brand>(content);
+        }
+
         #endregion
 
         #region Private Methods

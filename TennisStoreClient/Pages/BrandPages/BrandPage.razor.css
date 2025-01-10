@@ -1,0 +1,9 @@
+﻿/*-----------------------------------*\
+   * General Container Styling
+\*-----------------------------------*/
+.container {
+    max-width: 1120px;
+    margin: auto;
+    padding: 0 20px;
+    font-family: 'Kumbh Sans', sans-serif;
+}

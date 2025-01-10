@@ -1,0 +1,41 @@
+﻿@page "/brand/{id:int}"
+@using System.Text.RegularExpressions
+
+<div class="container">
+    <img style="margin:auto;" src="@("/images/" + CurrentBrand?.LogoPath)" alt="@CurrentBrand?.HebName" width="100" height="100">
+    <h1 style="margin:auto;">Hi</h1>
+    @CurrentBrand?.HebName
+</div>
+
+
+
+@code {
+    #region Parameters
+
+    [Parameter]
+    public int Id { get; set; }
+
+    #endregion
+
+    #region Properties
+
+    private Brand? CurrentBrand { get; set; }
+
+    #endregion
+
+    #region Lifecycle Methods
+
+    protected override async Task OnInitializedAsync()
+    {
+        CurrentBrand = await BrandService.GetBrandById(Id);
+    }
+
+    #endregion
+
+    #region Methods
+
+
+
+    #endregion
+}
+

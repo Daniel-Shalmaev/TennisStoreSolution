@@ -29,8 +29,11 @@ namespace TennisStoreServer.Repositories
                 new ServiceResponse(false, "Category already exist");
         }
 
+        private async Task Commit() => await appDbContext.SaveChangesAsync();
+
         public async Task<List<Brand>> GetAllBrands() => await appDbContext.Brands.ToListAsync();
 
-        private async Task Commit() => await appDbContext.SaveChangesAsync();
+        public async Task<Brand?> GetBrandById(int id) => await appDbContext.Brands.FirstOrDefaultAsync(b => b.Id == id);
+
     }
 }

@@ -7,16 +7,15 @@ namespace TennisStoreServer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class ProductController(IProduct productService) : ControllerBase
     {
-        private readonly IProduct productService;
-
-        public ProductController(IProduct productService) => this.productService = productService;
+        private readonly IProduct productService = productService;
 
         [HttpGet]
         public async Task<ActionResult<List<Product>>> GetAllProducts(bool featured)
         {
-            var products = await productService.GetAllProducts(featured); return Ok(products);
+            var products = await productService.GetAllProducts(featured); 
+            return Ok(products);
         }
 
         [HttpGet("{id}")]

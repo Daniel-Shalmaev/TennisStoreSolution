@@ -18,7 +18,15 @@ namespace TennisStoreServer.Controllers
             return Ok(brands);
         }
 
-        [HttpPost]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Brand>> GetBrandById(int id)
+        {
+            var brand = await brandService.GetBrandById(id);
+            if (brand == null) return NotFound($"Brand with ID {id} not found.");
+            return Ok(brand);
+        }
+
+            [HttpPost]
         public async Task<ActionResult<ServiceResponse>> AddBrand(Brand model)
         {
             if (model is null) return BadRequest("Model is null");
