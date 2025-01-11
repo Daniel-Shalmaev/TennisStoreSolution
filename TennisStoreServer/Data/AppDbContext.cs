@@ -20,6 +20,15 @@ namespace TennisStoreServer.Data
 
             modelBuilder.Entity<ProductAttribute>()
                 .HasKey(pa => new { pa.ProductId, pa.AttributeId });
+
+            modelBuilder.Entity<Brand>()
+                .HasMany(b => b.Subcategories)
+                .WithMany(sc => sc.Brands)
+                .UsingEntity<Dictionary<string, object>>(
+                    "BrandSubcategory",
+                    b => b.HasOne<Subcategory>().WithMany().HasForeignKey("SubcategoryId"),
+                    sc => sc.HasOne<Brand>().WithMany().HasForeignKey("BrandId")
+                );
         }
     }
 }

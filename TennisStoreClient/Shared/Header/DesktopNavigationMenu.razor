@@ -45,10 +45,10 @@
                         @foreach (var brand in BrandService.AllBrands)
                         {
                             <li class="dropdown-item">
-                                <a href="@brand.EnName" style="display: flex; align-items: center; gap: 10px;">
+                                <NavLink href="@($"/brand/{brand.Id}")" style="display: flex; align-items: center; gap: 10px;">
                                     <img src="@("/images/" + brand.LogoPath)" alt="@brand.EnName" width="60" height="60">
                                     <span>@brand.EnName</span>
-                                </a>
+                                </NavLink>
                             </li>
                         }
                     }

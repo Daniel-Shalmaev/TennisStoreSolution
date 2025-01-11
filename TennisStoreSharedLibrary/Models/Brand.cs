@@ -19,9 +19,14 @@ namespace TennisStoreSharedLibrary.Models
         [Required]
         public string? LogoPath { get; set; }
 
+        [Required]
+        public string? BrandPageBannerImage { get; set; }
+
         // Relationships
         [JsonIgnore]
         public List<Product>? Products { get; set; }
+
+        public List<Subcategory>? Subcategories { get; set; } // Many-to-Many
 
     }
 }

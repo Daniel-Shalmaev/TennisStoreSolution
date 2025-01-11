@@ -1,9 +1,55 @@
-﻿/*-----------------------------------*\
-   * General Container Styling
-\*-----------------------------------*/
+﻿/* Container Styling */
 .container {
     max-width: 1120px;
     margin: auto;
-    padding: 0 20px;
+    padding: 20px;
     font-family: 'Kumbh Sans', sans-serif;
+    text-align: center;
+}
+
+    /* Logo Styling */
+    .container .brand-logo {
+        width: 120px;
+        height: 120px;
+        margin: 20px auto;
+        border-radius: 50%;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .container .brand-logo:hover {
+            transform: scale(1.1);
+        }
+
+    /* Banner Image Styling */
+    .container .banner-img {
+        width: 100%;
+        height: auto;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        margin-bottom: 20px;
+    }
+
+    /* Title Styling */
+    .container .brand-title {
+        font-size: 32px;
+        color: #333;
+        margin: 10px 0;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+        /* Hebrew Name Styling */
+        .container .brand-title + span {
+            font-size: 24px;
+            color: #666;
+            display: block;
+            margin-top: 10px;
+            text-transform: capitalize;
+        }
+
+/* Background Styling */
+body {
+    background: linear-gradient(120deg, #ffffff, #f0f0f0);
+    color: #333;
 }

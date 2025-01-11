@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TennisStoreServer.Data;
 
@@ -11,9 +12,11 @@ using TennisStoreServer.Data;
 namespace TennisStoreServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250111102701_Add_BrandPageBannerImage_To_BrandModel")]
+    partial class Add_BrandPageBannerImage_To_BrandModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace TennisStoreServer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("BrandSubcategory", b =>
-                {
-                    b.Property<int>("BrandId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SubcategoryId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BrandId", "SubcategoryId");
-
-                    b.HasIndex("SubcategoryId");
-
-                    b.ToTable("BrandSubcategory");
-                });
 
             modelBuilder.Entity("TennisStoreServer.Data.SystemRole", b =>
                 {
@@ -341,9 +329,6 @@ namespace TennisStoreServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("BrandIconPath")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
@@ -381,21 +366,6 @@ namespace TennisStoreServer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserAccounts");
-                });
-
-            modelBuilder.Entity("BrandSubcategory", b =>
-                {
-                    b.HasOne("TennisStoreSharedLibrary.Models.Brand", null)
-                        .WithMany()
-                        .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TennisStoreSharedLibrary.Models.Subcategory", null)
-                        .WithMany()
-                        .HasForeignKey("SubcategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("TennisStoreSharedLibrary.Models.Customer", b =>

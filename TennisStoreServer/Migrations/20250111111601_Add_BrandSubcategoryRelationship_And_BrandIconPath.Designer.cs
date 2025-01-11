@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TennisStoreServer.Data;
 
@@ -11,9 +12,11 @@ using TennisStoreServer.Data;
 namespace TennisStoreServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250111111601_Add_BrandSubcategoryRelationship_And_BrandIconPath")]
+    partial class Add_BrandSubcategoryRelationship_And_BrandIconPath
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,15 +27,15 @@ namespace TennisStoreServer.Migrations
 
             modelBuilder.Entity("BrandSubcategory", b =>
                 {
-                    b.Property<int>("BrandId")
+                    b.Property<int>("BrandsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SubcategoryId")
+                    b.Property<int>("SubcategoriesId")
                         .HasColumnType("int");
 
-                    b.HasKey("BrandId", "SubcategoryId");
+                    b.HasKey("BrandsId", "SubcategoriesId");
 
-                    b.HasIndex("SubcategoryId");
+                    b.HasIndex("SubcategoriesId");
 
                     b.ToTable("BrandSubcategory");
                 });
@@ -387,13 +390,13 @@ namespace TennisStoreServer.Migrations
                 {
                     b.HasOne("TennisStoreSharedLibrary.Models.Brand", null)
                         .WithMany()
-                        .HasForeignKey("BrandId")
+                        .HasForeignKey("BrandsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TennisStoreSharedLibrary.Models.Subcategory", null)
                         .WithMany()
-                        .HasForeignKey("SubcategoryId")
+                        .HasForeignKey("SubcategoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
