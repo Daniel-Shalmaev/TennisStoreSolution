@@ -34,7 +34,7 @@ namespace TennisStoreServer.Repositories
         public async Task<List<Brand>> GetAllBrands() => await appDbContext.Brands.ToListAsync();
 
         public async Task<Brand?> GetBrandById(int id) =>
-            await appDbContext.Brands.Include(b => b.Subcategories).FirstOrDefaultAsync(b => b.Id == id);
+            await appDbContext.Brands.Include(b => b.Subcategories)!.ThenInclude(sc => sc.Category).FirstOrDefaultAsync(b => b.Id == id);
 
     }
 }

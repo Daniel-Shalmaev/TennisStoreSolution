@@ -9,6 +9,7 @@ namespace TennisStoreSharedLibrary.Models
 
         [Required]
         public string? Name { get; set; }
+        public string CategoryName { get; set; }
         public string? BrandIconPath { get; set; }
 
         // Relationship: Many-to-One with Category

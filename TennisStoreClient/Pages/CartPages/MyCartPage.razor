@@ -10,7 +10,7 @@
         <h1 class="cart-title">עגלת הקניות שלי</h1>
         <div class="cart-layout">
             <div class="cart-summary">
-                <h2>סיכום סל הקניות - <span>@MyCartOrders.Count</span> פריטים</h2>
+                <h2>סיכום סל הקניות - <span>@MyCartOrders.Sum(item => item.Quantity)</span> פריטים</h2>
                 <div class="summary-details">
                     <p>סה"כ: <span class="total-price">₪@MyCartOrders.Sum(_ => _.SubTotal).ToString("#.##")</span></p>
                     <p>משלוח: יתווסף לאחר בחירת אפשרות</p>
@@ -72,13 +72,13 @@
             if (productDetails != null)
             {
                 MyCartOrders.Add(new Order
-                    {
-                        Id = productDetails.Id,
-                        Name = productDetails.Name,
-                        Image = productDetails.Image1,
-                        Price = productDetails.Price,
-                        Quantity = cartItem.Quantity
-                    });
+                {
+                    Id = productDetails.Id,
+                    Name = productDetails.Name,
+                    Image = productDetails.Image1,
+                    Price = productDetails.Price,
+                    Quantity = cartItem.Quantity
+                });
             }
         }
     }

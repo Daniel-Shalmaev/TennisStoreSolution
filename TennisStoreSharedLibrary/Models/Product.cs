@@ -11,7 +11,6 @@ namespace TennisStoreSharedLibrary.Models
         [Required]
         public string? Name { get; set; }
 
-        [Required]
         public string? SubName { get; set; }
 
         public string? ShortDescription { get; set; }

@@ -14,7 +14,9 @@
                                 <h3 class="brand-item-title">@brand.EnName</h3>
                                 <p class="brand-item-amount">(@brand.ProductsCount)</p>
                             </div>
-                            <a href="/b/@brand.EnName" class="brand-btn">Show all</a>
+                            <NavLink href="@($"/brand/{brand.Id}")">
+                                <span class="brand-btn">הצג מוצג</span>
+                            </NavLink>
                         </div>
                     </div>
                 }
