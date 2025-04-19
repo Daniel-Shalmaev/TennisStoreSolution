@@ -47,6 +47,15 @@ namespace TennisStoreClient.Services
             return new ServiceResponse(true, "Brand added successfully");
         }
 
+        public async Task<List<Product>> GetProductsByBrandAndSubcategory(int brandId, int subcategoryId)
+        {
+            var response = await _httpClient.GetAsync($"api/brand/products?brandId={brandId}&subcategoryId={subcategoryId}");
+            if (!response.IsSuccessStatusCode) return new();
+
+            var content = await response.Content.ReadAsStringAsync();
+            return General.DeserializedJsonStringList<Product>(content).ToList() ?? new();
+        }
+
         public async Task<Brand?> GetBrandById(int brandId)
         {
             var response = await _httpClient.GetAsync($"api/brand/{brandId}");

@@ -8,5 +8,7 @@ namespace TennisStoreServer.Repositories
         Task<List<Brand>> GetAllBrands();
         Task<Brand?> GetBrandById(int id);
         Task<ServiceResponse> AddBrand(Brand model);
+        Task<List<Product>> GetProductsByBrandAndSubcategory(int brandId, int subcategoryId);
+
     }
 }

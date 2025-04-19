@@ -1,25 +1,28 @@
 ﻿@page "/add-product"
 @implements IDisposable
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <EditForm Model="MyProduct" Enhance OnValidSubmit="HandleSaveProduct">
+<div class="container form-rtl">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <EditForm Model="MyProduct" OnValidSubmit="HandleSaveProduct">
                 <DataAnnotationsValidator />
                 <ValidationSummary />
-                <div class="card">
-                    <div class="card-header">Add Product</div>
+
+                <div class="card custom-card">
+                    <div class="card-header bg-primary text-white">הוספת מוצר חדש</div>
+
                     <div class="card-body">
                         <div class="form-group">
-                            <label class="form-label">Name</label>
-                            <InputText @bind-Value="MyProduct.Name" class="form-control"></InputText>
+                            <label class="form-label">שם מוצר</label>
+                            <InputText @bind-Value="MyProduct.Name" class="form-control" />
                         </div>
+
                         <div class="form-group">
-                            <label>Select Category</label>
+                            <label class="form-label">בחר קטגוריה</label>
                             @if (CategoryService.AllCategories is not null)
                             {
-                                <InputSelect class="form-select form-control-sm" @bind-Value="@MyProduct.CategoryId">
-                                    <option>Select Category</option>
+                                <InputSelect class="form-select" @bind-Value="MyProduct.CategoryId">
+                                    <option value="">-- בחר קטגוריה --</option>
                                     @foreach (var category in CategoryService.AllCategories)
                                     {
                                         <option value="@category.Id">@category.Name</option>
@@ -27,41 +30,44 @@
                                 </InputSelect>
                             }
                         </div>
-                        <div class="form-group mt-3">
-                            <label class="form-label">Price</label>
-                            <InputNumber @bind-Value="MyProduct.Price" class="form-control"></InputNumber>
+
+                        <div class="form-group">
+                            <label class="form-label">מחיר</label>
+                            <InputNumber @bind-Value="MyProduct.Price" class="form-control" />
                         </div>
-                        <div class="form-group mt-3">
-                            <label class="form-label">Quantity</label>
-                            <InputNumber @bind-Value="MyProduct.Quantity" class="form-control"></InputNumber>
+
+                        <div class="form-group">
+                            <label class="form-label">כמות</label>
+                            <InputNumber @bind-Value="MyProduct.Quantity" class="form-control" />
                         </div>
-                        <div class="form-group mt-3">
-                            <label class="form-label">Description</label>
-                            <InputTextArea @bind-Value="MyProduct.LongDescription" class="form-control"></InputTextArea>
+
+                        <div class="form-group">
+                            <label class="form-label">תיאור</label>
+                            <InputTextArea @bind-Value="MyProduct.LongDescription" class="form-control" />
                         </div>
-                        <div class="form-group mt-3">
-                            <label class="form-label @(ImageUploadMessage == ""?"" : "text-danger")">
-                                @(ImageUploadMessage == "" ? "Upload Image" : ImageUploadMessage)
+
+                        <div class="form-group">
+                            <label class="form-label @(ImageUploadMessage == "" ? "" : "text-danger")">
+                                @(ImageUploadMessage == "" ? "העלה תמונה" : ImageUploadMessage)
                             </label>
-                            <InputFile class="form-control" OnChange="UploadImage"></InputFile>
+                            <InputFile OnChange="UploadImage" class="form-control" />
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <div class="form-group mt-3">
-                            @if (MessageDialogService.ShowSaveButton)
-                            {
-                                <button type="submit" class="btn btn-outline-primary"><i class="fa fa-plus"></i>Save Product</button>
-                            }
-                            <BusyButtonComponent ShowBusyButton="MessageDialogService.ShowBusyButton"></BusyButtonComponent>
-                        </div>
+
+                    <div class="card-footer text-end">
+                        @if (MessageDialogService.ShowSaveButton)
+                        {
+                            <button type="submit" class="btn btn-success">💾 שמור מוצר</button>
+                        }
+                        <BusyButtonComponent ShowBusyButton="MessageDialogService.ShowBusyButton"></BusyButtonComponent>
                     </div>
                 </div>
             </EditForm>
         </div>
     </div>
 </div>
-<MessageDialog @ref="MessageDialogService.messageDialog"></MessageDialog>
 
+<MessageDialog @ref="MessageDialogService.messageDialog"></MessageDialog>
 
 @code {
     Product MyProduct = new();

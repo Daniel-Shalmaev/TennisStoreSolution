@@ -7,6 +7,10 @@
     text-align: center;
 }
 
+    .container .subcategory-products-wrapper {
+        margin-top: 30px;
+    }
+
     /* Logo Styling */
     .container .brand-logo {
         width: 120px;
@@ -53,19 +57,19 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 20px; 
+        gap: 20px;
     }
 
     /* Subcategory Styling */
     .container .subcategory-icon {
         width: 160px;
-        height: 180px; 
+        height: 180px;
         display: flex;
         flex-direction: column;
-        justify-content: space-between; 
+        justify-content: space-between;
         align-items: center;
         background-color: #f9f9f9;
-        border: 1px solid transparent; 
+        border: 1px solid transparent;
         border-radius: 5px;
         padding: 10px;
         transition: all 0.3s ease-in-out;
@@ -80,8 +84,8 @@
 
         .container .subcategory-icon .subcategory-img {
             max-width: 100%;
-            max-height: 140px; 
-            object-fit: contain; 
+            max-height: 140px;
+            object-fit: contain;
         }
 
         .container .subcategory-icon .subcategory-name {
@@ -89,8 +93,8 @@
             font-size: 16px;
             font-weight: bold;
             text-align: center;
-            padding: 5px 0; 
-            margin-top: auto; 
+            padding: 5px 0;
+            margin-top: auto;
             transition: color 0.3s ease-in-out;
         }
 

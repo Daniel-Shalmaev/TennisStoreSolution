@@ -29,6 +29,13 @@ namespace TennisStoreServer.Repositories
                 new ServiceResponse(false, "Category already exist");
         }
 
+        public async Task<List<Product>> GetProductsByBrandAndSubcategory(int brandId, int subcategoryId)
+        {
+            return await appDbContext.Products
+                .Where(p => p.BrandId == brandId && p.SubCategoryId == subcategoryId)
+                .ToListAsync();
+        }
+
         private async Task Commit() => await appDbContext.SaveChangesAsync();
 
         public async Task<List<Brand>> GetAllBrands() => await appDbContext.Brands.ToListAsync();

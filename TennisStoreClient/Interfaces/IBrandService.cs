@@ -10,5 +10,7 @@ namespace TennisStoreClient.Interfaces
         Task<Brand?> GetBrandById(int brandId);
         public List<Brand> AllBrands { get; set; }
         Task<ServiceResponse> AddBrand(Brand model);
+        Task<List<Product>> GetProductsByBrandAndSubcategory(int brandId, int subcategoryId);
+
     }
 }

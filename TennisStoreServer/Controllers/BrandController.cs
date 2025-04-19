@@ -26,7 +26,15 @@ namespace TennisStoreServer.Controllers
             return Ok(brand);
         }
 
-            [HttpPost]
+        [HttpGet("products")]
+        public async Task<ActionResult<List<Product>>> GetProductsByBrandAndSubcategory([FromQuery] int brandId, [FromQuery] int subcategoryId)
+        {
+            var products = await brandService.GetProductsByBrandAndSubcategory(brandId, subcategoryId);
+            return Ok(products);
+        }
+
+
+        [HttpPost]
         public async Task<ActionResult<ServiceResponse>> AddBrand(Brand model)
         {
             if (model is null) return BadRequest("Model is null");

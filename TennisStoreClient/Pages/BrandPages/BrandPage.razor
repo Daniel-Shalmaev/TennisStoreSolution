@@ -1,5 +1,6 @@
 ﻿@page "/brand/{id:int}"
 @using System.Text.RegularExpressions
+@using TennisStoreClient.Components.Home
 
 <div class="container">
     <img class="brand-logo" src="@("/images/" + CurrentBrand?.LogoPath)" alt="@CurrentBrand?.HebName">
@@ -11,7 +12,7 @@
             {
                 if (!string.IsNullOrEmpty(subcategory.BrandIconPath))
                 {
-                    <div class="subcategory-icon">
+                    <div class="subcategory-icon" @onclick="() => LoadProducts(CurrentBrand.Id, subcategory.Id)">
                         <div class="subcategory-content">
                             <img class="subcategory-img" src="/Images/Icons/@subcategory.BrandIconPath" alt="@subcategory.Name">
                             <span class="subcategory-name">@subcategory.CategoryName</span>
@@ -23,6 +24,14 @@
     }
     @* <h1 class="brand-title">Hi</h1>
     <span>@CurrentBrand?.HebName</span> *@
+
+    @if (Products?.Any() == true)
+    {
+        <div class="subcategory-products-wrapper">
+            <ProductsGrid Products="Products" Title="@SelectedSubcategoryName" />
+        </div>
+    }
+
 </div>
 
 @code {
@@ -36,6 +45,9 @@
     #region Properties
 
     private Brand? CurrentBrand { get; set; }
+    private List<Product> Products { get; set; } = new();
+    private string SelectedSubcategoryName { get; set; } = "";
+
 
     #endregion
 
@@ -44,6 +56,14 @@
     protected override async Task OnInitializedAsync()
     {
         CurrentBrand = await BrandService.GetBrandById(Id);
+    }
+
+    private async Task LoadProducts(int brandId, int subcategoryId)
+    {
+        Products = await BrandService.GetProductsByBrandAndSubcategory(brandId, subcategoryId);
+
+        var subcategory = CurrentBrand?.Subcategories!.FirstOrDefault(sc => sc.Id == subcategoryId);
+        SelectedSubcategoryName = subcategory?.CategoryName ?? "";
     }
 
     #endregion
